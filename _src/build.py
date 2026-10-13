@@ -632,7 +632,7 @@ def build():
   <ul>
     <li><strong>What we collect:</strong> your email if you join the newsletter, and your name, email and message if you use the contact form.</li>
     <li><strong>Why:</strong> to send the newsletter you asked for and to reply to you. Nothing else.</li>
-    <li><strong>Where it's stored:</strong> with our hosting provider, Netlify, and later with our email newsletter service.</li>
+    <li><strong>Where it's stored:</strong> with our hosting provider, Netlify, and our email newsletter service, Brevo, which sends the daily brief.</li>
     <li><strong>What we don't do:</strong> we don't sell or share your details, and we don't use tracking cookies or ads on this site.</li>
     <li><strong>Your choice:</strong> every newsletter has an unsubscribe link. To have your details deleted, use the <a href="/contact.html">contact form</a>.</li>
   </ul>

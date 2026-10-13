@@ -23,6 +23,16 @@
   function encode(form) {
     return new URLSearchParams(new FormData(form)).toString();
   }
+  // Newsletter signups also go to the FIN2DAY Daily Brief list in Brevo.
+  var BREVO_URL = 'https://fd4d0761.sibforms.com/serve/MUIFACI9VykHTjuQVZ4hdoTJZGvPjqOURDK3uERQwFvWqMvhHTJHbZ6s_uxPkBk3xVT2Q0IgLzJ7WUut-DoqavaOhNJ13uoKyTI_KnXwq1NQk1LVkwUso04cIRfThRVtqRY2k8nLYdQavfCYyBV76FcHHDw_PYJtKn6zkKPMKMZyBh3Gb_idabbfBzs5evZ33uFPUVCcEEi8EEd-7A==';
+  function toBrevo(form) {
+    var bot = form.querySelector('[name="bot-field"]');
+    if (bot && bot.value) return Promise.resolve();
+    var body = new URLSearchParams({EMAIL: form.querySelector('input[type="email"]').value.trim(), email_address_check: '', locale: 'en', html_type: 'simple'}).toString();
+    return fetch(BREVO_URL, {method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: body})
+      .catch(function () {});
+  }
+
   // Netlify strips data-netlify from the served HTML, so match our forms by class.
   var SUCCESS = {
     newsletter: 'You\u2019re on the list! We\u2019ll email you when the daily brief starts.',
@@ -54,8 +64,11 @@
       submit.disabled = true;
       var old = submit.textContent;
       submit.textContent = 'Sending…';
-      fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: encode(form)})
-        .then(function (r) {
+      var sends = [fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: encode(form)})];
+      if (form.getAttribute('name') === 'newsletter') sends.push(toBrevo(form));
+      Promise.all(sends)
+        .then(function (res) {
+          var r = res[0];
           if (!r.ok) throw new Error(r.status);
           form.reset();
           msg.className = 'msg ok';

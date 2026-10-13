@@ -35,7 +35,7 @@
 
   // Netlify strips data-netlify from the served HTML, so match our forms by class.
   var SUCCESS = {
-    newsletter: 'You\u2019re on the list! We\u2019ll email you when the daily brief starts.',
+    newsletter: 'You\u2019re on the list! Check your inbox (and spam folder) for a welcome email.',
     contact: 'Thanks! Your message is in. We\u2019ll get back to you soon.'
   };
   document.querySelectorAll('form.form').forEach(function (form) {

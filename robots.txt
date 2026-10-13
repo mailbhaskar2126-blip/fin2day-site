@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://fin2day.netlify.app/sitemap.xml

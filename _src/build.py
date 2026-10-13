@@ -71,7 +71,7 @@ def page(path, title, desc, body, active=None, og_type="website"):
 
 
 def newsletter_form(fid="newsletter"):
-    return f"""<form class="form" name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-success="You're on the list! The first brief lands soon." novalidate>
+    return f"""<form class="form" name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
       <input type="hidden" name="form-name" value="newsletter">
       <p class="hp"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
       <label for="{fid}-email">Your email</label>
@@ -602,7 +602,7 @@ def build():
     <p>The quickest way is a DM on <a href="{IG}" target="_blank" rel="noopener">Instagram @fin2day</a>.</p>
     <p>Found an error in an explainer? Tell us which one and what's wrong, and we'll fix it and note the correction.</p>
   </div>
-  <form class="form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-success="Thanks! Your message is in. We'll get back to you soon." novalidate>
+  <form class="form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
     <input type="hidden" name="form-name" value="contact">
     <p class="hp"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
     <div class="row"><label for="c-name">Name (required)</label><input id="c-name" name="name" autocomplete="name" required></div>

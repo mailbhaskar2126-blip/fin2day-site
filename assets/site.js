@@ -23,7 +23,12 @@
   function encode(form) {
     return new URLSearchParams(new FormData(form)).toString();
   }
-  document.querySelectorAll('form[data-netlify="true"]').forEach(function (form) {
+  // Netlify strips data-netlify from the served HTML, so match our forms by class.
+  var SUCCESS = {
+    newsletter: 'You\u2019re on the list! We\u2019ll email you when the daily brief starts.',
+    contact: 'Thanks! Your message is in. We\u2019ll get back to you soon.'
+  };
+  document.querySelectorAll('form.form').forEach(function (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var msg = form.querySelector('.msg');
@@ -54,7 +59,7 @@
           if (!r.ok) throw new Error(r.status);
           form.reset();
           msg.className = 'msg ok';
-          msg.textContent = form.getAttribute('data-success') || 'Thanks! We got it.';
+          msg.textContent = SUCCESS[form.getAttribute('name')] || 'Thanks! We got it.';
         })
         .catch(function () {
           msg.className = 'msg err';

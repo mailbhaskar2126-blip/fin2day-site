@@ -89,10 +89,10 @@ def newsletter_form(fid="newsletter"):
 # ----------------------------------------------------------------------------
 EXPLAINERS = [
     dict(
-        slug="september-2026-inflation-onions", topic="rbi concepts", tag=("Inflation", "red"), date="14 Oct 2026", mins=5,
+        slug="september-2026-inflation-onions", topic="rbi concepts", tag=("Inflation", "red"), date="14 Oct 2026", mins=4,
         title="Onions are up 108%. Why India's inflation just jumped to 5.54%",
         short="Onions are up 108%. Why inflation just jumped to 5.54%",
-        dek="September's retail inflation is the highest since India's new CPI series began. Food did most of the damage, and villages are feeling it most.",
+        dek="Five charts that take September's 5.54% apart: where it really comes from, how one vegetable punched far above its weight, and why villages feel it more than cities.",
         card="Retail inflation jumped from 4.83% to 5.54% in September. Food inflation hit 7.74%, led by onions.",
         hero_src="Data: CPI, Sep 2026",
     ),
@@ -202,7 +202,71 @@ CPI_ITEMS = """<svg viewBox="0 0 460 300" role="img" aria-label="Year-on-year pr
     for i,(n,v) in enumerate([("Onion",108.09),("Silver jewellery",87.80),("Ginger",62.85),("Garlic",54.62),("Lemon",36.41),("Coconut",-3.99),("Tomato",-8.62),("Potato",-11.50)])
 ) + "</g></svg>"
 
-HERO_CHART = {"september-2026-inflation-onions": CPI_BARS}
+
+_M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep"]
+_V=[2.74,3.21,3.40,3.48,3.93,4.38,4.45,4.83,5.54]
+def _y(v): return 200-(v-2)*36
+TREND_CHART = ('<svg viewBox="0 0 460 236" role="img" aria-label="CPI inflation in 2026, new series: Jan 2.74%, Feb 3.21%, Mar 3.40%, Apr 3.48%, May 3.93%, Jun 4.38%, Jul 4.45%, Aug 4.83%, Sep 5.54%. RBI target 4%, upper limit 6%">'
+  '<g font-family="Inter, sans-serif" font-size="11">'
+  f'<rect x="44" y="20" width="406" height="{_y(6)-20:.0f}" fill="var(--red)" opacity="0.08"/>'
+  f'<line x1="44" x2="450" y1="{_y(6):.0f}" y2="{_y(6):.0f}" stroke="var(--red)" stroke-dasharray="4 4"/>'
+  f'<text x="50" y="{_y(6)-6:.0f}" fill="var(--red)" font-weight="700">6% upper limit</text>'
+  f'<line x1="44" x2="450" y1="{_y(4):.0f}" y2="{_y(4):.0f}" stroke="var(--blue)" stroke-dasharray="4 4"/>'
+  f'<text x="448" y="{_y(4)+16:.0f}" text-anchor="end" fill="var(--blue)" font-weight="700">4% target</text>'
+  '<g font-family="JetBrains Mono, monospace" font-size="10" fill="var(--mute)">'
+  + "".join(f'<text x="4" y="{_y(v)+4:.0f}">{v}%</text>' for v in (2,3,5,7))
+  + "".join(f'<text x="{60+i*48}" y="226" text-anchor="middle">{m}</text>' for i,m in enumerate(_M))
+  + '</g>'
+  f'<polyline points="{" ".join(f"{60+i*48},{_y(v):.1f}" for i,v in enumerate(_V))}" fill="none" stroke="var(--ink)" stroke-width="2.4"/>'
+  + "".join(f'<circle cx="{60+i*48}" cy="{_y(v):.1f}" r="{5 if i==8 else 3}" fill="{"var(--red)" if i==8 else "var(--ink)"}"/>' for i,v in enumerate(_V))
+  + f'<text x="60" y="{_y(2.74)+18:.0f}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="var(--ink)">2.74%</text>'
+  f'<text x="432" y="{_y(5.54)-5:.0f}" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="var(--red)">5.54%</text>'
+  '</g></svg>')
+
+_C=[("Food & beverages",2.71,"var(--red)"),("Personal care & misc.",0.69,"var(--amber)"),("Housing & fuel",0.48,"var(--ink)"),("Transport",0.44,"var(--ink)"),("Restaurants & hotels",0.31,"var(--ink)"),("Clothing & footwear",0.25,"var(--ink)"),("Other six groups",0.62,"var(--mute)")]
+CONTRIB_CHART = ('<svg viewBox="0 0 460 250" role="img" aria-label="Approximate contribution to 5.54% inflation in September 2026, percentage points: food and beverages 2.71, personal care and miscellaneous 0.69, housing and fuel 0.48, transport 0.44, restaurants and hotels 0.31, clothing and footwear 0.25, other six groups 0.62">'
+  '<g font-family="Inter, sans-serif" font-size="12">'
+  + "".join(f'<text x="150" y="{24+i*33}" text-anchor="end" font-weight="600" fill="var(--ink)">{n}</text>'
+            f'<rect x="160" y="{11+i*33}" width="{v/2.71*230:.0f}" height="18" fill="{c}"/>'
+            f'<text x="{166+v/2.71*230:.0f}" y="{25+i*33}" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="{c}">{v:.2f}</text>' for i,(n,v,c) in enumerate(_C))
+  + '<text x="160" y="246" font-family="JetBrains Mono, monospace" font-size="10" fill="var(--mute)">percentage points of the 5.54% headline</text>'
+  '</g></svg>')
+
+PUNCH_CHART = ('<svg viewBox="0 0 460 196" role="img" aria-label="Onion is 0.70% of the CPI basket but about 13.7% of September inflation. Silver jewellery is 0.31% of the basket but about 5% of inflation">'
+  '<g font-family="Inter, sans-serif" font-size="12">'
+  '<rect x="0" y="0" width="12" height="12" fill="var(--rule)"/><text x="18" y="10" fill="var(--mute)">Share of the basket</text>'
+  '<rect x="160" y="0" width="12" height="12" fill="var(--red)"/><text x="178" y="10" fill="var(--mute)">Share of September inflation (est.)</text>'
+  + "".join(f'<text x="0" y="{58+i*76}" font-weight="700" fill="var(--ink)">{n}</text>'
+            f'<rect x="120" y="{38+i*76}" width="{max(a/16*300,3):.0f}" height="16" fill="var(--rule)"/>'
+            f'<text x="{126+max(a/16*300,3):.0f}" y="{51+i*76}" font-family="JetBrains Mono, monospace" font-size="11" fill="var(--mute)">{a:.2f}%</text>'
+            f'<rect x="120" y="{57+i*76}" width="{b/16*300:.0f}" height="20" fill="var(--red)"/>'
+            f'<text x="{126+b/16*300:.0f}" y="{72+i*76}" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="var(--red)">~{b:.1f}%</text>' for i,(n,a,b) in enumerate([("Onion",0.70,13.7),("Silver jewellery",0.31,5.0)]))
+  + '</g></svg>')
+
+BASKET_CHART = ('<svg viewBox="0 0 460 236" role="img" aria-label="Share of the CPI basket, rural vs urban: food and beverages 42.0% vs 30.3%, housing and fuel 11.8% vs 25.0%, transport 8.6% vs 9.0%, education 2.4% vs 4.5%">'
+  '<g font-family="Inter, sans-serif" font-size="12">'
+  '<rect x="0" y="0" width="12" height="12" fill="var(--red)"/><text x="18" y="10" fill="var(--mute)">Rural</text>'
+  '<rect x="70" y="0" width="12" height="12" fill="var(--blue)"/><text x="88" y="10" fill="var(--mute)">Urban</text>'
+  + "".join(f'<text x="0" y="{44+i*50}" font-weight="700" fill="var(--ink)">{n}</text>'
+            f'<rect x="120" y="{30+i*50}" width="{r/45*290:.0f}" height="15" fill="var(--red)"/>'
+            f'<text x="{126+r/45*290:.0f}" y="{42+i*50}" font-family="JetBrains Mono, monospace" font-size="11" fill="var(--red)">{r:.1f}%</text>'
+            f'<rect x="120" y="{47+i*50}" width="{u/45*290:.0f}" height="15" fill="var(--blue)"/>'
+            f'<text x="{126+u/45*290:.0f}" y="{59+i*50}" font-family="JetBrains Mono, monospace" font-size="11" fill="var(--blue)">{u:.1f}%</text>' for i,(n,r,u) in enumerate([("Food",41.98,30.25),("Housing & fuel",11.76,25.00),("Transport",8.64,8.99),("Education",2.38,4.52)]))
+  + '</g></svg>')
+
+_S=[("Tamil Nadu",6.81),("Odisha",6.70),("Madhya Pradesh",6.68),("Telangana",6.64),("All India",5.54),("Maharashtra",5.18),("Gujarat",5.11),("Delhi",3.40)]
+def _sx(v): return 140+(v-3)/4.5*300
+STATES_CHART = ('<svg viewBox="0 0 460 262" role="img" aria-label="CPI inflation by state, September 2026: Tamil Nadu 6.81%, Odisha 6.70%, Madhya Pradesh 6.68%, Telangana 6.64%, All India 5.54%, Maharashtra 5.18%, Gujarat 5.11%, Delhi 3.40%">'
+  '<g font-family="Inter, sans-serif" font-size="12">'
+  f'<line x1="{_sx(6):.0f}" x2="{_sx(6):.0f}" y1="4" y2="240" stroke="var(--red)" stroke-dasharray="4 4"/>'
+  f'<text x="{_sx(6)+4:.0f}" y="256" fill="var(--red)" font-size="10" font-family="JetBrains Mono, monospace">6% limit</text>'
+  + "".join(f'<text x="130" y="{22+i*29}" text-anchor="end" font-weight="{700 if n=="All India" else 500}" fill="var(--ink)">{n}</text>'
+            f'<line x1="140" x2="{_sx(v):.0f}" y1="{18+i*29}" y2="{18+i*29}" stroke="var(--rule)" stroke-width="2"/>'
+            f'<circle cx="{_sx(v):.0f}" cy="{18+i*29}" r="6" fill="{"var(--red)" if v>6 else ("var(--blue)" if n=="All India" else "var(--ink)")}"/>'
+            f'<text x="{_sx(v)+12:.0f}" y="{22+i*29}" font-family="JetBrains Mono, monospace" font-size="11" fill="var(--ink)">{v:.2f}%</text>' for i,(n,v) in enumerate(_S))
+  + '</g></svg>')
+
+HERO_CHART = {"september-2026-inflation-onions": TREND_CHART}
 
 
 def share_bar():
@@ -217,43 +281,47 @@ def share_bar():
 
 ARTICLE_BODIES = {
 "september-2026-inflation-onions": f"""
-<p>India's retail inflation rose to <strong>5.54%</strong> in September 2026, up from 4.83% in August, according to provisional Consumer Price Index (CPI) data released on 12 October. It's the highest reading since India moved to its new CPI series with 2024 as the base year.</p>
-<p>In plain terms: a basket of everyday goods and services that cost ₹100 in September 2025 cost about ₹105.54 in September 2026. A month earlier, the same basket was up only ₹4.83.</p>
-<h2>First, what CPI actually measures</h2>
-<p>The CPI tracks the prices of a fixed basket of things households buy: food, fuel, clothing, housing, health, education, transport and more. Prices are collected every month from markets across rural and urban India, and the Ministry of Statistics (MoSPI) publishes the result around the 12th of the following month.</p>
-<p>Each item has a weight based on how much of a typical household budget it takes up. That's why a big jump in a small item moves the headline number less than a modest rise across a big category like food.</p>
-<p>The RBI's job is to keep this number at 4%, with a comfort band of 2% to 6%. At 5.54%, inflation is now uncomfortably close to the top of that band.</p>
-<h2>Food did most of the damage</h2>
-<p>Food inflation, measured by the Consumer Food Price Index, jumped to <strong>7.74%</strong> from 5.97% a month earlier. Every major measure rose in September, but food rose the most.</p>
-<div class="chart">{CPI_BARS}<div class="cap">Year-on-year CPI inflation, August vs September 2026 (provisional).</div></div>
-<p>Food matters so much because it's the single biggest part of the CPI basket. When food prices rise across the board, the headline number has nowhere to go but up.</p>
-<h2>Onions, garlic and ginger led the spike</h2>
-<p>Onion prices were up <strong>108.09%</strong> from a year earlier, more than double August's 48.78%. Ginger (+62.85%), garlic (+54.62%) and lemon (+36.41%) also jumped. Not everything got dearer: potato (−11.50%), tomato (−8.62%) and coconut (−3.99%) were cheaper than a year ago.</p>
-<div class="chart">{CPI_ITEMS}<div class="cap">Year-on-year price change by item, September 2026.</div></div>
-<p>To put 108% in perspective: if onions cost ₹30 a kilo last September, a 108% rise means roughly ₹62 a kilo now. (Illustration only; actual prices vary by city.)</p>
-<p>One caveat: onion has a small weight in the CPI basket, so a 108% rise in onions on its own moves the headline number only a little. It's the broad rise across food that pushed inflation up.</p>
-<h2>Why onion prices swing so wildly</h2>
-<p>Onions are one of India's most volatile staples. Most of the year's supply comes from a few harvests, and stored onions from the spring crop typically start running low around September and October, before the new kharif crop reaches markets. Any weather damage, delayed harvest or export change in that window can send prices sharply higher.</p>
-<p>The good news is that this kind of spike is often seasonal. Once fresh supply arrives, prices usually ease, which is why the October and November numbers will matter.</p>
-<h2>Not just food: silver jewellery too</h2>
-<p>One of the biggest non-food movers was silver jewellery, up <strong>87.80%</strong> from a year earlier. Jewellery is part of the CPI basket under personal goods, so when precious metal prices surge, it shows up in inflation too, even though most households don't buy it every month.</p>
-<h2>Villages are feeling it more than cities</h2>
+<p>The headline says inflation is 5.54%. Underneath that number, one vegetable that makes up less than 1% of what Indians buy did about a seventh of the work. Here's what the September data shows when you take it apart.</p>
+<h2>Nine months of climbing</h2>
+<p>This didn't happen overnight. Under the new CPI series, inflation has risen every single month of 2026, from 2.74% in January to 5.54% in September. September was the fourth month in a row above the RBI's 4% target, and it came in above the 5.4% that economists polled by Reuters had expected.</p>
+<div class="chart">{TREND_CHART}<div class="cap">CPI inflation, year on year, 2026 (base 2024=100). September is provisional.</div></div>
+<h2>Where the 5.54% actually comes from</h2>
+<p>Each spending group's contribution to inflation is roughly its weight in the basket multiplied by its own inflation rate. Run that maths on September's official numbers and the pieces add up to about 5.51%, very close to the published 5.54%.</p>
+<div class="chart">{CONTRIB_CHART}<div class="cap">Approximate contribution by spending group, September 2026. FIN2DAY calculation from official MoSPI weights and group inflation rates.</div></div>
+<p>Food and beverages make up 36.75% of the basket but delivered about 2.7 points, nearly half of all inflation. The surprise is in second place: personal care and miscellaneous goods, up 13.75%, mostly because of jewellery. "Other personal effects" rose 38.69%. Eating out is getting pricier too, with restaurant and hotel inflation at 9.36%.</p>
+<p>Meanwhile housing and fuel, the second-biggest group at 17.67% of the basket, rose just 2.74%. That's what is holding the headline number down.</p>
+<h2>Small weight, big punch</h2>
+<p>In the new series, onion has a weight of just 0.70%. But when the price of something doubles, even a small weight matters. At 108% inflation, onions alone contributed roughly 0.75 of a percentage point, about 14% of all inflation in September.</p>
+<div class="chart">{PUNCH_CHART}<div class="cap">FIN2DAY estimate using official item weights (onion 0.7006, silver jewellery 0.3127). Approximate.</div></div>
+<p>The jump from August is even more striking. Onion inflation went from 48.78% to 108.09%, which on its own adds about 0.4 points. Headline inflation rose 0.71 points in the month, so onions explain more than half of the increase.</p>
+<p>Silver jewellery, at just 0.31% of the basket, rose 87.8% and added roughly another quarter of a point.</p>
+<h2>Why villages are hit harder</h2>
+<p>Rural and urban households don't buy the same things, and the CPI weights show it.</p>
+<div class="chart">{BASKET_CHART}<div class="cap">Share of the CPI basket by group, rural vs urban. Source: MoSPI, CPI base 2024.</div></div>
+<p>Food is 42% of the rural basket but only 30% of the urban one. Housing, where prices barely moved, is a quarter of the urban basket. So when food spikes and rents don't, villages take the hit while cities get a cushion. Rural food inflation hit 8.06% in September, against 7.18% in cities.</p>
+<p>That's also why Delhi, at 3.40%, looks so different from Tamil Nadu at 6.81%. Four large states are already above the RBI's 6% limit.</p>
+<div class="chart">{STATES_CHART}<div class="cap">CPI inflation by state, September 2026 (provisional).</div></div>
+<h2>What's behind it, beyond onions</h2>
 <ul class="points">
-  <li><b>Rural 6.08%</b><span>Up from 5.24%. Already above the RBI's 6% upper limit. Food takes up a bigger share of rural household budgets, so food spikes hit harder.</span></li>
-  <li><b>Urban 4.88%</b><span>Up from 4.31%. Still inside the comfort band, but rising.</span></li>
-  <li><b>States</b><span>Tamil Nadu had the highest inflation at 6.81%, followed by Odisha at 6.70%.</span></li>
+  <li><b>Weather</b><span>Analysts point to below-normal rainfall this monsoon and an El Niño that Emkay Global's Madhavi Arora says may persist into 2027.</span></li>
+  <li><b>Oil</b><span>Higher crude prices tied to the Iran war. DBS Bank's Radhika Rao expects fuel costs to push up non-food prices with a lag.</span></li>
+  <li><b>Base effect</b><span>Inflation a year ago was unusually low. In September 2025 it was 1.54% on the old series, a 99-month low, so this year's comparison looks steeper.</span></li>
+  <li><b>Core</b><span>ICRA estimates core inflation, which excludes food and fuel, at about 4.6%. Price pressure is spreading, but not yet runaway.</span></li>
 </ul>
-<p>This gap matters. Rural families spend a larger share of what they earn on food, so the same rise in vegetable prices takes a bigger bite out of their monthly budget than it does for a typical city household.</p>
-<h2>Why this matters for the RBI, and for you</h2>
-<p>This is the backdrop to the RBI's decision on 7 October to raise the repo rate from 5.25% to 5.50%, its first hike since 2023. It also raised its inflation forecast for this financial year to 5.2% from 5.0%, and said it expects inflation to get close to 6% in October to December. Read our <a href="/explainers/rbi-rate-hike-oct-2026.html">explainer on the rate hike</a>.</p>
-<p>Higher interest rates can't make onions grow faster. What they can do is cool overall demand and stop high food prices from spreading into everything else, like wages, rents and services. The RBI also watches oil and the rupee closely: crude above $100 a barrel and a weak rupee both make imports costlier and add to price pressure.</p>
-<div class="callout"><b>What it means for you</b><p>Floating-rate home and car loans linked to the repo rate can get costlier at the next reset, and new fixed deposits may pay a little more. Your kitchen budget is feeling it already. If food prices stay high, another rate hike at the RBI's 2–4 December meeting is possible.</p></div>
+<h2>What forecasters now expect</h2>
+<ul class="points">
+  <li><b>HDFC Bank</b><span>Next print near 6%, full-year inflation 5.4%, a 25 bps hike in December. (Sakshi Gupta)</span></li>
+  <li><b>Kotak</b><span>Inflation above 6% over the next few months, another 50 bps of hikes. (Upasna Bhardwaj)</span></li>
+  <li><b>Emkay</b><span>October–December inflation averaging about 6.1%, hikes in December and February. (Madhavi Arora)</span></li>
+  <li><b>IDFC First</b><span>Repo rate peaking at 6.0–6.25%, up from 5.50% today. (Gaura Sengupta)</span></li>
+</ul>
+<div class="callout"><b>What that could mean for your EMI</b><p>Take a ₹50 lakh, 20-year home loan at 8.5%. If two more 25 bps hikes are passed on in full, the rate becomes 9.0% and the EMI rises from about ₹43,391 to ₹44,986, roughly ₹1,600 more a month. That's an illustration; your bank's reset terms decide the actual change.</p></div>
 <h2>Dates to watch</h2>
 <ul class="points">
-  <li><b>12 Nov</b><span>October inflation data. The first sign of whether onion and food prices are cooling as the new crop arrives.</span></li>
-  <li><b>2–4 Dec</b><span>The RBI's next monetary policy meeting: hike or pause.</span></li>
+  <li><b>12 Nov</b><span>October inflation. If forecasters are right, it could touch 6%.</span></li>
+  <li><b>2–4 Dec</b><span>RBI policy meeting. Most economists quoted above expect another hike.</span></li>
 </ul>
-<p><em>September figures are provisional and may be revised when MoSPI publishes final numbers.</em></p>
+<p><em>September figures are provisional. Contribution figures are FIN2DAY approximations from official weights, not official statistics.</em></p>
 """,
 "us-russia-diesel-deal": f"""
 <p>For a year, Washington told New Delhi one thing: stop buying Russian oil. On 9 October 2026, President Trump announced the US would buy Russian <strong>diesel</strong> instead.</p>
@@ -310,11 +378,13 @@ ARTICLE_BODIES = {
 
 SOURCES = {
 "september-2026-inflation-onions": [
-    ("Finnovate: India CPI inflation September 2026", "https://www.finnovate.in/learn/blog/india-cpi-inflation-september-2026"),
-    ("IndexBox: India's retail inflation rises to 5.54% in September 2026", "https://www.indexbox.io/blog/indias-retail-inflation-rises-to-554-in-september-2026/"),
-    ("Sahi: India September CPI inflation rises to 5.54%", "https://www.sahi.com/news/india-september-cpi-inflation-rises-to-5-54-year-over-year"),
-    ("The Indian Eye: Retail inflation rises to 5.54% in September", "https://theindianeye.com/2026/10/13/retail-inflation-rises-to-5-54-in-september/"),
-    ("Ministry of Statistics (MoSPI): CPI press releases", "https://www.mospi.gov.in/"),
+    ("MoSPI / PIB: CPI (base 2024=100) group and item weights", "https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/feb/doc2026212787501.pdf"),
+    ("MoSPI / PIB: CPI press release, June 2026 (monthly series)", "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2284125&reg=48&lang=1"),
+    ("Reuters via Investing.com: India inflation jumps to 5.54% in September", "https://www.investing.com/news/economy-news/india-inflation-jumps-to-554-in-september-strengthening-case-for-further-rate-hikes-4943948"),
+    ("Finnovate: India CPI inflation September 2026 (group, item and state data)", "https://www.finnovate.in/learn/blog/india-cpi-inflation-september-2026"),
+    ("Trading Economics: India inflation rate", "https://tradingeconomics.com/india/inflation-cpi"),
+    ("Business Today: CPI base revision, what's changed", "https://www.businesstoday.in/amp/latest/economy/story/cpi-inflation-base-revision-whats-changed-why-it-matters-515940-2026-02-12"),
+    ("Business Standard: Retail inflation at 1.54% in September 2025", "https://www.business-standard.com/amp/economy/news/india-s-retail-inflation-slips-to-99-month-low-of-1-54-in-september-125101301472_1.html"),
 ],
 "us-russia-diesel-deal": [
     ("AP: Trump says US to get diesel from Russia (9 Oct 2026)", "https://www.kttc.com/2026/10/09/trump-says-us-get-diesel-russia-relaxing-pressure-moscow-ease-prices-before-midterms/"),

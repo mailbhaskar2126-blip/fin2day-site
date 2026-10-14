@@ -1,28 +1,33 @@
 [
  [
   "Closing data as of",
-  "13 Oct 2026",
+  "14 Oct 2026",
   ""
  ],
  [
   "Nifty 50",
-  "22,722 ▲ 1.6%",
-  "up"
- ],
- [
-  "Sensex",
-  "73,034 ▲ 1,109 pts",
-  "up"
- ],
- [
-  "Brent crude",
-  "$105.69 / bbl",
+  "22,622.70 ▼ 0.44%",
   "dn"
  ],
  [
-  "Rupee",
-  "₹95.36 / $ ▲ 42 paise",
+  "Sensex",
+  "72,781.89 ▼ 252 pts",
+  "dn"
+ ],
+ [
+  "Brent crude",
+  "$106.37 / bbl",
   "up"
+ ],
+ [
+  "Rupee",
+  "₹95.17 / $ ▲ 19 paise",
+  "up"
+ ],
+ [
+  "WPI inflation",
+  "11.39% ▲ Sep",
+  "dn"
  ],
  [
   "CPI inflation",
@@ -41,7 +46,7 @@
  ],
  [
   "FPI selling 2026",
-  "₹3.04 lakh cr",
+  "$32.52 bn",
   "dn"
  ],
  [

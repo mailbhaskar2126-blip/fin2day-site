@@ -45,7 +45,10 @@ Do not repeat a topic already covered: check existing slugs and titles in `conte
    `<a href="/explainers/<slug>.html">`.
 6. Allowed body elements: `<p> <h2> <strong> <em> <ul class="points"><li><b>Label</b><span>text</span></li></ul>`,
    `<div class="callout"><b>Title</b><p>…</p></div>`, charts via `chart(svg, caption)`.
-7. Markets updates: also refresh `content/ticker.json` (Nifty, Sensex, plus the most relevant macro numbers).
+7. Markets updates: also refresh `content/ticker.json`. The first item is always `["Closing data as of", "<D Mon YYYY>", ""]`.
+   Then Nifty 50, Sensex, Brent crude, Rupee and other macro items. Always exact verified figures with units
+   (e.g. `$105.69 / bbl`, `₹95.36 / $`), never approximations like "above $100". The ticker is not live; it
+   shows the latest closing figures, refreshed by the daily markets update.
 
 ## Publish checklist
 1. Write the story with a small script using `charts.py` (see `example_stories.py`), save to `content/`.

@@ -1,0 +1,26 @@
+{
+ "slug": "how-sensex-nifty-work",
+ "date": "2026-10-14",
+ "order": -2,
+ "topic": "markets concepts",
+ "tag": "Markets",
+ "tag_class": "",
+ "title": "How the Sensex and Nifty are actually calculated",
+ "short": "How the Sensex and Nifty are actually calculated",
+ "dek": "When the Nifty 'rises 1%', what exactly rose? The two numbers behind every market headline, from base year to free float.",
+ "card": "What 'the market rose 1%' really means: base values, free float, and why a few big stocks move everything.",
+ "sources": [
+  [
+   "NSE Indices (Nifty index provider)",
+   "https://www.niftyindices.com/"
+  ],
+  [
+   "Asia Index (Sensex index provider)",
+   "https://www.asiaindex.co.in/"
+  ],
+  [
+   "Business Standard: Stock market close, 13 October 2026",
+   "https://www.business-standard.com/amp/markets/news/stock-market-live-october-13-bse-sensex-today-nifty50-gift-nifty-crude-oil-prices-q2-results-ipo-today-126101300081_1.html"
+  ]
+ ]
+}

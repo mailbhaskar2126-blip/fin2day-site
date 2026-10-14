@@ -1,0 +1,22 @@
+{
+ "slug": "pe-ratio-explained",
+ "date": "2026-10-14",
+ "order": 4,
+ "topic": "concepts markets",
+ "tag": "Basics",
+ "tag_class": "",
+ "title": "P/E ratio: how to tell if a stock is cheap or expensive",
+ "short": "P/E ratio: how to tell if a stock is cheap or expensive",
+ "dek": "The most quoted number in investing, explained with simple maths: what it measures, why some companies trade at 80 times profit, and where it misleads.",
+ "card": "What the price-to-earnings ratio really measures, and the three ways it can fool you.",
+ "sources": [
+  [
+   "SEBI: Investor education resources",
+   "https://investor.sebi.gov.in/"
+  ],
+  [
+   "NSE: Index P/E, P/B and dividend yield (historical data)",
+   "https://www.niftyindices.com/reports/historical-data"
+  ]
+ ]
+}

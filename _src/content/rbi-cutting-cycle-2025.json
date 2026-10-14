@@ -1,0 +1,30 @@
+{
+ "slug": "rbi-cutting-cycle-2025",
+ "date": "2026-10-14",
+ "order": 2,
+ "topic": "rbi",
+ "tag": "RBI",
+ "tag_class": "red",
+ "title": "The 2025 rate cuts: how the RBI went from 6.50% to 5.25%, and why it's reversing",
+ "short": "2025's rate cuts: 6.50% to 5.25%, and why they're reversing",
+ "dek": "Four cuts worth 125 basis points as inflation fell to record lows. Ten months later, the RBI was hiking again. The full round trip.",
+ "card": "125 basis points of cuts in 2025 as inflation collapsed. By October 2026, the RBI had started hiking again.",
+ "sources": [
+  [
+   "Business Standard: RBI MPC takes 2025 rate cut tally to 125 bps",
+   "https://www.business-standard.com/finance/news/rbi-s-mpc-delivers-again-takes-2025-rate-cut-tally-to-125-basis-points-125120501302_1.html"
+  ],
+  [
+   "RBI repo rate history, 2000 to 2026",
+   "https://stableinvestor.com/2021/10/rbi-repo-rate-history-india.html"
+  ],
+  [
+   "Trading Economics: India inflation rate",
+   "https://tradingeconomics.com/india/inflation-cpi"
+  ],
+  [
+   "SCC Online: RBI hikes repo rate to 5.50%, October 2026",
+   "https://www.scconline.com/blog/post/2026/10/09/rbi-hikes-repo-rate-to-5-50-percent-october-2026/"
+  ]
+ ]
+}

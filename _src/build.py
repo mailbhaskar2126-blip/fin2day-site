@@ -56,7 +56,7 @@ def page(path, title, desc, body, active=None, og_type="website"):
     <div class="fgrid">
       <div class="fbig">FIN<b>2</b>DAY</div>
       <div class="fcols">
-        <div class="flinks"><span>Read</span><a href="/explainers/">All explainers</a><a href="/explainers/#rbi">RBI</a><a href="/explainers/#ipo">IPOs</a><a href="/explainers/#global">Global economy</a></div>
+        <div class="flinks"><span>Read</span><a href="/explainers/">All explainers</a><a href="/explainers/#rbi">RBI</a><a href="/explainers/#ipo">IPOs</a><a href="/explainers/#global">Global economy</a><a href="/explainers/#markets">Markets</a></div>
         <div class="flinks"><span>FIN2DAY</span><a href="/about.html">About</a><a href="/contact.html">Contact</a><a href="/#newsletter">Newsletter</a><a href="{IG}" target="_blank" rel="noopener">Instagram ↗</a></div>
         <div class="flinks"><span>Legal</span><a href="/disclaimer.html">Disclaimer</a><a href="/disclaimer.html#privacy">Privacy</a></div>
       </div>
@@ -85,188 +85,46 @@ def newsletter_form(fid="newsletter"):
 
 
 # ----------------------------------------------------------------------------
-# Explainers
+# Content: one story = _src/content/<slug>.json (meta) + <slug>.html (body)
+# optional <slug>.hero.svg (homepage chart; else the first chart in the body).
+# Read time and display dates are worked out from the content automatically.
 # ----------------------------------------------------------------------------
-EXPLAINERS = [
-    dict(
-        slug="september-2026-inflation-onions", topic="rbi concepts", tag=("Inflation", "red"), date="14 Oct 2026", mins=4,
-        title="Onions are up 108%. Why India's inflation just jumped to 5.54%",
-        short="Onions are up 108%. Why inflation just jumped to 5.54%",
-        dek="Five charts that take September's 5.54% apart: where it really comes from, how one vegetable punched far above its weight, and why villages feel it more than cities.",
-        card="Retail inflation jumped from 4.83% to 5.54% in September. Food inflation hit 7.74%, led by onions.",
-        hero_src="Data: CPI, Sep 2026",
-    ),
-    dict(
-        slug="us-russia-diesel-deal", topic="global trade", tag=("Global", ""), date="13 Oct 2026", mins=3,
-        title="America punished India for buying Russian oil. Then it bought Russian diesel.",
-        short="America punished India for Russian oil. Then it bought Russian diesel.",
-        dek="Trump's diesel deal with Putin, the sanctions it paused, and why India is watching closely.",
-        card="The US doubled tariffs on India over Russian oil. On 9 October, Trump agreed to buy Russian diesel.",
-    ),
-    dict(
-        slug="rbi-rate-hike-oct-2026", topic="rbi concepts", tag=("RBI", "red"), date="12 Oct 2026", mins=2,
-        title="Why the RBI raised rates after a year of cutting",
-        short="Why the RBI raised rates after a year of cutting",
-        dek="The repo rate went from 5.25% to 5.50%, the first hike since 2023. Here's what changed and what it means for your EMI.",
-        card="The repo rate went from 5.25% to 5.50%, the first hike since 2023. Ten months ago the RBI was still cutting.",
-    ),
-    dict(
-        slug="how-an-ipo-works", topic="ipo concepts", tag=("IPO", ""), date="Oct 2026", mins=2,
-        title="Big IPO coming? How an IPO actually works",
-        short="Big IPO coming? How an IPO actually works",
-        dek="With mega listings like Reliance's Jio Platforms in the news, here's what happens when a company goes public, and what to check before you apply.",
-        card="What happens when a company goes public, and the three things to read before you bid.",
-    ),
-]
+import json, glob, re, math, datetime
+HERE = os.path.dirname(os.path.abspath(__file__))
+CONTENT = os.path.join(HERE, "content")
+ROOT = os.path.dirname(HERE)
 
-RBI_CHART = """<svg viewBox="0 0 460 198" role="img" aria-label="Repo rate: 6.50% through 2024, cut to 6.25% Feb 2025, 6.00% Apr 2025, 5.50% Jun 2025, 5.25% Dec 2025, then hiked to 5.50% in Oct 2026">
-  <g font-family="JetBrains Mono, monospace" font-size="10" fill="var(--mute)">
-    <g stroke="var(--rule)" stroke-dasharray="2 3"><line x1="44" x2="450" y1="20" y2="20"/><line x1="44" x2="450" y1="80" y2="80"/><line x1="44" x2="450" y1="140" y2="140"/></g>
-    <text x="4" y="24">6.50%</text><text x="4" y="84">6.00%</text><text x="4" y="144">5.50%</text>
-    <text x="44" y="192">2024</text><text x="180" y="192">2025</text><text x="316" y="192">2026</text>
-  </g>
-  <path d="M44 20 H191 V50 H213 V80 H236 V140 H304 V170 H417 V140 H450" fill="none" stroke="var(--ink)" stroke-width="2.4"/>
-  <path d="M417 170 V140 H450" fill="none" stroke="var(--red)" stroke-width="3.2"/>
-  <circle cx="417" cy="140" r="5" fill="var(--red)"/>
-  <text x="448" y="128" text-anchor="end" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="var(--red)">Oct 2026: 5.50%</text>
-  <text x="310" y="163" font-family="Inter, sans-serif" font-size="10" fill="var(--mute)">5.25%</text>
-</svg>"""
+def _words(body):
+    t = re.sub(r"<svg.*?</svg>", " ", body, flags=re.S)
+    t = re.sub(r'<div class="cap">.*?</div>', " ", t, flags=re.S)
+    return len(html.unescape(re.sub(r"<[^>]+>", " ", t)).split())
 
-TARIFF_CHART = """<svg viewBox="0 0 460 230" role="img" aria-label="US tariffs on Indian goods: 25% from 7 Aug 2025, 50% from 27 Aug 2025, 18% after the Feb 2026 deal, and up to 100% threatened under the Sep 2026 law">
-  <g font-family="Inter, sans-serif">
-    <line x1="20" x2="450" y1="180" y2="180" stroke="var(--ink)" stroke-width="1.5"/>
-    <rect x="30" y="140" width="80" height="40" fill="var(--mute)"/>
-    <rect x="135" y="100" width="80" height="80" fill="var(--red)"/>
-    <rect x="240" y="151" width="80" height="29" fill="var(--blue)"/>
-    <rect x="345" y="20" width="80" height="160" fill="none" stroke="var(--red)" stroke-width="2" stroke-dasharray="6 4"/>
-    <g font-weight="700" font-size="16" text-anchor="middle" fill="var(--ink)">
-      <text x="70" y="132">25%</text><text x="175" y="92" fill="var(--red)">50%</text><text x="280" y="143" fill="var(--blue)">18%</text><text x="385" y="104" fill="var(--red)">up to 100%</text>
-    </g>
-    <g font-family="JetBrains Mono, monospace" font-size="10" text-anchor="middle" fill="var(--mute)">
-      <text x="70" y="198">AUG 7 2025</text><text x="175" y="198">AUG 27 2025</text><text x="280" y="198">FEB 2026</text><text x="385" y="198">SEP 2026 LAW</text>
-    </g>
-    <g font-size="10" text-anchor="middle" fill="var(--mute)">
-      <text x="70" y="214">reciprocal</text><text x="175" y="214">+25% oil penalty</text><text x="280" y="214">trade deal</text><text x="385" y="214">top 5 buyers</text>
-    </g>
-  </g>
-</svg>"""
+def load_stories():
+    out = []
+    for jf in glob.glob(os.path.join(CONTENT, "*.json")):
+        if jf.endswith("ticker.json"):
+            continue
+        m = json.load(open(jf))
+        base = jf[:-5]
+        m["body"] = open(base + ".html").read()
+        hero = base + ".hero.svg"
+        if os.path.exists(hero):
+            m["hero"] = open(hero).read()
+        else:
+            f = re.search(r"<svg.*?</svg>", m["body"], re.S)
+            m["hero"] = f.group(0) if f else ""
+        m["mins"] = max(2, math.ceil(_words(m["body"]) / 220))
+        d = datetime.date.fromisoformat(m["date"])
+        m["date_label"] = f"{d.day} {d.strftime('%b %Y')}"
+        m.setdefault("tag_class", "")
+        out.append(m)
+    out.sort(key=lambda m: (m["date"], m.get("order", 0)), reverse=True)
+    return out
 
-DIESEL_CHART = """<svg viewBox="0 0 460 170" role="img" aria-label="Russian diesel promised to the US: 300,000 tons immediately, 500,000 tons in November, 1,000,000 tons soon after">
-  <g font-family="Inter, sans-serif" font-size="13">
-    <text x="0" y="34" fill="var(--ink)" font-weight="600">Immediately</text>
-    <rect x="120" y="20" width="96" height="20" fill="var(--ink)"/><text x="224" y="35" fill="var(--ink)" font-family="JetBrains Mono, monospace" font-size="12">300,000 t</text>
-    <text x="0" y="84" fill="var(--ink)" font-weight="600">November</text>
-    <rect x="120" y="70" width="160" height="20" fill="var(--ink)"/><text x="288" y="85" fill="var(--ink)" font-family="JetBrains Mono, monospace" font-size="12">500,000 t</text>
-    <text x="0" y="134" fill="var(--ink)" font-weight="600">Soon after</text>
-    <rect x="120" y="120" width="320" height="20" fill="var(--amber)"/><text x="436" y="160" text-anchor="end" fill="var(--ink)" font-family="JetBrains Mono, monospace" font-size="12">1,000,000 t</text>
-  </g>
-</svg>"""
-
-IPO_CHART = """<svg viewBox="0 0 460 150" role="img" aria-label="Illustration: in an IPO part of the ownership moves from existing owners to new public shareholders">
-  <g font-family="Inter, sans-serif" font-size="12" fill="var(--ink)">
-    <rect x="10" y="22" width="440" height="34" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="1.2"/>
-    <rect x="10" y="22" width="300" height="34" fill="var(--ink)"/>
-    <rect x="310" y="22" width="80" height="34" fill="var(--rule)"/>
-    <rect x="390" y="22" width="60" height="34" fill="var(--blue)"/>
-    <text x="18" y="44" fill="var(--paper)" font-weight="600">Promoters / parent company</text>
-    <text x="316" y="44" font-size="11">Early investors</text>
-    <text x="10" y="84" font-weight="700">Before listing</text>
-    <text x="10" y="102" fill="var(--mute)" font-size="11">Shares are held privately.</text>
-    <text x="450" y="84" text-anchor="end" font-weight="700" fill="var(--blue)">New public shareholders</text>
-    <text x="450" y="102" text-anchor="end" fill="var(--mute)" font-size="11">Anyone with a demat account can bid.</text>
-    <text x="10" y="138" fill="var(--mute)" font-size="10" font-family="JetBrains Mono, monospace">Shares shown for illustration, not an actual offer size</text>
-  </g>
-</svg>"""
-
-
-CPI_BARS = """<svg viewBox="0 0 460 250" role="img" aria-label="August vs September 2026 inflation: food 5.97% to 7.74%, rural 5.24% to 6.08%, overall 4.83% to 5.54%, urban 4.31% to 4.88%">
-  <g font-family="Inter, sans-serif" font-size="12">
-    <rect x="0" y="0" width="12" height="12" fill="var(--rule)"/><text x="18" y="10" fill="var(--mute)">August</text>
-    <rect x="80" y="0" width="12" height="12" fill="var(--ink)"/><text x="98" y="10" fill="var(--mute)">September</text>
-""" + "".join(
-    f'<text x="0" y="{44+i*54}" font-weight="700" fill="var(--ink)">{n}</text>'
-    f'<rect x="70" y="{30+i*54}" width="{a/8*300:.0f}" height="14" fill="var(--rule)"/>'
-    f'<text x="{76+a/8*300:.0f}" y="{41+i*54}" font-family="JetBrains Mono, monospace" font-size="11" fill="var(--mute)">{a:.2f}%</text>'
-    f'<rect x="70" y="{47+i*54}" width="{b/8*300:.0f}" height="18" fill="{c}"/>'
-    f'<text x="{76+b/8*300:.0f}" y="{61+i*54}" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="{c}">{b:.2f}%</text>'
-    for i,(n,a,b,c) in enumerate([("Food",5.97,7.74,"var(--red)"),("Rural",5.24,6.08,"var(--ink)"),("Overall",4.83,5.54,"var(--ink)"),("Urban",4.31,4.88,"var(--ink)")])
-) + "</g></svg>"
-
-CPI_ITEMS = """<svg viewBox="0 0 460 300" role="img" aria-label="Year-on-year price change, September 2026: onion +108.1%, silver jewellery +87.8%, ginger +62.9%, garlic +54.6%, lemon +36.4%, coconut -4.0%, tomato -8.6%, potato -11.5%">
-  <line x1="150" x2="150" y1="0" y2="300" stroke="var(--ink)" stroke-width="1.5"/>
-  <g font-family="Inter, sans-serif" font-size="12">
-""" + "".join(
-    f'<text x="{142 if v>=0 else 142-abs(v)*2.2:.0f}" y="{20+i*35+(10 if v<0 else 0)}" text-anchor="end" font-weight="600" fill="var(--ink)">{n}</text>'
-    f'<rect x="{150 if v>=0 else 150-abs(v)*2.2:.0f}" y="{8+i*35+(10 if v<0 else 0)}" width="{max(abs(v)*2.2,2):.0f}" height="18" fill="{"var(--red)" if v>=0 else "var(--green)"}"/>'
-    f'<text x="{156+abs(v)*2.2 if v>=0 else 156:.0f}" y="{21+i*35+(10 if v<0 else 0)}" font-family="JetBrains Mono, monospace" font-size="11" fill="{"var(--red)" if v>=0 else "var(--green)"}">{"+" if v>=0 else "−"}{abs(v):.1f}%</text>'
-    for i,(n,v) in enumerate([("Onion",108.09),("Silver jewellery",87.80),("Ginger",62.85),("Garlic",54.62),("Lemon",36.41),("Coconut",-3.99),("Tomato",-8.62),("Potato",-11.50)])
-) + "</g></svg>"
-
-
-_M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep"]
-_V=[2.74,3.21,3.40,3.48,3.93,4.38,4.45,4.83,5.54]
-def _y(v): return 200-(v-2)*36
-TREND_CHART = ('<svg viewBox="0 0 460 236" role="img" aria-label="CPI inflation in 2026, new series: Jan 2.74%, Feb 3.21%, Mar 3.40%, Apr 3.48%, May 3.93%, Jun 4.38%, Jul 4.45%, Aug 4.83%, Sep 5.54%. RBI target 4%, upper limit 6%">'
-  '<g font-family="Inter, sans-serif" font-size="11">'
-  f'<rect x="44" y="20" width="406" height="{_y(6)-20:.0f}" fill="var(--red)" opacity="0.08"/>'
-  f'<line x1="44" x2="450" y1="{_y(6):.0f}" y2="{_y(6):.0f}" stroke="var(--red)" stroke-dasharray="4 4"/>'
-  f'<text x="50" y="{_y(6)-6:.0f}" fill="var(--red)" font-weight="700">6% upper limit</text>'
-  f'<line x1="44" x2="450" y1="{_y(4):.0f}" y2="{_y(4):.0f}" stroke="var(--blue)" stroke-dasharray="4 4"/>'
-  f'<text x="448" y="{_y(4)+16:.0f}" text-anchor="end" fill="var(--blue)" font-weight="700">4% target</text>'
-  '<g font-family="JetBrains Mono, monospace" font-size="10" fill="var(--mute)">'
-  + "".join(f'<text x="4" y="{_y(v)+4:.0f}">{v}%</text>' for v in (2,3,5,7))
-  + "".join(f'<text x="{60+i*48}" y="226" text-anchor="middle">{m}</text>' for i,m in enumerate(_M))
-  + '</g>'
-  f'<polyline points="{" ".join(f"{60+i*48},{_y(v):.1f}" for i,v in enumerate(_V))}" fill="none" stroke="var(--ink)" stroke-width="2.4"/>'
-  + "".join(f'<circle cx="{60+i*48}" cy="{_y(v):.1f}" r="{5 if i==8 else 3}" fill="{"var(--red)" if i==8 else "var(--ink)"}"/>' for i,v in enumerate(_V))
-  + f'<text x="60" y="{_y(2.74)+18:.0f}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="var(--ink)">2.74%</text>'
-  f'<text x="432" y="{_y(5.54)-5:.0f}" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="var(--red)">5.54%</text>'
-  '</g></svg>')
-
-_C=[("Food & beverages",2.71,"var(--red)"),("Personal care & misc.",0.69,"var(--amber)"),("Housing & fuel",0.48,"var(--ink)"),("Transport",0.44,"var(--ink)"),("Restaurants & hotels",0.31,"var(--ink)"),("Clothing & footwear",0.25,"var(--ink)"),("Other six groups",0.62,"var(--mute)")]
-CONTRIB_CHART = ('<svg viewBox="0 0 460 250" role="img" aria-label="Approximate contribution to 5.54% inflation in September 2026, percentage points: food and beverages 2.71, personal care and miscellaneous 0.69, housing and fuel 0.48, transport 0.44, restaurants and hotels 0.31, clothing and footwear 0.25, other six groups 0.62">'
-  '<g font-family="Inter, sans-serif" font-size="12">'
-  + "".join(f'<text x="150" y="{24+i*33}" text-anchor="end" font-weight="600" fill="var(--ink)">{n}</text>'
-            f'<rect x="160" y="{11+i*33}" width="{v/2.71*230:.0f}" height="18" fill="{c}"/>'
-            f'<text x="{166+v/2.71*230:.0f}" y="{25+i*33}" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="{c}">{v:.2f}</text>' for i,(n,v,c) in enumerate(_C))
-  + '<text x="160" y="246" font-family="JetBrains Mono, monospace" font-size="10" fill="var(--mute)">percentage points of the 5.54% headline</text>'
-  '</g></svg>')
-
-PUNCH_CHART = ('<svg viewBox="0 0 460 196" role="img" aria-label="Onion is 0.70% of the CPI basket but about 13.7% of September inflation. Silver jewellery is 0.31% of the basket but about 5% of inflation">'
-  '<g font-family="Inter, sans-serif" font-size="12">'
-  '<rect x="0" y="0" width="12" height="12" fill="var(--rule)"/><text x="18" y="10" fill="var(--mute)">Share of the basket</text>'
-  '<rect x="160" y="0" width="12" height="12" fill="var(--red)"/><text x="178" y="10" fill="var(--mute)">Share of September inflation (est.)</text>'
-  + "".join(f'<text x="0" y="{58+i*76}" font-weight="700" fill="var(--ink)">{n}</text>'
-            f'<rect x="120" y="{38+i*76}" width="{max(a/16*300,3):.0f}" height="16" fill="var(--rule)"/>'
-            f'<text x="{126+max(a/16*300,3):.0f}" y="{51+i*76}" font-family="JetBrains Mono, monospace" font-size="11" fill="var(--mute)">{a:.2f}%</text>'
-            f'<rect x="120" y="{57+i*76}" width="{b/16*300:.0f}" height="20" fill="var(--red)"/>'
-            f'<text x="{126+b/16*300:.0f}" y="{72+i*76}" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="var(--red)">~{b:.1f}%</text>' for i,(n,a,b) in enumerate([("Onion",0.70,13.7),("Silver jewellery",0.31,5.0)]))
-  + '</g></svg>')
-
-BASKET_CHART = ('<svg viewBox="0 0 460 236" role="img" aria-label="Share of the CPI basket, rural vs urban: food and beverages 42.0% vs 30.3%, housing and fuel 11.8% vs 25.0%, transport 8.6% vs 9.0%, education 2.4% vs 4.5%">'
-  '<g font-family="Inter, sans-serif" font-size="12">'
-  '<rect x="0" y="0" width="12" height="12" fill="var(--red)"/><text x="18" y="10" fill="var(--mute)">Rural</text>'
-  '<rect x="70" y="0" width="12" height="12" fill="var(--blue)"/><text x="88" y="10" fill="var(--mute)">Urban</text>'
-  + "".join(f'<text x="0" y="{44+i*50}" font-weight="700" fill="var(--ink)">{n}</text>'
-            f'<rect x="120" y="{30+i*50}" width="{r/45*290:.0f}" height="15" fill="var(--red)"/>'
-            f'<text x="{126+r/45*290:.0f}" y="{42+i*50}" font-family="JetBrains Mono, monospace" font-size="11" fill="var(--red)">{r:.1f}%</text>'
-            f'<rect x="120" y="{47+i*50}" width="{u/45*290:.0f}" height="15" fill="var(--blue)"/>'
-            f'<text x="{126+u/45*290:.0f}" y="{59+i*50}" font-family="JetBrains Mono, monospace" font-size="11" fill="var(--blue)">{u:.1f}%</text>' for i,(n,r,u) in enumerate([("Food",41.98,30.25),("Housing & fuel",11.76,25.00),("Transport",8.64,8.99),("Education",2.38,4.52)]))
-  + '</g></svg>')
-
-_S=[("Tamil Nadu",6.81),("Odisha",6.70),("Madhya Pradesh",6.68),("Telangana",6.64),("All India",5.54),("Maharashtra",5.18),("Gujarat",5.11),("Delhi",3.40)]
-def _sx(v): return 140+(v-3)/4.5*300
-STATES_CHART = ('<svg viewBox="0 0 460 262" role="img" aria-label="CPI inflation by state, September 2026: Tamil Nadu 6.81%, Odisha 6.70%, Madhya Pradesh 6.68%, Telangana 6.64%, All India 5.54%, Maharashtra 5.18%, Gujarat 5.11%, Delhi 3.40%">'
-  '<g font-family="Inter, sans-serif" font-size="12">'
-  f'<line x1="{_sx(6):.0f}" x2="{_sx(6):.0f}" y1="4" y2="240" stroke="var(--red)" stroke-dasharray="4 4"/>'
-  f'<text x="{_sx(6)+4:.0f}" y="256" fill="var(--red)" font-size="10" font-family="JetBrains Mono, monospace">6% limit</text>'
-  + "".join(f'<text x="130" y="{22+i*29}" text-anchor="end" font-weight="{700 if n=="All India" else 500}" fill="var(--ink)">{n}</text>'
-            f'<line x1="140" x2="{_sx(v):.0f}" y1="{18+i*29}" y2="{18+i*29}" stroke="var(--rule)" stroke-width="2"/>'
-            f'<circle cx="{_sx(v):.0f}" cy="{18+i*29}" r="6" fill="{"var(--red)" if v>6 else ("var(--blue)" if n=="All India" else "var(--ink)")}"/>'
-            f'<text x="{_sx(v)+12:.0f}" y="{22+i*29}" font-family="JetBrains Mono, monospace" font-size="11" fill="var(--ink)">{v:.2f}%</text>' for i,(n,v) in enumerate(_S))
-  + '</g></svg>')
-
-HERO_CHART = {"september-2026-inflation-onions": TREND_CHART}
+EXPLAINERS = load_stories()
+SOURCES = {e["slug"]: e["sources"] for e in EXPLAINERS}
+ARTICLE_BODIES = {e["slug"]: e["body"] for e in EXPLAINERS}
+TICKER = json.load(open(os.path.join(CONTENT, "ticker.json")))
 
 
 def share_bar():
@@ -279,132 +137,10 @@ def share_bar():
 </div>"""
 
 
-ARTICLE_BODIES = {
-"september-2026-inflation-onions": f"""
-<p>The headline says inflation is 5.54%. Underneath that number, one vegetable that makes up less than 1% of what Indians buy did about a seventh of the work. Here's what the September data shows when you take it apart.</p>
-<h2>Nine months of climbing</h2>
-<p>This didn't happen overnight. Under the new CPI series, inflation has risen every single month of 2026, from 2.74% in January to 5.54% in September. September was the fourth month in a row above the RBI's 4% target, and it came in above the 5.4% that economists polled by Reuters had expected.</p>
-<div class="chart">{TREND_CHART}<div class="cap">CPI inflation, year on year, 2026 (base 2024=100). September is provisional.</div></div>
-<h2>Where the 5.54% actually comes from</h2>
-<p>Each spending group's contribution to inflation is roughly its weight in the basket multiplied by its own inflation rate. Run that maths on September's official numbers and the pieces add up to about 5.51%, very close to the published 5.54%.</p>
-<div class="chart">{CONTRIB_CHART}<div class="cap">Approximate contribution by spending group, September 2026. FIN2DAY calculation from official MoSPI weights and group inflation rates.</div></div>
-<p>Food and beverages make up 36.75% of the basket but delivered about 2.7 points, nearly half of all inflation. The surprise is in second place: personal care and miscellaneous goods, up 13.75%, mostly because of jewellery. "Other personal effects" rose 38.69%. Eating out is getting pricier too, with restaurant and hotel inflation at 9.36%.</p>
-<p>Meanwhile housing and fuel, the second-biggest group at 17.67% of the basket, rose just 2.74%. That's what is holding the headline number down.</p>
-<h2>Small weight, big punch</h2>
-<p>In the new series, onion has a weight of just 0.70%. But when the price of something doubles, even a small weight matters. At 108% inflation, onions alone contributed roughly 0.75 of a percentage point, about 14% of all inflation in September.</p>
-<div class="chart">{PUNCH_CHART}<div class="cap">FIN2DAY estimate using official item weights (onion 0.7006, silver jewellery 0.3127). Approximate.</div></div>
-<p>The jump from August is even more striking. Onion inflation went from 48.78% to 108.09%, which on its own adds about 0.4 points. Headline inflation rose 0.71 points in the month, so onions explain more than half of the increase.</p>
-<p>Silver jewellery, at just 0.31% of the basket, rose 87.8% and added roughly another quarter of a point.</p>
-<h2>Why villages are hit harder</h2>
-<p>Rural and urban households don't buy the same things, and the CPI weights show it.</p>
-<div class="chart">{BASKET_CHART}<div class="cap">Share of the CPI basket by group, rural vs urban. Source: MoSPI, CPI base 2024.</div></div>
-<p>Food is 42% of the rural basket but only 30% of the urban one. Housing, where prices barely moved, is a quarter of the urban basket. So when food spikes and rents don't, villages take the hit while cities get a cushion. Rural food inflation hit 8.06% in September, against 7.18% in cities.</p>
-<p>That's also why Delhi, at 3.40%, looks so different from Tamil Nadu at 6.81%. Four large states are already above the RBI's 6% limit.</p>
-<div class="chart">{STATES_CHART}<div class="cap">CPI inflation by state, September 2026 (provisional).</div></div>
-<h2>What's behind it, beyond onions</h2>
-<ul class="points">
-  <li><b>Weather</b><span>Analysts point to below-normal rainfall this monsoon and an El Niño that Emkay Global's Madhavi Arora says may persist into 2027.</span></li>
-  <li><b>Oil</b><span>Higher crude prices tied to the Iran war. DBS Bank's Radhika Rao expects fuel costs to push up non-food prices with a lag.</span></li>
-  <li><b>Base effect</b><span>Inflation a year ago was unusually low. In September 2025 it was 1.54% on the old series, a 99-month low, so this year's comparison looks steeper.</span></li>
-  <li><b>Core</b><span>ICRA estimates core inflation, which excludes food and fuel, at about 4.6%. Price pressure is spreading, but not yet runaway.</span></li>
-</ul>
-<h2>What forecasters now expect</h2>
-<ul class="points">
-  <li><b>HDFC Bank</b><span>Next print near 6%, full-year inflation 5.4%, a 25 bps hike in December. (Sakshi Gupta)</span></li>
-  <li><b>Kotak</b><span>Inflation above 6% over the next few months, another 50 bps of hikes. (Upasna Bhardwaj)</span></li>
-  <li><b>Emkay</b><span>October–December inflation averaging about 6.1%, hikes in December and February. (Madhavi Arora)</span></li>
-  <li><b>IDFC First</b><span>Repo rate peaking at 6.0–6.25%, up from 5.50% today. (Gaura Sengupta)</span></li>
-</ul>
-<div class="callout"><b>What that could mean for your EMI</b><p>Take a ₹50 lakh, 20-year home loan at 8.5%. If two more 25 bps hikes are passed on in full, the rate becomes 9.0% and the EMI rises from about ₹43,391 to ₹44,986, roughly ₹1,600 more a month. That's an illustration; your bank's reset terms decide the actual change.</p></div>
-<h2>Dates to watch</h2>
-<ul class="points">
-  <li><b>12 Nov</b><span>October inflation. If forecasters are right, it could touch 6%.</span></li>
-  <li><b>2–4 Dec</b><span>RBI policy meeting. Most economists quoted above expect another hike.</span></li>
-</ul>
-<p><em>September figures are provisional. Contribution figures are FIN2DAY approximations from official weights, not official statistics.</em></p>
-""",
-"us-russia-diesel-deal": f"""
-<p>For a year, Washington told New Delhi one thing: stop buying Russian oil. On 9 October 2026, President Trump announced the US would buy Russian <strong>diesel</strong> instead.</p>
-<h2>How India got squeezed</h2>
-<p>In August 2025 the US put a 25% reciprocal tariff on Indian goods, then added another 25% as a penalty for buying Russian crude. That took the total to 50%. In February 2026, India agreed to stop buying Russian crude, and the US said it would cut the tariff to 18%.</p>
-<div class="chart">{TARIFF_CHART}<div class="cap">US tariffs on Indian goods. The Sep 2026 law allows tariffs of up to 100% on the five biggest buyers of Russian oil and gas; final rates are still to be set.</div></div>
-<p>Then on 18 September 2026, Trump signed a new sanctions law. It directs tariffs of up to 100% on the top five importers of Russian oil or gas, which puts India back in the line of fire.</p>
-<h2>The phone call</h2>
-<p>Three weeks later, after a call with Vladimir Putin, Trump said Russia would supply:</p>
-<div class="chart">{DIESEL_CHART}<div class="cap">Diesel volumes as stated by President Trump on 9 Oct 2026. He said 3 million more tons would follow "within a short period of time".</div></div>
-<p>The US Treasury issued a licence so that sanctions won't apply until <strong>April 2027</strong> to Russian diesel loaded onto tankers as of that day. It's the first diesel licence longer than the usual 30 days since the Ukraine war began in 2022.</p>
-<h2>Why Trump did it</h2>
-<ul class="points">
-  <li><b>$6.52</b><span>Record US national average for diesel per AAA, on 22 September 2026. It was $6.28 on 9 October.</span></li>
-  <li><b>Midterms</b><span>Trump said lower fuel prices for truckers, farmers and ranchers were his top priority, with midterm elections weeks away.</span></li>
-  <li><b>Russia</b><span>Moscow had restricted diesel exports in July after Ukrainian attacks on its refineries. It said it would lift those limits early.</span></li>
-</ul>
-<h2>The reaction</h2>
-<p>Ukraine's President Zelenskyy called it "a weak decision by strong partners." US Democrats including Chuck Schumer and Elizabeth Warren called it a betrayal of Ukraine. Analysts disagreed on whether it would bring prices down much at all.</p>
-<div class="callout"><b>What it means for India</b><p>The same law that threatens India with up to 100% tariffs is still on the books. Watch for which five countries the US Trade Representative names, and whether India's February deal protects it.</p></div>
-""",
-"rbi-rate-hike-oct-2026": f"""
-<p>On 7 October 2026, the RBI raised the repo rate from 5.25% to 5.50%. All six members of the Monetary Policy Committee voted yes. It was the first hike since 2023, and it came just ten months after the RBI's last cut.</p>
-<div class="chart">{RBI_CHART}<div class="cap">RBI policy repo rate, Jan 2024 to Oct 2026.</div></div>
-<h2>What changed</h2>
-<p>Through 2025 the RBI cut rates four times, from 6.50% to 5.25%, to support growth. Then three things turned at once:</p>
-<ul class="points">
-  <li><b>Oil</b><span>Crude crossed $100 a barrel again. India imports most of its oil, so this feeds straight into prices.</span></li>
-  <li><b>Rupee</b><span>The rupee slid close to its record low against the dollar, which makes imports costlier still.</span></li>
-  <li><b>Inflation</b><span>The RBI expects inflation to touch about 6% in October to December, the top of its 2–6% comfort band.</span></li>
-</ul>
-<h2>What the RBI signalled</h2>
-<p>The Governor's message was that the next move is another hike or a pause. Rate cuts are off the table for now.</p>
-<div class="callout"><b>What it means for you</b><p>EMIs on floating-rate home and car loans linked to the repo rate can rise slightly at the next reset. New fixed deposits should start paying a little more.</p></div>
-<h2>Repo rate, explained</h2>
-<p>The repo rate is the interest rate at which the RBI lends money to banks overnight. When it goes up, borrowing gets costlier for banks, and they pass that on to loans. It's the RBI's main tool to cool inflation.</p>
-""",
-"how-an-ipo-works": f"""
-<p>An IPO, or initial public offering, is the first time a company sells its shares to the public. Part of the ownership moves from the founders and early investors to anyone who bids through a broker.</p>
-<div class="chart">{IPO_CHART}<div class="cap">How ownership changes when a company lists.</div></div>
-<h2>Why companies do it</h2>
-<ul class="points">
-  <li><b>Fresh issue</b><span>New shares are created and the money goes to the company, often for expansion or paying down debt.</span></li>
-  <li><b>Offer for sale</b><span>Existing owners sell some of their shares. That money goes to them, not the company.</span></li>
-  <li><b>A price tag</b><span>Listing gives the business a public market value that changes every trading day.</span></li>
-</ul>
-<h2>Three things to read before you bid</h2>
-<p><strong>1. The price band and valuation.</strong> Compare the valuation it implies with listed rivals.<br>
-<strong>2. Fresh issue vs offer for sale.</strong> A big offer for sale means owners are cashing out.<br>
-<strong>3. The risk factors.</strong> Every IPO files a draft red herring prospectus (DRHP) with SEBI. Read the debt, litigation and risk sections.</p>
-<div class="callout"><b>How to apply</b><p>You bid through your broker app using UPI. Big IPOs are often oversubscribed, so shares are allotted by lottery for retail investors and allotment isn't guaranteed.</p></div>
-""",
-}
-
-SOURCES = {
-"september-2026-inflation-onions": [
-    ("MoSPI / PIB: CPI (base 2024=100) group and item weights", "https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/feb/doc2026212787501.pdf"),
-    ("MoSPI / PIB: CPI press release, June 2026 (monthly series)", "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2284125&reg=48&lang=1"),
-    ("Reuters via Investing.com: India inflation jumps to 5.54% in September", "https://www.investing.com/news/economy-news/india-inflation-jumps-to-554-in-september-strengthening-case-for-further-rate-hikes-4943948"),
-    ("Finnovate: India CPI inflation September 2026 (group, item and state data)", "https://www.finnovate.in/learn/blog/india-cpi-inflation-september-2026"),
-    ("Trading Economics: India inflation rate", "https://tradingeconomics.com/india/inflation-cpi"),
-    ("Business Today: CPI base revision, what's changed", "https://www.businesstoday.in/amp/latest/economy/story/cpi-inflation-base-revision-whats-changed-why-it-matters-515940-2026-02-12"),
-    ("Business Standard: Retail inflation at 1.54% in September 2025", "https://www.business-standard.com/amp/economy/news/india-s-retail-inflation-slips-to-99-month-low-of-1-54-in-september-125101301472_1.html"),
-],
-"us-russia-diesel-deal": [
-    ("AP: Trump says US to get diesel from Russia (9 Oct 2026)", "https://www.kttc.com/2026/10/09/trump-says-us-get-diesel-russia-relaxing-pressure-moscow-ease-prices-before-midterms/"),
-    ("Business Today: India faces fresh US tariff threat over Russian oil", "https://www.businesstoday.in/latest/economy/story/india-faces-fresh-us-tariff-threat-over-russian-oil-what-happens-next-gtri-explains-556634-2026-09-19"),
-    ("Breakwave Advisors: India drops Russian crude, secures US tariff relief", "https://www.breakwaveadvisors.com/insights/2026/2/4/energy-realignment-india-drops-russian-crude-secures-us-tariff-relief"),
-    ("Fox Business: US diesel hits record high", "https://www.foxbusiness.com/economy/national-average-price-diesel-hits-new-record-high-amid-iran-conflict"),
-],
-"rbi-rate-hike-oct-2026": [
-    ("Reserve Bank of India: Monetary Policy Statements", "https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx"),
-],
-"how-an-ipo-works": [
-    ("SEBI: Investor education on IPOs", "https://investor.sebi.gov.in/"),
-],
-}
-
-
 def story_card(e, link_prefix="/explainers/"):
-    t, cls = e["tag"]
+    t, cls = e["tag"], e["tag_class"]
     return f"""<article class="story" data-topic="{e['topic']}">
-  <div class="meta"><span class="tag {cls}">{t}</span><span>{e['date']}</span><span>{e['mins']} min</span></div>
+  <div class="meta"><span class="tag {cls}">{t}</span><span>{e['date_label']}</span><span>{e['mins']} min</span></div>
   <h3><a href="{link_prefix}{e['slug']}.html">{e['short']}</a></h3>
   <p>{e['card']}</p>
   <a class="read" href="{link_prefix}{e['slug']}.html">Read the explainer →</a>
@@ -412,15 +148,16 @@ def story_card(e, link_prefix="/explainers/"):
 
 
 def build():
+    os.chdir(ROOT)
     os.makedirs("explainers", exist_ok=True)
     cards = "\n".join(story_card(e) for e in EXPLAINERS)
     home_cards = "\n".join(story_card(e) for e in EXPLAINERS[:3])
 
     # ---------------- Home ----------------
     home = f"""
-<div class="dateline"><div class="wrap"><span id="today">Tuesday, 13 October 2026</span><span>Finance, Explained</span></div></div>
+<div class="dateline"><div class="wrap"><span id="today">{datetime.date.fromisoformat(EXPLAINERS[0]['date']).strftime('%A %-d %B %Y')}</span><span>Finance, Explained</span></div></div>
 <div class="ticker" aria-label="Topics we cover"><div class="track">
-  {''.join(['<div class="tk"><span>CPI inflation</span><span class="mono dn">5.54% ▲ Sep</span></div><div class="tk"><span>Onion prices</span><span class="mono dn">+108% y/y</span></div><div class="tk"><span>RBI repo</span><span class="mono dn">5.50% ▲ 25 bps</span></div><div class="tk"><span>US diesel</span><span class="mono dn">record $6.52/gal</span></div><div class="tk"><span>Russian diesel</span><span class="mono">1M tons to US</span></div><div class="tk"><span>Brent crude</span><span class="mono dn">above $100</span></div><div class="tk"><span>Rupee</span><span class="mono dn">near record low</span></div><div class="tk"><span>Your EMI</span><span class="mono dn">floating rates up</span></div><div class="tk"><span>Fixed deposits</span><span class="mono up">new rates better</span></div>']*2)}
+  {''.join(''.join(f'<div class="tk"><span>{html.escape(k)}</span><span class="mono{(" " + c) if c else ""}">{html.escape(v)}</span></div>' for k, v, c in TICKER) for _ in range(2))}
 </div></div>
 
 <section class="hero">
@@ -436,10 +173,10 @@ def build():
     </div>
     <a class="postcard reveal d2" href="/explainers/{EXPLAINERS[0]['slug']}.html" style="text-decoration:none" aria-label="Today's story: {html.escape(EXPLAINERS[0]['short'])}">
       <div class="bar"><b>FIN<i>2</i>DAY</b><span class="stamp">FACT-CHECKED</span></div>
-      <div class="label" style="margin-top:16px">Today's story · {EXPLAINERS[0]['tag'][0]}</div>
+      <div class="label" style="margin-top:16px">Today's story · {EXPLAINERS[0]['tag']}</div>
       <h3>{EXPLAINERS[0]['short']}</h3>
-      <div class="chart" style="margin:14px 0 0;padding:12px 10px 6px">{HERO_CHART.get(EXPLAINERS[0]['slug'], DIESEL_CHART)}</div>
-      <div class="meta"><span>{EXPLAINERS[0]['date']}</span><span>{EXPLAINERS[0]['mins']} min read</span><span>{EXPLAINERS[0].get('hero_src','Sources: AP, AAA')}</span></div>
+      <div class="chart" style="margin:14px 0 0;padding:12px 10px 6px">{EXPLAINERS[0]['hero']}</div>
+      <div class="meta"><span>{EXPLAINERS[0]['date_label']}</span><span>{EXPLAINERS[0]['mins']} min read</span><span>{EXPLAINERS[0].get('hero_src') or 'Sources listed'}</span></div>
     </a>
   </div>
 </section>
@@ -467,7 +204,7 @@ def build():
   <div class="wrap">
     <div class="shead">
       <div><div class="label">What we explain</div><h2>Six beats. One story a day.</h2></div>
-      <p>We pick the story that matters most each morning, and swap the plan when big news breaks.</p>
+      <p>A new beat every weekday, a markets update after every trading day, and world markets at the weekend. When big news breaks, it jumps the queue.</p>
     </div>
     <div class="topics">
       <a class="topic" href="/explainers/#concepts"><div class="sym">CONCEPTS</div><h3>Money basics</h3><p>Repo rate, inflation, bonds, P/E. The ideas behind the headlines.</p><span class="go">Browse →</span></a>
@@ -498,7 +235,7 @@ def build():
     <h2 style="font-size:clamp(34px,5vw,56px);line-height:1.02;margin:10px 0 30px">Good to know.</h2>
     <div class="faq">
       <details><summary>Is this investment advice?</summary><p>No. FIN2DAY explains what happened and why. We never recommend buying or selling anything. For decisions about your money, talk to a SEBI-registered adviser.</p></details>
-      <details><summary>How often do you post?</summary><p>One story every weekday on Instagram, with longer explainers here on the site. When big news breaks, we cover it the same day.</p></details>
+      <details><summary>How often do you post?</summary><p>Every day. Monday is money basics, Tuesday IPOs, Wednesday the RBI and rates, Thursday the global economy and Friday trade wars. After every trading day there is a markets update, and on weekends we cover world markets like the NYSE and Shanghai. When big news breaks, we cover it the same day.</p></details>
       <details><summary>Is it free?</summary><p>Yes. The Instagram page, the site and the newsletter are all free.</p></details>
       <details><summary>Where do the numbers come from?</summary><p>From primary sources like the RBI, SEBI, government releases, and established news agencies. Every explainer lists its sources at the bottom.</p></details>
       <details><summary>Can I suggest a topic?</summary><p>Please do. Use the <a href="/contact.html">contact form</a> or DM us on <a href="{IG}" target="_blank" rel="noopener">Instagram</a>.</p></details>
@@ -540,14 +277,14 @@ def build():
 
     # ---------------- Articles ----------------
     for i, e in enumerate(EXPLAINERS):
-        t, cls = e["tag"]
+        t, cls = e["tag"], e["tag_class"]
         nxt = EXPLAINERS[(i + 1) % len(EXPLAINERS)]
         srcs = "".join(f'<li><a href="{u}" target="_blank" rel="noopener">{html.escape(n)}</a></li>' for n, u in SOURCES[e["slug"]])
         body = f"""
 <div class="wrap narrow">
   <p class="crumbs"><a href="/">Home</a> / <a href="/explainers/">Explainers</a> / {t}</p>
   <header class="article-head">
-    <div class="byline"><span class="tag {cls}">{t}</span><span>{e['date']}</span><span>{e['mins']} min read</span></div>
+    <div class="byline"><span class="tag {cls}">{t}</span><span>{e['date_label']}</span><span>{e['mins']} min read</span></div>
     <h1>{e['title']}</h1>
     <p class="dek">{e['dek']}</p>
   </header>

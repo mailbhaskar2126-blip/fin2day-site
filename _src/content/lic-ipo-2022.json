@@ -1,0 +1,30 @@
+{
+ "slug": "lic-ipo-2022",
+ "date": "2026-10-14",
+ "order": 8,
+ "topic": "ipo",
+ "tag": "IPO",
+ "tag_class": "",
+ "title": "LIC's ₹21,000 crore IPO: how it was priced, and why it listed below the issue price",
+ "short": "LIC's IPO: how it was priced, and why it listed lower",
+ "dek": "In May 2022, India's biggest insurer went public in what was then the country's largest IPO. Policyholders rushed in. The shares opened 8% lower.",
+ "card": "India's biggest IPO at the time was nearly 3 times subscribed. It still opened 8% below the issue price.",
+ "sources": [
+  [
+   "Finology Ticker: LIC IPO details and subscription",
+   "https://ticker.finology.in/ipo/life-insurance-corporation-of-india"
+  ],
+  [
+   "Business Standard: LIC lists at 8.6% discount",
+   "https://www.business-standard.com/amp/article/markets/lic-lists-at-8-6-discount-stock-recovers-partially-post-weak-debut-122051700296_1.html"
+  ],
+  [
+   "Onmanorama: LIC lists at 8.11% discount at ₹872 on NSE",
+   "https://onmanorama.com/news/business/2022/05/17/life-insurance-corp-set-for-lacklustre-market-debut.html"
+  ],
+  [
+   "RBI repo rate history",
+   "https://stableinvestor.com/2021/10/rbi-repo-rate-history-india.html"
+  ]
+ ]
+}

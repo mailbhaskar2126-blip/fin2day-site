@@ -1,0 +1,22 @@
+{
+ "slug": "bond-prices-and-yields",
+ "date": "2026-10-14",
+ "order": 3,
+ "topic": "concepts",
+ "tag": "Basics",
+ "tag_class": "",
+ "title": "Bonds, explained: why prices fall when yields rise",
+ "short": "Bonds: why prices fall when yields rise",
+ "dek": "The see-saw at the heart of finance, worked out with one ₹1,000 bond. Once this clicks, rate hikes, debt funds and FPI selling all make more sense.",
+ "card": "One ₹1,000 bond, worked through at five interest rates. The see-saw that moves debt funds and stock markets.",
+ "sources": [
+  [
+   "SEBI: Investor education resources",
+   "https://investor.sebi.gov.in/"
+  ],
+  [
+   "Business Standard: FPIs pull out ₹44,166 cr in October 2026",
+   "https://www.business-standard.com/finance/news/fpis-pull-out-44-166-cr-from-equities-in-oct-2026-outflows-cross-3-trn-126101100210_1.html"
+  ]
+ ]
+}

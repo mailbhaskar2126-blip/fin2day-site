@@ -1,0 +1,22 @@
+{
+ "slug": "what-is-the-repo-rate",
+ "date": "2026-10-14",
+ "order": 5,
+ "topic": "concepts rbi",
+ "tag": "Basics",
+ "tag_class": "",
+ "title": "What the repo rate actually is, and how it reaches your EMI",
+ "short": "What the repo rate actually is, and how it reaches your EMI",
+ "dek": "Every RBI headline mentions the repo rate. Here's what it is, the two rates on either side of it, and the path from Mint Street to your loan.",
+ "card": "The single number behind every RBI headline, and the five steps it takes to change your EMI.",
+ "sources": [
+  [
+   "RBI: Monetary policy statements and press releases",
+   "https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx"
+  ],
+  [
+   "SCC Online: RBI hikes repo rate to 5.50%, October 2026",
+   "https://www.scconline.com/blog/post/2026/10/09/rbi-hikes-repo-rate-to-5-50-percent-october-2026/"
+  ]
+ ]
+}

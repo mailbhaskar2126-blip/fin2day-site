@@ -1,0 +1,43 @@
+{
+ "slug": "september-2026-inflation-onions",
+ "date": "2026-10-14",
+ "topic": "rbi concepts",
+ "tag": "Inflation",
+ "tag_class": "red",
+ "title": "Onions are up 108%. Why India's inflation just jumped to 5.54%",
+ "short": "Onions are up 108%. Why inflation just jumped to 5.54%",
+ "dek": "Five charts that take September's 5.54% apart: where it really comes from, how one vegetable punched far above its weight, and why villages feel it more than cities.",
+ "card": "Retail inflation jumped from 4.83% to 5.54% in September. Food inflation hit 7.74%, led by onions.",
+ "hero_src": "Data: CPI, Sep 2026",
+ "sources": [
+  [
+   "MoSPI / PIB: CPI (base 2024=100) group and item weights",
+   "https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/feb/doc2026212787501.pdf"
+  ],
+  [
+   "MoSPI / PIB: CPI press release, June 2026 (monthly series)",
+   "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2284125&reg=48&lang=1"
+  ],
+  [
+   "Reuters via Investing.com: India inflation jumps to 5.54% in September",
+   "https://www.investing.com/news/economy-news/india-inflation-jumps-to-554-in-september-strengthening-case-for-further-rate-hikes-4943948"
+  ],
+  [
+   "Finnovate: India CPI inflation September 2026 (group, item and state data)",
+   "https://www.finnovate.in/learn/blog/india-cpi-inflation-september-2026"
+  ],
+  [
+   "Trading Economics: India inflation rate",
+   "https://tradingeconomics.com/india/inflation-cpi"
+  ],
+  [
+   "Business Today: CPI base revision, what's changed",
+   "https://www.businesstoday.in/amp/latest/economy/story/cpi-inflation-base-revision-whats-changed-why-it-matters-515940-2026-02-12"
+  ],
+  [
+   "Business Standard: Retail inflation at 1.54% in September 2025",
+   "https://www.business-standard.com/amp/economy/news/india-s-retail-inflation-slips-to-99-month-low-of-1-54-in-september-125101301472_1.html"
+  ]
+ ],
+ "order": 100
+}

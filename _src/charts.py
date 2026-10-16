@@ -1,5 +1,5 @@
 """Small SVG chart helpers matching the FIN2DAY site (uses CSS vars)."""
-import json, os
+import json, os, re
 
 MONO = 'font-family="JetBrains Mono, monospace"'
 SANS = 'font-family="Inter, sans-serif"'
@@ -100,8 +100,22 @@ def steps(points, label, ymin, ymax, yticks, xlabels, w=460, h=230, fmt="{:.2f}%
     return "".join(out)
 
 
-def line(series, label, ymin, ymax, yticks, xlabels, w=460, h=230, fmt="{:g}", annotate=()):
-    """series: [(color, [(x 0..1, y)], name)]"""
+def _tip(fmt, y):
+    """Exact value for the hover readout, keeping the axis format's prefix/suffix (e.g. %, $)."""
+    s = fmt.format(y)
+    try:
+        if abs(float(re.sub(r"[^0-9.\-]", "", s)) - y) < 1e-9:
+            return s
+    except ValueError:
+        pass
+    pre, suf = fmt.split("{", 1)[0], fmt.rsplit("}", 1)[-1]
+    raw = f"{y:,.2f}".rstrip("0").rstrip(".")
+    return pre + raw + suf
+
+
+def line(series, label, ymin, ymax, yticks, xlabels, w=460, h=230, fmt="{:g}", annotate=(), tipfmt=None):
+    """series: [(color, [(x 0..1, y)], name)]. Each point carries its exact value for the hover readout
+    (tipfmt, else the axis fmt with full precision)."""
     L, R, T, B = 46, w - 12, 18, h - 30
     X = lambda x: L + x * (R - L)
     Y = lambda y: B - (y - ymin) / (ymax - ymin) * (B - T)
@@ -113,7 +127,7 @@ def line(series, label, ymin, ymax, yticks, xlabels, w=460, h=230, fmt="{:g}", a
         out.append(f'<text x="{X(x):.0f}" y="{h-8}" text-anchor="middle" {MONO} font-size="10" fill="var(--mute)">{esc(t)}</text>')
     for c, pts, _ in series:
         out.append(f'<polyline points="{" ".join(f"{X(x):.1f},{Y(y):.1f}" for x, y in pts)}" fill="none" stroke="{c}" stroke-width="2.4"/>')
-        out.extend(f'<circle cx="{X(x):.1f}" cy="{Y(y):.1f}" r="3.5" fill="{c}"/>' for x, y in pts)
+        out.extend(f'<circle cx="{X(x):.1f}" cy="{Y(y):.1f}" r="3.5" fill="{c}" data-tip="{esc(tipfmt.format(y) if tipfmt else _tip(fmt, y))}"/>' for x, y in pts)
     for x, y, t, anchor, dy, c in annotate:
         out.append(f'<text x="{X(x):.0f}" y="{Y(y)+dy:.0f}" text-anchor="{anchor}" font-weight="700" font-size="11" fill="{c}">{esc(t)}</text>')
     out.append("</g></svg>")

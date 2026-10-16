@@ -41,7 +41,9 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:400;text-wrap:balance;margin:
 :focus-visible{outline:2px solid var(--brass);outline-offset:3px;border-radius:6px}
 .skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:var(--paper);padding:8px 12px;z-index:50;border-radius:8px}
 .skip:focus{left:8px}
-.u{color:var(--brass);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:.14em;font-style:normal}
+.u{color:var(--brass);font-style:normal;background:linear-gradient(currentColor,currentColor) no-repeat 0 92%/100% 1.5px;padding-bottom:.04em}
+html.moving .u{background-size:0 1.5px;transition:background-size 1.1s var(--ease) .7s}
+html.moving .u.play{background-size:100% 1.5px}
 
 /* Announcement (today's story) */
 .news{display:grid;grid-template-columns:1fr 1fr;min-height:220px;position:relative}
@@ -83,11 +85,16 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:400;text-wrap:balance;margin:
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--paper);border:1px solid var(--ink);font:500 15px var(--sans);padding:11px 20px;border-radius:999px;text-decoration:none;cursor:pointer;transition:background .25s var(--ease),color .25s,border-color .25s,transform .25s var(--ease)}
-.btn:hover{background:var(--brass);border-color:var(--brass);color:#fff}
+.btn{position:relative;overflow:hidden;isolation:isolate}
+.btn::before{content:"";position:absolute;inset:-1px;z-index:-1;background:var(--brass);border-radius:inherit;transform:translateY(102%);transition:transform .45s var(--ease)}
+.btn:hover{border-color:var(--brass);color:#fff}
+.btn:hover::before{transform:none}
 .btn.ghost{background:transparent;color:var(--ink);border-color:color-mix(in srgb,var(--ink) 35%,transparent)}
-.btn.ghost:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.ghost::before{background:var(--ink)}
+.btn.ghost:hover{color:var(--paper);border-color:var(--ink)}
 .btn.brass{background:var(--brass);border-color:var(--brass);color:#fff}
-.btn.brass:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn.brass::before{background:var(--ink)}
+.btn.brass:hover{border-color:var(--ink);color:var(--paper)}
 .btn.sm{padding:8px 16px;font-size:14px}
 .more{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:500;text-decoration:none;color:var(--ink)}
 .more::after{content:"›";color:var(--brass);font-size:20px;line-height:1;transition:transform .25s var(--ease)}
@@ -344,3 +351,72 @@ footer{padding:clamp(40px,6vw,80px) 12px 12px}
 html.js .rv{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
 html.js .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion: reduce){.track,.reveal,.float,.tile{animation:none}html{scroll-behavior:auto}html.js .rv{opacity:1;transform:none;transition:none}}
+
+/* ===== Motion layer (assets/motion.js) ===== */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+
+/* Header: compacts and tucks away while reading, returns on scroll up */
+.mast{transition:transform .5s var(--ease),box-shadow .3s}
+.mast.scrolled{box-shadow:0 1px 0 var(--rule)}
+.mast.away{transform:translateY(-100%)}
+.nav.has-blob{position:relative}
+.nav.has-blob a{position:relative;z-index:1}
+.nav.has-blob a:hover,.nav.has-blob a[aria-current="page"]{background:transparent;box-shadow:none}
+.nav .blob{position:absolute;left:0;top:5px;bottom:5px;width:0;border-radius:999px;background:var(--card);box-shadow:0 1px 2px rgba(0,0,0,.08);transition:transform .45s var(--ease),width .45s var(--ease),opacity .25s;opacity:0;pointer-events:none}
+@media(max-width:980px){.nav .blob{display:none}}
+
+/* Split headings */
+.words .wo{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.words .wi{display:inline-block;transform:translateY(105%);transition:transform 1s var(--ease)}
+.words.play .wi{transform:none}
+.svc h3.words{flex-wrap:wrap}
+
+/* Hero parallax */
+.collage .main{transition:transform .8s var(--ease);transform-style:preserve-3d;will-change:transform}
+.float{transition:translate .9s var(--ease)}
+
+/* Card tilt + light */
+.story,.bx,.mini,.stat{transition:transform .6s var(--ease),box-shadow .4s}
+.tilting{transform:perspective(900px) rotateX(var(--rx,0)) rotateY(var(--ry,0)) translateY(-4px)!important}
+.bx.tilting,.story.tilting,.stat.tilting{background-image:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--brass) 9%,transparent),transparent 60%)}
+.mini.tilting{transform:perspective(900px) rotateX(var(--rx,0)) rotateY(var(--ry,0)) translateX(-6px)!important}
+
+/* Scroll-linked panels */
+.svc .vis,.tile,.ctap .mail{transition:translate .2s linear}
+html.moving .svc .vis .mini{transform:translateX(70px);opacity:0;transition:transform 1.2s var(--ease),opacity .8s var(--ease)}
+html.moving .svc .vis.in .mini{transform:none;opacity:1}
+html.moving .svc .vis.in .mini:hover{transform:translateX(-6px)}
+
+/* Chart draw-in */
+html.moving .chart svg.anim .draw{transition:stroke-dashoffset 1.6s cubic-bezier(.45,0,.2,1) .15s}
+html.moving .chart svg.anim.play .draw{stroke-dashoffset:0!important}
+html.moving .chart svg.anim .grow{transform-box:fill-box;transition:transform 1s var(--ease)}
+html.moving .chart svg.anim .grow.o-left{transform-origin:left center;transform:scaleX(0)}
+html.moving .chart svg.anim .grow.o-right{transform-origin:right center;transform:scaleX(0)}
+html.moving .chart svg.anim .grow.o-bottom{transform-origin:center bottom;transform:scaleY(0)}
+html.moving .chart svg.anim .grow.o-top{transform-origin:center top;transform:scaleY(0)}
+html.moving .chart svg.anim.play .grow{transform:none}
+html.moving .chart svg.anim .late{opacity:0;transition:opacity .6s ease}
+html.moving .chart svg.anim.play .late{opacity:1}
+html.moving .chart svg.anim .pop{transform-box:fill-box;transform-origin:center;transform:scale(0);transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
+html.moving .chart svg.anim.play .pop{transform:none}
+html.moving .chart svg.anim .soft{opacity:0;transition:opacity .9s ease .25s}
+html.moving .chart svg.anim.play .soft{opacity:1}
+
+/* Chart readouts */
+.chart svg.interactive{cursor:crosshair;touch-action:pan-y}
+.chart svg.interactive rect,.chart svg.interactive circle{transition:opacity .25s,filter .25s}
+.chart svg.focus rect:not(.hot),.chart svg.focus circle:not(.hot){opacity:.35}
+.chart svg.focus text.late:not(.hot){opacity:.4}
+.chart svg circle.hot{r:6;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--brass) 60%,transparent))}
+.chart svg circle{transition:r .2s}
+.chart svg .guide{stroke:var(--brass);stroke-width:1;stroke-dasharray:3 3;opacity:0;transition:opacity .2s}
+.chart svg.focus .guide{opacity:.9}
+.tip{position:fixed;left:0;top:0;z-index:60;pointer-events:none;background:var(--ink);color:var(--paper);border-radius:10px;padding:7px 11px;font:500 12.5px/1.35 var(--sans);display:flex;gap:10px;align-items:baseline;white-space:nowrap;opacity:0;transition:opacity .15s,transform .12s var(--ease);box-shadow:0 12px 30px -10px rgba(0,0,0,.4)}
+.tip.on{opacity:1}
+.tip span{opacity:.75}
+.tip b{font:700 13px var(--mono);font-variant-numeric:tabular-nums}
+
+@media (prefers-reduced-motion: reduce){.btn::before,.mast{transition:none}.u{background-size:100% 1.5px}}

@@ -1,0 +1,35 @@
+{
+ "slug": "smoot-hawley-tariff-1930",
+ "date": "2026-10-16",
+ "order": 50,
+ "topic": "trade",
+ "tag": "Trade",
+ "tag_class": "",
+ "title": "Smoot-Hawley, 1930: the tariff that made the Great Depression worse",
+ "short": "Smoot-Hawley: the 1930 tariff that made the Depression worse",
+ "dek": "A limited fix for farmers became duties on nearly 3,300 goods, retaliation from trading partners and a 66% collapse in world trade. Why the 1930 law is still the benchmark for every trade war.",
+ "card": "US tariffs on dutiable goods hit 59.1% by 1932, and world trade fell 66%. The story of history's most famous tariff.",
+ "hero_src": "Data: Douglas Irwin (NBER), US Office of the Historian",
+ "sources": [
+  [
+   "Douglas A. Irwin, 'The Hawley-Smoot Tariff and the Great Depression, 1928–1932', in Clashing over Commerce (NBER / University of Chicago Press)",
+   "https://www.nber.org/chapters/c13858.pdf"
+  ],
+  [
+   "US Department of State, Office of the Historian: Protectionism in the interwar period",
+   "https://history.state.gov/milestones/1921-1936/protectionism"
+  ],
+  [
+   "US Senate: Senate passes Smoot-Hawley tariff",
+   "https://www.senate.gov/artandhistory/history/minute/Senate_Passes_Smoot_Hawley_Tariff.htm"
+  ],
+  [
+   "Wikipedia: Smoot–Hawley Tariff Act (retaliating countries, citing Mitchener et al.)",
+   "https://en.wikipedia.org/wiki/Smoot%E2%80%93Hawley_Tariff_Act"
+  ],
+  [
+   "The Budget Lab at Yale: State of US tariffs (updated 24 August 2026)",
+   "https://budgetlab.yale.edu/research/state-us-tariffs-april-8-2026"
+  ]
+ ]
+}

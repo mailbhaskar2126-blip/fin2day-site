@@ -236,11 +236,6 @@ def build():
     SRC_TILES = ["RBI", "SEBI", "NSE", "BSE", "PIB", "MoSPI", "Reuters", "NBER"]
     tiles = "".join(f'<div class="tile t{i+1}">{t}</div>' for i, t in enumerate(SRC_TILES))
 
-    news = f"""<aside class="news" id="news" aria-label="Today's story">
-  <div class="l"><small>Today's story · {lead['tag']}</small><h2>{lead['short']}</h2><p>{lead['card']}</p><a href="/explainers/{lead['slug']}.html">Read today's story ›</a></div>
-  <div class="r" aria-hidden="true"><div class="wm">FIN<b>2</b>DAY</div></div>
-  <button class="x" aria-label="Close">×</button>
-</aside>"""
 
     home_cta = cta_panel("home", "The daily brief", 'Get the story before your <em class="u">first meeting</em>.', "One email every weekday morning: today's story, one chart, and what it means for you. Free, and you can leave any time.", lead)
     home = f"""
@@ -329,7 +324,7 @@ def build():
 </section>
 """
     open("index.html", "w").write(page("index.html", "FIN2DAY | Finance, Explained",
-        "Today's money news, explained in 2 minutes. Markets, IPOs, the RBI and the global economy in plain words, with real charts.", home, "/", pre=news))
+        "Today's money news, explained in 2 minutes. Markets, IPOs, the RBI and the global economy in plain words, with real charts.", home, "/"))
 
     # ---------------- Explainers list ----------------
     chips = "".join(f'<button class="chip" data-filter="{k}" aria-pressed="false">{v}</button>' for k, v in

@@ -11,6 +11,27 @@
     });
   }
 
+  // Scroll reveals
+  var rv = document.querySelectorAll('.rv');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, {rootMargin: '0px 0px -8% 0px', threshold: 0.08});
+    rv.forEach(function (el) { io.observe(el); });
+  } else {
+    rv.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  // Today's-story banner (dismissible for this visit)
+  var news = document.getElementById('news');
+  if (news) {
+    try { if (sessionStorage.getItem('f2d-news') === news.querySelector('a').getAttribute('href')) news.hidden = true; } catch (e) {}
+    news.querySelector('.x').addEventListener('click', function () {
+      news.hidden = true;
+      try { sessionStorage.setItem('f2d-news', news.querySelector('a').getAttribute('href')); } catch (e) {}
+    });
+  }
+
   // Live dateline
   var d = document.getElementById('today');
   if (d) {

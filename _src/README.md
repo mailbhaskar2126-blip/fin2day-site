@@ -10,6 +10,8 @@ step on Netlify: run the build locally and commit the generated HTML.
 - `content/<slug>.hero.svg` — optional homepage chart (otherwise the first chart in the body is used)
 - `content/ticker.json` — homepage ticker: list of `[label, value, "up" | "dn" | ""]`
 - `charts.py` — SVG chart helpers (`hbars`, `vbars`, `steps`, `line`, `flow`, `chart`, `save`)
+  Charts animate and show hover/tap readouts automatically (`assets/motion.js`). Bar readouts use the bar's own
+  label and value. `line()` points carry their exact value in `data-tip` (pass `tipfmt=` to control the format).
 - `example_stories.py` — reference examples of real stories (do not run)
 - `build.py` — generates every page into the repo root. Run: `python3 _src/build.py`
 

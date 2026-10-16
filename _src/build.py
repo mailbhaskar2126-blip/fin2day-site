@@ -70,6 +70,8 @@ def page(path, title, desc, body, active=None, og_type="website", pre=""):
   </div>
 </footer>
 <script src="/assets/site.js" defer></script>
+<script src="/assets/lenis.min.js" defer></script>
+<script src="/assets/motion.js" defer></script>
 </body>
 </html>
 """

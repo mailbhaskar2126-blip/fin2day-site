@@ -1,0 +1,35 @@
+{
+ "slug": "sip-compounding-explained",
+ "date": "2026-10-26",
+ "order": 50,
+ "topic": "concepts",
+ "tag": "Basics",
+ "tag_class": "",
+ "title": "How a SIP works: compounding, time and rupee-cost averaging",
+ "short": "How a SIP works: compounding, time and averaging",
+ "dek": "Indians put a record ₹32,490 crore into SIPs in September, even as fund assets fell. The three ideas behind the monthly habit, with the maths, and what it can't do.",
+ "card": "₹10,000 a month for 25 years: ₹30 lakh in, about ₹1.9 crore out at 12%. How SIP maths works, and where it breaks.",
+ "hero_src": "Data: AMFI; illustrations: FIN2DAY calculation",
+ "sources": [
+  [
+   "The Statesman: Mutual fund SIP inflows hit record ₹32,490 crore in September (AMFI data)",
+   "https://www.thestatesman.com/business/mutual-fund-sip-inflows-hit-record-rs-32490-crore-in-september-amfi-data-1503650203.html"
+  ],
+  [
+   "Equentis: AMFI September 2026 data, AUM falls 5.1% to ₹82.64 lakh crore",
+   "https://www.equentis.com/blog/amfi-september-data-2026-mutual-fund-aum-falls-5-1-to-%E2%82%B982-64-lakh-crore-sip-inflows-hit-record-%E2%82%B932490-crore/"
+  ],
+  [
+   "RightAdvise: SIP data India, monthly AMFI SIP contribution history",
+   "https://rightadvise.com/sip-data-india.html"
+  ],
+  [
+   "Morung Express (IANS): Net SIP inflow hits record ₹2 trillion in FY26 (SEBI data)",
+   "https://morungexpress.com/net-sip-inflow-hits-record-rs-2-trillion-in-fy26-despite-rise-in-account-closures"
+  ],
+  [
+   "AMFI: Association of Mutual Funds in India",
+   "https://www.amfiindia.com/mutual-fund"
+  ]
+ ]
+}

@@ -111,11 +111,15 @@
   if (chips.length) {
     var stories = document.querySelectorAll('.story[data-topic]');
     var empty = document.getElementById('empty');
+    var q = '', cur = 'all';
+    var sbox = document.getElementById('ex-search');
     var apply = function (topic) {
       var shown = 0;
+      cur = topic;
       chips.forEach(function (c) { c.setAttribute('aria-pressed', c.dataset.filter === topic ? 'true' : 'false'); });
       stories.forEach(function (s) {
         var match = topic === 'all' || s.dataset.topic.split(' ').indexOf(topic) > -1;
+        if (match && q) match = s.textContent.toLowerCase().indexOf(q) > -1;
         s.hidden = !match;
         if (match) shown++;
       });
@@ -130,6 +134,19 @@
     var start = (location.hash || '').replace('#', '');
     var valid = Array.prototype.some.call(chips, function (c) { return c.dataset.filter === start; });
     apply(valid ? start : 'all');
+    if (sbox) sbox.addEventListener('input', function () { q = sbox.value.trim().toLowerCase(); apply(cur); });
+  }
+
+  // Glossary search
+  var gs = document.getElementById('gl-search');
+  if (gs) {
+    var gls = document.querySelectorAll('.gl'), grs = document.querySelectorAll('.gl-group'), ge = document.getElementById('gl-empty');
+    gs.addEventListener('input', function () {
+      var q = gs.value.trim().toLowerCase(), n = 0;
+      gls.forEach(function (g) { var m = !q || g.dataset.t.indexOf(q) > -1; g.hidden = !m; if (m) n++; });
+      grs.forEach(function (g) { g.hidden = !g.querySelector('.gl:not([hidden])'); });
+      if (ge) ge.hidden = n > 0;
+    });
   }
 
   // Share buttons

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inflation calculator | FIN2DAY</title>
+<meta name="description" content="What something costing you today could cost in the future, or what today&#x27;s money is worth then.">
+<link rel="canonical" href="https://fin2day.netlify.app/tools/inflation-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FIN2DAY">
+<meta property="og:title" content="Inflation calculator | FIN2DAY">
+<meta property="og:description" content="What something costing you today could cost in the future, or what today&#x27;s money is worth then.">
+<meta property="og:url" content="https://fin2day.netlify.app/tools/inflation-calculator.html">
+<meta property="og:image" content="https://fin2day.netlify.app/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F5F5F5">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23202020'/%3E%3Ctext x='32' y='46' font-family='Arial,sans-serif' font-size='40' fill='%23C9A95C' text-anchor='middle'%3E2%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="mast">
+  <div class="wrap">
+    <a class="logo" href="/" aria-label="FIN2DAY home"><span class="wm">FIN<b>2</b>DAY</span><span class="by">Finance, Explained</span></a>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="/">Home</a><a href="/explainers/">Explainers</a><a href="/learn/">Learn</a><a href="/tools/" aria-current="page">Tools</a><a href="/glossary.html">Glossary</a><a href="/about.html">About</a><a href="/contact.html">Contact</a>
+      <a class="btn" href="https://www.instagram.com/fin2day/" target="_blank" rel="noopener">Follow @fin2day</a>
+    </nav>
+    <a class="btn sm mast-cta" href="https://www.instagram.com/fin2day/" target="_blank" rel="noopener">Follow @fin2day</a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
+  </div>
+</header>
+<main id="main">
+<div class="page-head"><div class="wrap"><div class="label"><a href="/tools/" style="text-decoration:none">Tools</a></div><h1>Inflation calculator</h1><p>What something costing you today could cost in the future, or what today&#x27;s money is worth then.</p></div></div><section class="block" style="padding-top:12px"><div class="wrap"><div class="calc" data-calc="inflation-calculator"><div class="calc-in"><div class="fld"><label for="amt">Cost today</label><div class="inp"><span class="u">₹</span><input id="amt" type="number" inputmode="decimal" value="100000" min="1000" max="100000000" step="1000"></div><input class="rng" id="amt-r" type="range" value="100000" min="1000" max="100000000" step="1000" aria-label="Cost today slider"></div><div class="fld"><label for="rate">Inflation (p.a.)</label><div class="inp"><input id="rate" type="number" inputmode="decimal" value="6" min="1" max="20" step="0.1"><span class="u">%</span></div><input class="rng" id="rate-r" type="range" value="6" min="1" max="20" step="0.1" aria-label="Inflation (p.a.) slider"></div><div class="fld"><label for="yrs">Years ahead</label><div class="inp"><input id="yrs" type="number" inputmode="decimal" value="10" min="1" max="40" step="1"><span class="u">years</span></div><input class="rng" id="yrs-r" type="range" value="10" min="1" max="40" step="1" aria-label="Years ahead slider"></div></div><div class="calc-out" aria-live="polite"></div></div><div class="calc-note"><h3>How it is worked out</h3><p>Future cost = today's cost × (1 + i)<sup>n</sup>, where i is the yearly inflation rate and n is the number of years. Purchasing power of today's amount = today's amount ÷ (1 + i)<sup>n</sup>.</p><p class="note-sm">Educational estimate only. It assumes a constant rate for the whole period; real returns and rates change. Nothing here is investment advice.</p></div><div class="calc-more"><span>More tools</span><a href="/tools/sip-calculator.html">SIP calculator</a><a href="/tools/emi-calculator.html">EMI calculator</a><a href="/tools/fd-calculator.html">FD and lump-sum calculator</a></div></div></section><script src="/assets/tools.js" defer></script>
+</main>
+<footer>
+  <div class="fbox">
+    <div class="fgrid">
+      <div class="fbig">FIN<b>2</b>DAY</div>
+      <div></div>
+      <div class="fcols">
+        <div class="flinks"><span>Read</span><a href="/explainers/">All explainers</a><a href="/explainers/#rbi">RBI</a><a href="/explainers/#ipo">IPOs</a><a href="/explainers/#global">Global economy</a><a href="/explainers/#markets">Markets</a><a href="/learn/">Learn</a><a href="/tools/">Money tools</a><a href="/glossary.html">Glossary</a></div>
+        <div class="flinks"><span>FIN2DAY</span><a href="/about.html">About</a><a href="/contact.html">Contact</a><a href="/#newsletter">Newsletter</a><a href="https://www.instagram.com/fin2day/" target="_blank" rel="noopener">Instagram ↗</a></div>
+        <div class="flinks"><span>Legal</span><a href="/disclaimer.html">Disclaimer</a><a href="/disclaimer.html#privacy">Privacy</a></div>
+      </div>
+    </div>
+    <p class="disc">FIN2DAY publishes educational content only. Nothing here is investment, legal or tax advice. Do your own research or speak to a SEBI-registered adviser before making financial decisions. © 2026 FIN2DAY.</p>
+    <svg class="fcurve" viewBox="0 0 300 420" aria-hidden="true"><path d="M300 0v420H150c0-40 18-70 54-90 34-19 46-52 46-100V0z" fill="currentColor"/></svg>
+  </div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script src="/assets/lenis.min.js" defer></script>
+<script src="/assets/motion.js" defer></script>
+</body>
+</html>

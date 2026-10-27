@@ -59,3 +59,9 @@ Do not repeat a topic already covered: check existing slugs and titles in `conte
    no horizontal overflow on phone, all internal links exist, word count ≤ 1,000.
 4. `git add -A && git commit -m "..." && git push`. Netlify publishes within ~1 minute.
 5. Verify the live page at https://fin2day.netlify.app/explainers/<slug>.html
+
+## Tools, glossary and learn paths
+- `extras.py` generates `/tools/` (SIP, EMI, FD/lump-sum, inflation calculators), `/glossary.html` and `/learn/`, plus the home snapshot strip (from `content/ticker.json`) and tools teaser. Calculator logic lives in `assets/tools.js`.
+- `glossary.py` holds the terms. Definitions must stay evergreen (no live figures). Any linked explainer slug is checked at build time.
+- Learn paths are listed in `LEARN` in `extras.py`; slugs are checked at build time.
+- Calculators are educational, run in the browser and store nothing.

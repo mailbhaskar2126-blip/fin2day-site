@@ -1,5 +1,7 @@
 """Generates the FIN2DAY static site. Run: python3 build.py"""
-import os, html
+import os, sys, html
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import extras
 
 SITE = "https://fin2day.netlify.app"
 IG = "https://www.instagram.com/fin2day/"
@@ -8,7 +10,7 @@ FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="
 FAVICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23202020'/%3E"
            "%3Ctext x='32' y='46' font-family='Arial,sans-serif' font-size='40' fill='%23C9A95C' text-anchor='middle'%3E2%3C/text%3E%3C/svg%3E")
 
-NAV = [("/", "Home"), ("/explainers/", "Explainers"), ("/about.html", "About"), ("/#newsletter", "Newsletter"), ("/contact.html", "Contact")]
+NAV = [("/", "Home"), ("/explainers/", "Explainers"), ("/learn/", "Learn"), ("/tools/", "Tools"), ("/glossary.html", "Glossary"), ("/about.html", "About"), ("/contact.html", "Contact")]
 
 
 def page(path, title, desc, body, active=None, og_type="website", pre=""):
@@ -60,7 +62,7 @@ def page(path, title, desc, body, active=None, og_type="website", pre=""):
       <div class="fbig">FIN<b>2</b>DAY</div>
       <div></div>
       <div class="fcols">
-        <div class="flinks"><span>Read</span><a href="/explainers/">All explainers</a><a href="/explainers/#rbi">RBI</a><a href="/explainers/#ipo">IPOs</a><a href="/explainers/#global">Global economy</a><a href="/explainers/#markets">Markets</a></div>
+        <div class="flinks"><span>Read</span><a href="/explainers/">All explainers</a><a href="/explainers/#rbi">RBI</a><a href="/explainers/#ipo">IPOs</a><a href="/explainers/#global">Global economy</a><a href="/explainers/#markets">Markets</a><a href="/learn/">Learn</a><a href="/tools/">Money tools</a><a href="/glossary.html">Glossary</a></div>
         <div class="flinks"><span>FIN2DAY</span><a href="/about.html">About</a><a href="/contact.html">Contact</a><a href="/#newsletter">Newsletter</a><a href="{IG}" target="_blank" rel="noopener">Instagram ↗</a></div>
         <div class="flinks"><span>Legal</span><a href="/disclaimer.html">Disclaimer</a><a href="/disclaimer.html#privacy">Privacy</a></div>
       </div>
@@ -267,6 +269,8 @@ def build():
   </div>
 </section>
 
+{extras.snapshot(TICKER)}
+
 <section class="svc-wrap" id="topics">
   <div class="svc-head rv">
     <div class="label">What we explain</div>
@@ -291,6 +295,8 @@ def build():
     </div>
   </div>
 </section>
+
+{extras.tools_teaser()}
 
 <section class="how wrap" id="how">
   <div class="tiles" aria-hidden="true">{tiles}</div>
@@ -336,6 +342,7 @@ def build():
   <p>Filter by topic, or start with the latest. New explainers go up as the news breaks.</p>
 </div></div>
 <section class="block" style="padding-top:12px"><div class="wrap">
+  <input class="search" id="ex-search" type="search" placeholder="Search explainers…" aria-label="Search explainers">
   <div class="filters" role="group" aria-label="Filter by topic">{chips}</div>
   <div class="stories">{cards}</div>
   <p class="empty" id="empty" hidden>No explainers on this topic yet. <a href="/#newsletter">Join the newsletter</a> to get the first one, or <a href="/explainers/">see all explainers</a>.</p>
@@ -343,6 +350,8 @@ def build():
 """
     open("explainers/index.html", "w").write(page("explainers/index.html", "Explainers",
         "All FIN2DAY explainers: RBI, IPOs, markets, global economy and trade wars, explained in plain words.", lst, "/explainers/"))
+
+    extra_urls = extras.build(page, lambda p, c: open(p, "w").write(c), EXPLAINERS, TICKER, SITE)
 
     # ---------------- Articles ----------------
     for i, e in enumerate(EXPLAINERS):
@@ -461,7 +470,7 @@ def build():
     # Netlify config: headers + pretty 404 is automatic for 404.html
     open("_headers", "w").write("/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n")
     open("robots.txt", "w").write(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
-    urls = ["/", "/explainers/", "/about.html", "/contact.html", "/disclaimer.html"] + [f"/explainers/{e['slug']}.html" for e in EXPLAINERS]
+    urls = ["/", "/explainers/", "/about.html", "/contact.html", "/disclaimer.html"] + extra_urls + [f"/explainers/{e['slug']}.html" for e in EXPLAINERS]
     open("sitemap.xml", "w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
                                    "".join(f"  <url><loc>{SITE}{u}</loc></url>\n" for u in urls) + "</urlset>\n")
 

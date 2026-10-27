@@ -124,7 +124,7 @@
     window.addEventListener('scroll', function () { if (current) off(); }, { passive: true });
   }
 
-  var charts = Array.prototype.map.call(document.querySelectorAll('.chart svg'), analyse);
+  var charts = Array.prototype.map.call(document.querySelectorAll('.chart:not(.ready) svg'), analyse);
   charts.forEach(attachReadout);
   // Chart cards that sit inside a link: let the link work on click, readouts on hover only.
 

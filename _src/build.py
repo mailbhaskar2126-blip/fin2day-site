@@ -1,7 +1,7 @@
 """Generates the FIN2DAY static site. Run: python3 build.py"""
 import os, sys, html
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import extras
+import extras, enhance
 
 SITE = "https://fin2day.netlify.app"
 IG = "https://www.instagram.com/fin2day/"
@@ -72,6 +72,7 @@ def page(path, title, desc, body, active=None, og_type="website", pre=""):
   </div>
 </footer>
 <script src="/assets/site.js" defer></script>
+<script src="/assets/charts.js" defer></script>
 <script src="/assets/lenis.min.js" defer></script>
 <script src="/assets/motion.js" defer></script>
 </body>
@@ -127,6 +128,10 @@ def _words(body):
     t = re.sub(r'<div class="cap">.*?</div>', " ", t, flags=re.S)
     return len(html.unescape(re.sub(r"<[^>]+>", " ", t)).split())
 
+# Stories whose charts use the interactive renderer (first batch; add slugs to roll out).
+ENHANCED = {"markets-2026-10-27", "markets-2026-10-26", "markets-2026-10-16", "fpi-sell-dii-buy-2026", "september-2026-inflation-onions"}
+
+
 def load_stories():
     out = []
     for jf in glob.glob(os.path.join(CONTENT, "*.json")):
@@ -141,6 +146,7 @@ def load_stories():
         else:
             f = re.search(r"<svg.*?</svg>", m["body"], re.S)
             m["hero"] = f.group(0) if f else ""
+        m["body_ic"] = enhance.enhance(m["body"]) if m["slug"] in ENHANCED else m["body"]
         m["mins"] = max(2, math.ceil(_words(m["body"]) / 220))
         d = datetime.date.fromisoformat(m["date"])
         m["date_label"] = f"{d.day} {d.strftime('%b %Y')}"
@@ -151,7 +157,7 @@ def load_stories():
 
 EXPLAINERS = load_stories()
 SOURCES = {e["slug"]: e["sources"] for e in EXPLAINERS}
-ARTICLE_BODIES = {e["slug"]: e["body"] for e in EXPLAINERS}
+ARTICLE_BODIES = {e["slug"]: e["body_ic"] for e in EXPLAINERS}
 TICKER = json.load(open(os.path.join(CONTENT, "ticker.json")))
 
 

@@ -471,3 +471,50 @@ html.moving .chart svg.anim.play .soft{opacity:1}
 @media (max-width:1100px){.snaps{grid-template-columns:repeat(3,minmax(0,1fr))}.tools-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:860px){.calc,.paths{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:520px){.snaps{grid-template-columns:repeat(2,minmax(0,1fr))}.tools-grid{grid-template-columns:minmax(0,1fr)}.calc-in,.calc-out{padding:22px 18px}}
+
+/* ---- Interactive charts (charts.js) ---- */
+.chart.ic.ready{padding:22px 20px 16px}
+.ic-note{font:500 11px var(--mono);color:var(--mute);margin-top:14px}
+.ic .hb-row{display:grid;grid-template-columns:minmax(96px,34%) 1fr;align-items:center;gap:14px;padding:9px 6px;border-bottom:1px dotted var(--rule);border-radius:8px;transition:background .2s,opacity .2s;outline:none}
+.ic .hb-row:last-child{border-bottom:0}
+.ic .hb:hover .hb-row:not(:hover){opacity:.45}
+.ic .hb-row:hover,.ic .hb-row:focus-visible{background:var(--paper)}
+.ic .hb-l{font:600 14px/1.25 var(--sans);color:var(--ink);min-width:0;overflow-wrap:anywhere}
+.ic .hb-t{position:relative;height:28px;background:var(--paper-2);border-radius:2px}
+.ic .hb-z{position:absolute;top:-3px;bottom:-3px;width:1.5px;background:var(--ink);z-index:2}
+.ic .hb-b{position:absolute;top:0;height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;min-width:3px;border-radius:2px;transition:filter .2s}
+.ic .hb-b.out{justify-content:flex-start;padding:0}
+.ic .hb-row:hover .hb-b{filter:brightness(1.08)}
+.ic .hb-v{font:700 13px var(--mono);white-space:nowrap;font-variant-numeric:tabular-nums}
+.ic .vb{position:relative;display:flex;gap:6px}
+.ic .vb-z{position:absolute;left:0;right:0;height:1.5px;background:var(--ink);z-index:1}
+.ic .vb-c{position:relative;flex:1;min-width:0;outline:none;transition:opacity .2s}
+.ic .vb:hover .vb-c:not(:hover){opacity:.45}
+.ic .vb-b{position:absolute;left:14%;right:14%;border-radius:2px 2px 0 0;max-width:64px;margin-inline:auto;transition:filter .2s}
+.ic .vb-v,.ic .vb-x{position:absolute;left:0;right:0;text-align:center;white-space:nowrap}
+.ic .vb-v{font:700 12px var(--mono);font-variant-numeric:tabular-nums}
+.ic .vb-x{font:500 11px var(--mono);color:var(--mute)}
+.ic .vb-c:hover .vb-b{filter:brightness(1.1)}
+.ic .ln{position:relative}
+.ic .ln svg{display:block;width:100%;height:auto;touch-action:pan-y;cursor:crosshair}
+.ic .ln-g{stroke:var(--rule);stroke-dasharray:2 4}
+.ic .ln-y,.ic .ln-x{font:500 10.5px var(--mono);fill:var(--mute)}
+.ic .ln-a{font:700 11.5px var(--sans)}
+.ic .ln-c{stroke:var(--ink);stroke-width:1;stroke-dasharray:3 3;opacity:.5}
+.ic .ln-hd{stroke:var(--card);stroke-width:2.5;pointer-events:none}
+.ic .ln-tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper);border-radius:10px;padding:6px 10px;font:500 12px var(--sans);display:flex;gap:8px;align-items:baseline;white-space:nowrap;opacity:0;transition:opacity .15s}
+.ic .ln-tip.on{opacity:1}.ic .ln-tip span{opacity:.75}.ic .ln-tip b{font:700 13px var(--mono)}
+html.moving .ic.ready .hb-b{transform:scaleX(0);transition:transform .9s var(--ease) var(--d,0ms)}
+html.moving .ic.ready.play .hb-b{transform:none}
+html.moving .ic.ready .hb-v{opacity:0;transition:opacity .4s ease calc(var(--d,0ms) + .6s)}
+html.moving .ic.ready.play .hb-v{opacity:1}
+html.moving .ic.ready .vb-b{transform:scaleY(0);transition:transform .8s var(--ease) var(--d,0ms)}
+html.moving .ic.ready.play .vb-b{transform:none}
+html.moving .ic.ready .vb-v{opacity:0;transition:opacity .4s ease calc(var(--d,0ms) + .55s)}
+html.moving .ic.ready.play .vb-v{opacity:1}
+html.moving .ic.ready .ln-p{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s cubic-bezier(.45,0,.2,1)}
+html.moving .ic.ready.play .ln-p{stroke-dashoffset:0}
+html.moving .ic.ready .ln-area,html.moving .ic.ready .ln-end,html.moving .ic.ready .ln-halo,html.moving .ic.ready .ln-a{opacity:0;transition:opacity .6s ease 1.2s}
+html.moving .ic.ready.play .ln-area,html.moving .ic.ready.play .ln-end,html.moving .ic.ready.play .ln-a{opacity:1}
+html.moving .ic.ready.play .ln-halo{opacity:.18}
+@media (max-width:520px){.ic .hb-row{grid-template-columns:1fr;gap:6px}.ic .hb-t{height:26px}.chart.ic.ready{padding:18px 14px 14px}}

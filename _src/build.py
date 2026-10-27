@@ -95,7 +95,7 @@ def newsletter_form(fid="newsletter"):
 
 
 def cta_panel(fid, label, heading, intro, e):
-    chart = f'<div class="chart">{e["hero"]}</div>' if e.get("hero") else ""
+    chart = f'{e["hero_html"]}' if e.get("hero") else ""
     return f"""<div class="ctap rv">
     <div class="txt">
       <div class="label">{label}</div>
@@ -129,7 +129,7 @@ def _words(body):
     return len(html.unescape(re.sub(r"<[^>]+>", " ", t)).split())
 
 # Stories whose charts use the interactive renderer (first batch; add slugs to roll out).
-ENHANCED = {"markets-2026-10-27", "markets-2026-10-26", "markets-2026-10-16", "fpi-sell-dii-buy-2026", "september-2026-inflation-onions"}
+ENHANCED = None  # all stories now use the interactive renderer
 
 
 def load_stories():
@@ -146,7 +146,8 @@ def load_stories():
         else:
             f = re.search(r"<svg.*?</svg>", m["body"], re.S)
             m["hero"] = f.group(0) if f else ""
-        m["body_ic"] = enhance.enhance(m["body"]) if m["slug"] in ENHANCED else m["body"]
+        m["body_ic"] = enhance.enhance(m["body"])
+        m["hero_html"] = enhance.enhance(f'<div class="chart">{m["hero"]}</div>') if m["hero"] else ""
         m["mins"] = max(2, math.ceil(_words(m["body"]) / 220))
         d = datetime.date.fromisoformat(m["date"])
         m["date_label"] = f"{d.day} {d.strftime('%b %Y')}"
@@ -224,7 +225,7 @@ def build():
             vis = f"""<div class="vis rv"><a class="mini" href="/explainers/{latest['slug']}.html">
         <div class="mt"><span class="tag {latest['tag_class']}">{latest['tag']}</span><span>{latest['date_label']}</span><span>{latest['mins']} min</span></div>
         <h4>{latest['short']}</h4>
-        <div class="chart">{latest['hero']}</div></a></div>"""
+        {latest["hero_html"]}</a></div>"""
         beats += f"""
     <div class="svc" style="--sq:{SQ[i % 3]}">
       <div class="txt rv"><h3>{name}</h3><span class="sub">{sym}</span><p>{desc}</p><a class="more" href="/explainers/#{key}">Browse</a></div>
@@ -232,7 +233,7 @@ def build():
     </div>"""
 
     def bento(e, big=False):
-        chart = f'<div class="chart">{e["hero"]}</div>' if big and e["hero"] else ""
+        chart = f'{e["hero_html"]}' if big and e["hero"] else ""
         return f"""<article class="bx{' big' if big else ''} rv">
       <div class="meta"><span class="tag {e['tag_class']}">{e['tag']}</span><span>{e['date_label']}</span><span>{e['mins']} min</span></div>
       <h3><a href="/explainers/{e['slug']}.html">{e['short']}</a></h3>
@@ -263,7 +264,7 @@ def build():
         <div class="top"><b>FIN<i>2</i>DAY</b><span class="pill">FACT-CHECKED</span></div>
         <div class="label" style="margin-top:14px">Today's story · {lead['tag']}</div>
         <h3>{lead['short']}</h3>
-        <div class="chart">{lead['hero']}</div>
+        {lead["hero_html"]}
         <div class="foot"><span>{lead['date_label']}</span><span>{lead['mins']} min read</span><span>{lead.get('hero_src') or 'Sources listed'}</span></div>
       </a>
       {floats}

@@ -34,7 +34,7 @@
     var pos = 0, neg = 0;
     sp.rows.forEach(function (r) { if (r.n) neg = Math.max(neg, r.h); else pos = Math.max(pos, r.h); });
     var tot = (pos + neg) || 1, H = 230, padT = 26, padB = 46, area = H - padT - padB;
-    var wrap = h('div', 'vb'); wrap.style.height = H + 'px';
+    var wrap = h('div', 'vb' + (sp.rows.length > 6 ? ' dense' : '')); wrap.style.height = H + 'px';
     var zy = padT + pos / tot * area;
     var base = h('i', 'vb-z'); base.style.top = zy + 'px'; wrap.appendChild(base);
     sp.rows.forEach(function (r, i) {
@@ -54,43 +54,49 @@
   function line(sp, box) {
     var W = sp.W, H = sp.H, wrap = h('div', 'ln'), tip = h('div', 'ln-tip');
     var svg = s('svg', {viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': sp.a});
-    var L = 46, R = W - 12, T = 18, B = H - 30;
+    var xs = sp.xl.map(function (t) { return t[0]; }), L = 46, R = W - 8, T = 14, B = sp.yt.length ? Math.max.apply(null, sp.yt.map(function (t) { return t[0]; })) : H - 30;
+    (sp.bands || []).forEach(function (b) { svg.appendChild(s('rect', {x: b[0], y: b[1], width: b[2], height: b[3], fill: b[4], opacity: .09, class: 'ln-band'})); });
     sp.yt.forEach(function (t) {
-      svg.appendChild(s('line', {x1: L, x2: R, y1: t[0], y2: t[0], class: 'ln-g'}));
+      svg.appendChild(s('line', {x1: L - 4, x2: W - 6, y1: t[0], y2: t[0], class: 'ln-g'}));
       var tx = s('text', {x: 2, y: t[0] + 4, class: 'ln-y'}); tx.textContent = t[1]; svg.appendChild(tx);
     });
-    sp.xl.forEach(function (t) { var tx = s('text', {x: t[0], y: H - 8, class: 'ln-x', 'text-anchor': 'middle'}); tx.textContent = t[1]; svg.appendChild(tx); });
-    var pts = [];
+    svg.appendChild(s('line', {x1: L - 4, x2: W - 6, y1: B + 0.5, y2: B + 0.5, class: 'ln-base'}));
+    (sp.refs || []).forEach(function (r) { svg.appendChild(s('line', {x1: L - 4, x2: W - 6, y1: r[0], y2: r[0], stroke: r[1], 'stroke-dasharray': '5 4', 'stroke-width': 1.4, class: 'ln-ref'})); });
+    sp.xl.forEach(function (t) { svg.appendChild(s('line', {x1: t[0], x2: t[0], y1: B, y2: B + 5, class: 'ln-tick'})); var tx = s('text', {x: t[0], y: H - 6, class: 'ln-x', 'text-anchor': 'middle'}); tx.textContent = t[1]; svg.appendChild(tx); });
+    var base = sp.series[0], hov = [], endp;
     sp.series.forEach(function (se, si) {
-      var d = se.p.map(function (p, i) { return (i ? 'L' : 'M') + p[0] + ' ' + p[1]; }).join('');
-      var id = 'ica' + Math.random().toString(36).slice(2, 7);
-      var gr = s('linearGradient', {id: id, x1: 0, x2: 0, y1: 0, y2: 1});
-      gr.appendChild(s('stop', {offset: '0%', 'stop-color': se.c, 'stop-opacity': '.20'}));
-      gr.appendChild(s('stop', {offset: '100%', 'stop-color': se.c, 'stop-opacity': '0'}));
-      var defs = s('defs', {}); defs.appendChild(gr); svg.appendChild(defs);
-      if (sp.series.length === 1) svg.appendChild(s('path', {d: d + 'L' + se.p[se.p.length - 1][0] + ' ' + B + 'L' + se.p[0][0] + ' ' + B + 'Z', fill: 'url(#' + id + ')', class: 'ln-area'}));
-      var path = s('path', {d: d, fill: 'none', stroke: se.c, 'stroke-width': 2.6, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', class: 'ln-p', pathLength: 1});
-      svg.appendChild(path);
-      var last = se.p[se.p.length - 1];
-      svg.appendChild(s('circle', {cx: last[0], cy: last[1], r: 8, fill: se.c, opacity: '.18', class: 'ln-halo'}));
-      svg.appendChild(s('circle', {cx: last[0], cy: last[1], r: 4.2, fill: se.c, class: 'ln-end'}));
-      se.p.forEach(function (p) { pts.push({x: p[0], y: p[1], t: p[2], c: se.c, i: pts.length, l: sp.xl[pts.length] ? sp.xl[pts.length][1] : ''}); });
+      if (si === 0 && sp.series.length >= 1) {
+        var id = 'ica' + Math.random().toString(36).slice(2, 7), gr = s('linearGradient', {id: id, x1: 0, x2: 0, y1: 0, y2: 1});
+        gr.appendChild(s('stop', {offset: '0%', 'stop-color': se.c, 'stop-opacity': '.22'})); gr.appendChild(s('stop', {offset: '100%', 'stop-color': se.c, 'stop-opacity': '0'}));
+        var defs = s('defs', {}); defs.appendChild(gr); svg.appendChild(defs);
+        var nums = se.d.match(/-?[\d.]+/g).map(Number), fx = nums[0], lx, ly;
+        if (se.p) { lx = se.p[se.p.length - 1][0]; ly = se.p[se.p.length - 1][1]; } else { var rr = se.r[se.r.length - 1]; lx = rr[1]; ly = rr[2]; }
+        svg.appendChild(s('path', {d: se.d + 'L' + lx + ' ' + B + 'L' + fx + ' ' + B + 'Z', fill: 'url(#' + id + ')', stroke: 'none', class: 'ln-area'}));
+      }
+      svg.appendChild(s('path', {d: se.d, fill: 'none', stroke: se.c, 'stroke-width': Math.max(se.w, 2.8), 'stroke-linejoin': 'round', 'stroke-linecap': 'round', class: 'ln-p', pathLength: 1}));
     });
-    sp.ann.forEach(function (a) { var tx = s('text', {x: a[0], y: a[1], 'text-anchor': a[3], class: 'ln-a'}); tx.setAttribute('fill', a[4]); tx.textContent = a[2]; svg.appendChild(tx); });
-    var cross = s('line', {y1: T, y2: B, class: 'ln-c', opacity: 0}), dot = s('circle', {r: 5.5, class: 'ln-hd', opacity: 0});
+    var lastx, lasty, lastc = base.c;
+    if (base.p) { base.p.forEach(function (p) { hov.push({x: p[0], y: p[1], t: p[2]}); }); var lp = base.p[base.p.length - 1]; lastx = lp[0]; lasty = lp[1]; }
+    else { var rr2 = base.r[base.r.length - 1]; lastx = rr2[1]; lasty = rr2[2]; }
+    sp.series.forEach(function (se) { if (se !== base) lastc = se.c; });
+    svg.appendChild(s('circle', {cx: lastx, cy: lasty, r: 9, fill: lastc, class: 'ln-halo'}));
+    svg.appendChild(s('circle', {cx: lastx, cy: lasty, r: 4.6, fill: lastc, class: 'ln-end'}));
+    sp.ann.forEach(function (a) { var tx = s('text', {x: a[0], y: a[1], 'text-anchor': a[3], class: 'ln-a', 'font-size': Math.max(a[5], 12)}); tx.setAttribute('fill', a[4]); tx.textContent = a[2]; svg.appendChild(tx); });
+    var cross = s('line', {y1: T, y2: B, class: 'ln-c'}), dot = s('circle', {r: 6, class: 'ln-hd'});
     svg.appendChild(cross); svg.appendChild(dot);
     wrap.appendChild(svg); wrap.appendChild(tip); box.appendChild(wrap);
     var show = function (ev) {
-      var r = svg.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width * W, best = pts[0];
-      pts.forEach(function (p) { if (Math.abs(p.x - x) < Math.abs(best.x - x)) best = p; });
-      cross.setAttribute('x1', best.x); cross.setAttribute('x2', best.x); cross.setAttribute('opacity', 1);
-      dot.setAttribute('cx', best.x); dot.setAttribute('cy', best.y); dot.setAttribute('fill', best.c); dot.setAttribute('opacity', 1);
-      tip.innerHTML = ''; if (best.l) tip.appendChild(h('span', '', best.l)); tip.appendChild(h('b', '', best.t));
+      var r = svg.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width * W, hx, hy, label = '', t;
+      if (base.p) { var best = hov[0]; hov.forEach(function (p) { if (Math.abs(p.x - x) < Math.abs(best.x - x)) best = p; }); hx = best.x; hy = best.y; t = best.t; var i = hov.indexOf(best); label = sp.xl[i] ? sp.xl[i][1] : ''; }
+      else { var run = base.r[0]; base.r.forEach(function (q) { if (q[0] <= x + 0.01) run = q; }); hx = Math.max(run[0], Math.min(run[1], x)); hy = run[2]; t = run[3]; }
+      cross.setAttribute('x1', hx); cross.setAttribute('x2', hx); cross.style.opacity = 1;
+      dot.setAttribute('cx', hx); dot.setAttribute('cy', hy); dot.setAttribute('fill', base.c); dot.style.opacity = 1;
+      tip.innerHTML = ''; if (label) tip.appendChild(h('span', '', label)); tip.appendChild(h('b', '', t));
       tip.classList.add('on');
-      var px = best.x / W * r.width, tw = tip.offsetWidth;
-      tip.style.left = Math.max(0, Math.min(r.width - tw, px - tw / 2)) + 'px'; tip.style.top = Math.max(0, best.y / H * r.height - 46) + 'px';
+      var px = hx / W * r.width, tw = tip.offsetWidth;
+      tip.style.left = Math.max(0, Math.min(r.width - tw, px - tw / 2)) + 'px'; tip.style.top = Math.max(0, hy / H * r.height - 48) + 'px';
     };
-    var hide = function () { cross.setAttribute('opacity', 0); dot.setAttribute('opacity', 0); tip.classList.remove('on'); };
+    var hide = function () { cross.style.opacity = 0; dot.style.opacity = 0; tip.classList.remove('on'); };
     svg.addEventListener('pointermove', show); svg.addEventListener('pointerdown', show); svg.addEventListener('pointerleave', hide);
   }
 

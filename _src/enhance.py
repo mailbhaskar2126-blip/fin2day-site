@@ -50,7 +50,7 @@ def _num(t):
     return float(m.group(0).replace(",", "")) if m else None
 
 
-def _fill_tips(svg, circ, yt):
+def _fill_tips(svg, circ, yt, snap=False):
     """Points without a stored value get the exact figure from the chart's accessible label, accepted only if it matches the axis position."""
     ticks = [(y, _num(t), t) for y, t in yt if _num(t) is not None]
     if len(ticks) < 2:
@@ -69,33 +69,73 @@ def _fill_tips(svg, circ, yt):
         est = v1 + (float(cy) - y1) * per_px
         best = min(nums, key=lambda n: abs(n[0] - est), default=None)
         if best is None or abs(best[0] - est) > abs(per_px) * 2.5:
-            return None
+            q = round(est / 0.05) * 0.05
+            if not snap or abs(q - est) > 0.012:
+                return None
+            out.append((cx, cy, c, pre + f"{q:.2f}" + suf)); continue
         out.append((cx, cy, c, pre + best[1] + suf))
     return out
 
 
+def _at(tag):
+    return dict(re.findall(r'([\w-]+)="([^"]*)"', tag))
+
+
 def line(svg):
-    if "<polyline" not in svg:
+    """Line / step charts, with optional shaded bands and dashed reference lines."""
+    if "<polyline" not in svg and not re.search(r'<path d="M[^"]*H', svg):
         return None
     vb = re.search(r'viewBox="0 0 ([\d.]+) ([\d.]+)"', svg)
     W, H = float(vb.group(1)), float(vb.group(2))
-    pls = re.findall(r'<polyline points="([^"]+)" fill="none" stroke="([^"]+)"', svg)
-    circ = re.findall(r'<circle cx="([\d.]+)" cy="([\d.]+)" r="[\d.]+" fill="([^"]+)"(?: data-tip="([^"]*)")?', svg)
-    if not pls or not circ or len(circ) != sum(len(p[0].split()) for p in pls):
+    texts = [(_at(m.group(1)), _u(m.group(2))) for m in re.finditer(r"<text ([^>]*)>(.*?)</text>", svg)]
+    yt = [(float(a["y"]) - 4, t) for a, t in texts if a.get("x") == "4" and a.get("y")]
+    xl = [(float(a["x"]), t) for a, t in texts if a.get("text-anchor") == "middle" and float(a["y"]) >= H - 14 and "font-weight" not in a]
+    ann = [(float(a["x"]), float(a["y"]), t, a.get("text-anchor", "start"), a.get("fill", "var(--ink)"), float(a.get("font-size", 11))) for a, t in texts
+           if a.get("font-weight") == "700" and float(a["y"]) < H - 14 and a.get("x") != "4"]
+    bands = [(float(a["x"]), float(a["y"]), float(a["width"]), float(a["height"]), a["fill"]) for a in (_at(m) for m in re.findall(r"<rect ([^>]*)/>", svg)) if "opacity" in a]
+    refs = [(float(a["y1"]), a["stroke"]) for a in (_at(m) for m in re.findall(r"<line ([^>]*)/>", svg)) if a.get("stroke-dasharray") and a.get("stroke") != "var(--rule)" and a["y1"] == a["y2"]]
+    series, tipsrc = [], []
+    for pts, c, w in re.findall(r'<polyline points="([^"]+)" fill="none" stroke="([^"]+)" stroke-width="([\d.]+)"', svg):
+        P = [tuple(float(v) for v in q.split(",")) for q in pts.split()]
+        series.append({"c": c, "w": float(w), "d": "M" + "L".join(f"{x:g} {y:g}" for x, y in P), "pts": P})
+    if not series:
+        for d, c, w in re.findall(r'<path d="(M[^"]*H[^"]*)" fill="none" stroke="([^"]+)" stroke-width="([\d.]+)"', svg):
+            runs, x, y = [], None, None
+            for cmd, v in re.findall(r"([MHV])\s*([\d.]+)(?:\s+([\d.]+))?", d) and [(m[0], m[1:]) for m in re.findall(r"([MHV])\s*([\d.]+)(?:\s+([\d.]+))?", d)]:
+                if cmd == "M": x, y = float(v[0]), float(v[1])
+                elif cmd == "H":
+                    nx = float(v[0])
+                    if nx > x: runs.append((x, nx, y))
+                    x = nx
+                else: y = float(v[0])
+            series.append({"c": c, "w": float(w), "d": d, "runs": runs})
+    if not series:
         return None
-    yt = [(float(y), _u(t)) for y, t in re.findall(r'<line x1="[\d.]+" x2="[\d.]+" y1="[\d.]+" y2="([\d.]+)" stroke="var\(--rule\)"[^>]*/><text x="4"[^>]*>(.*?)</text>', svg)]
-    if any(not c[3] for c in circ):
-        circ = _fill_tips(svg, circ, yt)
-        if circ is None:
+    # exact values: stored tips, else the figures in the accessible label, accepted only if they sit on the axis position
+    base = series[0]
+    cir = re.findall(r'<circle cx="([\d.]+)" cy="([\d.]+)" r="[\d.]+" fill="([^"]+)"(?: data-tip="([^"]*)")?', svg)
+    if "pts" in base:
+        if len(cir) < len(base["pts"]):
             return None
-    xl = [(float(x), _u(t)) for x, t in re.findall(r'<text x="([\d.]+)" y="%d" text-anchor="middle"[^>]*>(.*?)</text>' % (H - 8), svg)]
-    ann = [(float(x), float(y), _u(t), a, c) for x, y, a, c, t in re.findall(r'<text x="([\d.]+)" y="([\d.\-]+)" text-anchor="(\w+)" font-weight="700" font-size="11" fill="([^"]+)">(.*?)</text>', svg)]
-    series, i = [], 0
-    for pts, c in pls:
-        n = len(pts.split())
-        series.append({"c": c, "p": [[round(float(a), 1), round(float(b), 1), _u(circ[i + j][3])] for j, (a, b) in enumerate(p.split(",") for p in pts.split())]})
-        i += n
-    return {"k": "l", "W": W, "H": H, "series": series, "yt": yt, "xl": xl, "ann": ann}
+        cir = [(str(x), str(y), "", t) for (x, y), (_, _, _, t) in zip(base["pts"], cir[:len(base["pts"])])]
+        if any(not c[3] for c in cir):
+            cir = _fill_tips(svg, cir, yt)
+            if cir is None:
+                return None
+        base["p"] = [[round(float(c[0]), 1), round(float(c[1]), 1), c[3]] for c in cir]
+    else:
+        tp = _fill_tips(svg, [(str(a), str(y), "", "") for a, _, y in base["runs"]], yt, snap=True)
+        if tp is None:
+            return None
+        base["r"] = [[a, b, y, t[3]] for (a, b, y), t in zip(base["runs"], tp)]
+    out = []
+    for i, se in enumerate(series):
+        o = {"c": se["c"], "w": se["w"], "d": se["d"]}
+        if i == 0:
+            if "p" in se: o["p"] = se["p"]
+            else: o["r"] = se["r"]
+        out.append(o)
+    return {"k": "l", "W": W, "H": H, "series": out, "yt": yt, "xl": xl, "ann": ann, "bands": bands, "refs": refs}
 
 
 def enhance(body):

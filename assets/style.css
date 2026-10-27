@@ -500,8 +500,8 @@ html.moving .chart svg.anim.play .soft{opacity:1}
 .ic .ln-g{stroke:var(--rule);stroke-dasharray:2 4}
 .ic .ln-y,.ic .ln-x{font:500 10.5px var(--mono);fill:var(--mute)}
 .ic .ln-a{font:700 11.5px var(--sans)}
-.ic .ln-c{stroke:var(--ink);stroke-width:1;stroke-dasharray:3 3;opacity:.5}
-.ic .ln-hd{stroke:var(--card);stroke-width:2.5;pointer-events:none}
+.ic .ln-c{stroke:var(--ink);stroke-width:1;stroke-dasharray:3 3;opacity:0;transition:opacity .12s}
+.ic .ln-hd{stroke:var(--card);stroke-width:2.5;pointer-events:none;opacity:0;transition:opacity .12s}
 .ic .ln-tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper);border-radius:10px;padding:6px 10px;font:500 12px var(--sans);display:flex;gap:8px;align-items:baseline;white-space:nowrap;opacity:0;transition:opacity .15s}
 .ic .ln-tip.on{opacity:1}.ic .ln-tip span{opacity:.75}.ic .ln-tip b{font:700 13px var(--mono)}
 html.moving .ic.ready .hb-b{transform:scaleX(0);transition:transform .9s var(--ease) var(--d,0ms)}
@@ -518,3 +518,28 @@ html.moving .ic.ready .ln-area,html.moving .ic.ready .ln-end,html.moving .ic.rea
 html.moving .ic.ready.play .ln-area,html.moving .ic.ready.play .ln-end,html.moving .ic.ready.play .ln-a{opacity:1}
 html.moving .ic.ready.play .ln-halo{opacity:.18}
 @media (max-width:520px){.ic .hb-row{grid-template-columns:1fr;gap:6px}.ic .hb-t{height:26px}.chart.ic.ready{padding:18px 14px 14px}}
+
+/* chart polish pass: bolder, closer to editorial chart style */
+.ic .hb-row{padding:11px 6px}
+.ic .hb-t{height:34px}
+.ic .hb-l{font-size:15px}
+.ic .hb-v{font-size:14.5px}
+.ic .vb-v{font-size:13px}
+.ic .vb-b{border-radius:3px 3px 0 0}
+.ic .ln-base{stroke:var(--ink);stroke-width:1.4}
+.ic .ln-tick{stroke:var(--ink);stroke-width:1.2}
+.ic .ln-y,.ic .ln-x{font-size:11.5px;fill:var(--ink-2)}
+.ic .ln-g{stroke:var(--rule);stroke-dasharray:none;stroke-width:1}
+.ic .ln-band{pointer-events:none}
+.ic .ln-a{paint-order:stroke;stroke:var(--card);stroke-width:4px;stroke-linejoin:round}
+/* homepage preview charts */
+.bx .chart.ic.ready,.mini .chart.ic.ready,.collage .chart.ic.ready{padding:10px 8px 6px;background:none;box-shadow:none}
+.bx .ic .hb-row{padding:6px 2px;grid-template-columns:minmax(80px,36%) 1fr;gap:10px}
+.bx .ic .hb-t{height:24px}
+.bx .ic .hb-l{font-size:12.5px}.bx .ic .hb-v{font-size:12px}
+.bx .ic .vb{transform-origin:left top}
+.ic .vb.dense{gap:3px}
+.ic .vb.dense .vb-v{font-size:10.5px;letter-spacing:-.04em}
+.ic .vb.dense .vb-x{font-size:9.5px;letter-spacing:-.05em}
+.ic .vb.dense .vb-b{left:8%;right:8%}
+@media (max-width:520px){.ic .vb.dense .vb-v{font-size:9.5px}.ic .vb.dense .vb-x{font-size:8.5px}}

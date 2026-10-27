@@ -1,42 +1,47 @@
 [
  [
   "Closing data as of",
-  "26 Oct 2026",
+  "27 Oct 2026",
   ""
  ],
  [
   "Nifty 50",
-  "22,753.20 ▲ 0.68%",
-  "up"
+  "22,749.75 ▼ 0.02%",
+  "dn"
  ],
  [
   "Sensex",
-  "73,606.75 ▲ 483 pts",
-  "up"
+  "73,598.67 ▼ 8 pts",
+  "dn"
  ],
  [
   "Brent crude",
-  "$115.08 / bbl",
+  "$115.73 / bbl",
   "dn"
  ],
  [
   "Rupee",
-  "₹95.22 / $ ▼ 29 paise",
-  "dn"
- ],
- [
-  "India VIX",
-  "17.13 ▲ 1.6%",
-  "dn"
- ],
- [
-  "FII net buying (23 Oct)",
-  "₹887.65 cr",
+  "₹95.12 / $ ▲ 3 paise",
   "up"
  ],
  [
-  "DII net buying (23 Oct)",
-  "₹3,235.36 cr",
+  "Bank Nifty",
+  "53,974.90 ▼ 0.72%",
+  "dn"
+ ],
+ [
+  "Nifty Smallcap 100",
+  "▲ 2.69%",
+  "up"
+ ],
+ [
+  "FII net selling (26 Oct)",
+  "₹1,462.49 cr",
+  "dn"
+ ],
+ [
+  "DII net buying (26 Oct)",
+  "₹2,609.57 cr",
   "up"
  ],
  [

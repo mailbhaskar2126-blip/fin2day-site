@@ -1,7 +1,7 @@
 """Small SVG chart helpers matching the FIN2DAY site (uses CSS vars)."""
 import json, os, re
 
-MONO = 'font-family="JetBrains Mono, monospace"'
+MONO = 'font-family="Inter, sans-serif"'
 SANS = 'font-family="Inter, sans-serif"'
 
 

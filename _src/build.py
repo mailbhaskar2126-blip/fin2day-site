@@ -6,7 +6,7 @@ import extras, enhance
 SITE = "https://fin2day.pages.dev"
 IG = "https://www.instagram.com/fin2day/"
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">')
+         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=Inter:wght@400;500;600&display=swap">')
 FAVICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23202020'/%3E"
            "%3Ctext x='32' y='46' font-family='Arial,sans-serif' font-size='40' fill='%23C9A95C' text-anchor='middle'%3E2%3C/text%3E%3C/svg%3E")
 

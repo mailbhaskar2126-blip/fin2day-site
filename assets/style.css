@@ -8,7 +8,7 @@
   --display:'Inter Tight','Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
   --serif:var(--display);
   --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  --mono:var(--sans);
   --r-lg:20px; --r-md:14px; --r-sm:10px;
   --ease:cubic-bezier(.22,.8,.2,1);
   color-scheme:light;
@@ -408,7 +408,7 @@ html.moving .chart svg.anim.play .soft{opacity:1}
 @media (prefers-reduced-motion: reduce){.btn::before,.mast{transition:none}.u{background-size:100% 1.5px}}
 
 /* ---- Tools, glossary, learn, snapshot, search (added Oct 2026) ---- */
-.mono{font-family:var(--mono,'JetBrains Mono',monospace)}
+.mono{font-family:var(--sans)}
 .search{display:block;width:100%;max-width:420px;margin:0 0 18px;padding:12px 18px;border:1px solid var(--rule);background:var(--card);color:var(--ink);border-radius:999px;font:400 16px var(--sans)}
 .search:focus{outline:2px solid var(--brass);outline-offset:2px}
 .note-sm{font-size:14px;color:var(--mute);margin-top:22px;max-width:70ch}
@@ -543,3 +543,7 @@ html.moving .ic.ready.play .ln-halo{opacity:.18}
 .ic .vb.dense .vb-x{font-size:9.5px;letter-spacing:-.05em}
 .ic .vb.dense .vb-b{left:8%;right:8%}
 @media (max-width:520px){.ic .vb.dense .vb-v{font-size:9.5px}.ic .vb.dense .vb-x{font-size:8.5px}}
+
+.ic,.ic *{font-variant-numeric:tabular-nums}
+.ic .hb-v,.ic .vb-v,.ic .ln-tip b{font-family:var(--sans);font-weight:700}
+.ic .ic-note,.ic .vb-x,.ic .ln-y,.ic .ln-x{font-family:var(--sans)}

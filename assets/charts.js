@@ -7,6 +7,13 @@
   var s = function (tag, attrs) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); return e; };
   var sign = function (t) { return t.replace(/^-/, '−'); };
 
+  // readable text on any bar colour: dark text on light bars, white on dark
+  function onColor(el) {
+    var m = getComputedStyle(el).backgroundColor.match(/[\d.]+/g) || [0, 0, 0];
+    var l = (0.2126 * m[0] + 0.7152 * m[1] + 0.0722 * m[2]) / 255;
+    return l > 0.62 ? '#171717' : '#fff';
+  }
+
   function hbars(sp, box) {
     var pos = 0, neg = 0;
     sp.rows.forEach(function (r) { if (r.n) neg = Math.max(neg, r.w); else pos = Math.max(pos, r.w); });
@@ -22,12 +29,22 @@
       bar.style.left = (r.n ? z - w : z) + '%'; bar.style.width = Math.max(w, 0.6) + '%';
       bar.style.transformOrigin = r.n ? 'right center' : 'left center';
       var inside = w > 24, v = h('span', 'hb-v', sign(r.t));
-      if (inside) { bar.classList.add('in'); bar.appendChild(v); v.style.color = '#fff'; }
+      if (inside) { bar.classList.add('in'); bar.appendChild(v); }
       else { v.style.color = r.c; v.style.position = 'absolute'; v.style[r.n ? 'right' : 'left'] = 'calc(100% + 8px)'; bar.appendChild(v); bar.classList.add('out'); }
       track.appendChild(bar); row.appendChild(lab); row.appendChild(track); wrap.appendChild(row);
     });
     box.appendChild(wrap);
     if (sp.note) box.appendChild(h('div', 'ic-note', sp.note));
+    wrap._fit = function () {
+      wrap.querySelectorAll('.hb-b').forEach(function (bar) {
+        var v = bar.querySelector('.hb-v'); if (!v) return;
+        var neg = bar.style.transformOrigin.indexOf('right') === 0;
+        bar.classList.remove('in', 'out'); v.style.position = ''; v.style.left = v.style.right = ''; v.style.color = '';
+        var fits = bar.clientWidth >= v.offsetWidth + 18;
+        if (fits) { bar.classList.add('in'); v.style.color = onColor(bar); }
+        else { bar.classList.add('out'); v.style.position = 'absolute'; v.style[neg ? 'right' : 'left'] = 'calc(100% + 8px)'; v.style.color = bar.style.background; }
+      });
+    };
   }
 
   function vbars(sp, box) {
@@ -109,6 +126,7 @@
       var sp = JSON.parse(el.getAttribute('data-spec')), fb = el.querySelector('.ic-fallback'), box = h('div', 'ic-body');
       if (sp.k === 'h') hbars(sp, box); else if (sp.k === 'v') vbars(sp, box); else if (sp.k === 'l') line(sp, box); else return;
       el.insertBefore(box, fb); fb.hidden = true; el.classList.add('ready', 'ic-' + sp.k);
+      var hb = box.querySelector('.hb'); if (hb && hb._fit) { hb._fit(); window.addEventListener('resize', hb._fit); if (document.fonts && document.fonts.ready) document.fonts.ready.then(hb._fit); }
       if (io) io.observe(el); else el.classList.add('play');
     } catch (e) { /* keep the static SVG */ }
   });

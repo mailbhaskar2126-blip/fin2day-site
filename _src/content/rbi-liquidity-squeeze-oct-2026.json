@@ -1,0 +1,39 @@
+{
+ "slug": "rbi-liquidity-squeeze-oct-2026",
+ "date": "2026-10-28",
+ "order": 50,
+ "topic": "rbi concepts",
+ "tag": "RBI",
+ "tag_class": "red",
+ "title": "From ₹10 lakh crore to almost zero: India's bank cash squeeze, explained",
+ "short": "From ₹10 lakh crore to almost zero: the bank cash squeeze",
+ "dek": "Banks' spare cash has nearly vanished since September, pushing overnight rates above the repo rate. Why it happened, and why the RBI is now lending money back.",
+ "card": "Bank liquidity fell from nearly ₹10 lakh crore in September to ₹542 crore on 22 October. A quieter tightening alongside the rate hike.",
+ "hero_src": "Data: RBI operations via Business Standard, Moneycontrol, ICICI Bank",
+ "sources": [
+  [
+   "Business Standard: RBI tightens liquidity after rate rise, raises daily CRR maintenance to 99% (9 Oct 2026)",
+   "https://www.business-standard.com/economy/news/rbi-tightens-liquidity-after-rate-rise-raises-daily-crr-maintenance-to-99-126100901382_1.html"
+  ],
+  [
+   "Moneycontrol via TradingView: RBI may continue VRR auctions as overnight rates rise above repo",
+   "https://www.tradingview.com/news/moneycontrol:5c9f2bfd6094b:0-rbi-may-continue-vrr-auctions-as-overnight-rates-rise-above-repo-amid-liquidity-squeeze/"
+  ],
+  [
+   "ANI: RBI steps up liquidity support as tighter cash conditions push up borrowing rates (ICICI Bank report, 27 Oct 2026)",
+   "https://aninews.in/news/business/rbi-steps-up-liquidity-support-as-tighter-cash-conditions-push-up-borrowing-rates-report20261027075855/"
+  ],
+  [
+   "Elets BFSI: RBI pumps ₹1.5 lakh crore into banks as festive demand tightens liquidity",
+   "https://bfsi.eletsonline.com/rbi-liquidity-1-5-lakh-crore-vrr-festive-season/"
+  ],
+  [
+   "Business Today: ₹10 lakh crore liquidity surplus and FCNR(B) inflows, says Jefferies (4 Sep 2026)",
+   "https://www.businesstoday.in/latest/economy/story/rs10-lakh-crore-liquidity-surplus-why-fcnr-b-inflows-could-push-bank-funding-costs-lower-says-jefferies-553348-2026-09-04"
+  ],
+  [
+   "ETV Bharat: RBI repo rate hike, banks that increased repo-linked lending rates",
+   "https://www.etvbharat.com/en/business/rbi-repo-rate-hike-these-banks-have-increased-repo-linked-lending-rate-enn26100801855"
+  ]
+ ]
+}

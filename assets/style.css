@@ -547,3 +547,49 @@ html.moving .ic.ready.play .ln-halo{opacity:.18}
 .ic,.ic *{font-variant-numeric:tabular-nums}
 .ic .hb-v,.ic .vb-v,.ic .ln-tip b{font-family:var(--sans);font-weight:700}
 .ic .ic-note,.ic .vb-x,.ic .ln-y,.ic .ln-x{font-family:var(--sans)}
+
+/* ---- chart cards v2: header, headline number, change chip, tooltips, footer ---- */
+.chart.ic.ready{position:relative;overflow:hidden;padding:24px 24px 14px;box-shadow:0 0 0 1px var(--rule),0 18px 40px -26px rgba(0,0,0,.35)}
+.chart.ic.ready::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--orange),var(--brass))}
+.ic-head{margin-bottom:16px}
+.ic-kick{display:flex;align-items:center;gap:8px;font:700 10.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--orange)}
+.ic-kick i{width:7px;height:7px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 3px color-mix(in srgb,var(--orange) 22%,transparent)}
+.ic-title{font:700 clamp(18px,2.3vw,22px)/1.22 var(--display);letter-spacing:-.02em;margin:7px 0 3px;text-wrap:balance;color:var(--ink)}
+.ic-sub{font:500 12.5px/1.4 var(--sans);color:var(--mute)}
+.ic-big{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;margin-top:14px;min-height:42px}
+.ic-big b{font:800 clamp(32px,5.4vw,44px)/1 var(--display);letter-spacing:-.035em;color:var(--ink);font-variant-numeric:tabular-nums}
+.ic-big small{font:600 12.5px var(--sans);color:var(--mute)}
+.ic-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font:700 12.5px var(--sans);background:var(--paper-2);color:var(--ink)}
+.ic-chip.none{display:none}
+.ic-chip i{font-style:normal;font-size:9px}
+.ic-chip.up i{color:var(--green)}.ic-chip.dn i{color:var(--red)}
+.ic-chip em{font:500 12px var(--sans);font-style:normal;color:var(--mute);margin-left:2px}
+.ic-foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:11px;border-top:1px dotted var(--rule);font:600 10.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.ic-brand{display:inline-flex;align-items:center;gap:7px;color:var(--ink);letter-spacing:.14em}
+.ic-brand i{width:10px;height:10px;border-radius:3px;background:linear-gradient(135deg,var(--orange),var(--brass))}
+.ic-hint{letter-spacing:.06em}
+@media (hover:none){.ic-hint{display:none}}
+/* the unit/source line lives in the header; keep it under the chart only where there is no header */
+.ic .ic-note{display:none}
+.bx .ic-head,.mini .ic-head,.collage .ic-head,.mail .ic-head,.bx .ic-foot,.mini .ic-foot,.collage .ic-foot,.mail .ic-foot,.bx .chart.ic.ready::before,.mini .chart.ic.ready::before,.collage .chart.ic.ready::before,.mail .chart.ic.ready::before{display:none}
+.bx .ic .ic-note,.mini .ic .ic-note,.collage .ic .ic-note,.mail .ic .ic-note{display:block}
+/* horizontal bars */
+.ic .hb-t{background:color-mix(in srgb,var(--ink) 6%,transparent);border-radius:999px}
+.ic .hb-b{border-radius:999px;background-image:linear-gradient(90deg,rgba(255,255,255,.12),rgba(255,255,255,0) 70%);box-shadow:0 4px 10px -7px rgba(0,0,0,.4)}
+.ic .hb-row{border-bottom:0;padding:9px 8px}
+.ic .hb-row:hover,.ic .hb-row:focus-visible{background:color-mix(in srgb,var(--ink) 5%,transparent)}
+/* vertical bars */
+.ic .vb-b{border-radius:7px 7px 0 0;background-image:linear-gradient(180deg,rgba(255,255,255,.3),rgba(255,255,255,0) 75%)}
+.ic .vb-g{position:absolute;left:0;right:0;border-top:1px dashed var(--rule);pointer-events:none}
+.ic .vb-tip{z-index:5}
+.ic .ln-tip em,.ic .vb-tip em{font:700 11.5px var(--sans);font-style:normal}
+.ic .ln-tip em.up,.ic .vb-tip em.up{color:#6fe3a4}.ic .vb-tip em.dn{color:#ff9d93}
+/* lines */
+.ic .ln-vg{stroke:var(--rule);stroke-width:1;opacity:.55}
+.ic .ln-pt{font:700 11px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--card);stroke-width:4px;stroke-linejoin:round}
+.ic .ln-p{filter:drop-shadow(0 6px 8px color-mix(in srgb,var(--ink) 20%,transparent))}
+@keyframes icpulse{0%{r:5;opacity:.35}100%{r:15;opacity:0}}
+html.moving .ic.ready.play .ln-halo{animation:icpulse 2.2s ease-out 1.8s infinite}
+@media (max-width:520px){.chart.ic.ready{padding:20px 16px 12px}.ic-big b{font-size:34px}}
+
+.ic .vb-c:hover .vb-v,.ic .vb-c:focus .vb-v{visibility:hidden}

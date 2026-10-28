@@ -3,7 +3,7 @@ import os, sys, html
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import extras, enhance
 
-SITE = "https://fin2day.netlify.app"
+SITE = "https://fin2day.pages.dev"
 IG = "https://www.instagram.com/fin2day/"
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
          '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">')

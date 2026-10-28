@@ -54,7 +54,6 @@
       .catch(function () {});
   }
 
-  // Netlify strips data-netlify from the served HTML, so match our forms by class.
   var SUCCESS = {
     newsletter: 'You\u2019re on the list! Check your inbox (and spam folder) for a welcome email.',
     contact: 'Thanks! Your message is in. We\u2019ll get back to you soon.'
@@ -85,8 +84,8 @@
       submit.disabled = true;
       var old = submit.textContent;
       submit.textContent = 'Sending…';
-      var sends = [fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: encode(form)})];
-      if (form.getAttribute('name') === 'newsletter') sends.push(toBrevo(form));
+      var isNews = form.getAttribute('name') === 'newsletter';
+      var sends = [isNews ? toBrevo(form).then(function () { return {ok: true}; }) : fetch('/api/contact', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(Object.fromEntries(new FormData(form)))})];
       Promise.all(sends)
         .then(function (res) {
           var r = res[0];

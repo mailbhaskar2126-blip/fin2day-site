@@ -220,7 +220,6 @@ def build():
     <div class="close-view">
       <div class="close-track"><ul>{close_items}</ul><ul class="close-dup" aria-hidden="true">{close_items}</ul></div>
     </div>
-    <button class="close-toggle" type="button" aria-pressed="false" aria-label="Pause the ticker"><svg viewBox="0 0 12 12" aria-hidden="true"><path class="ic-pause" d="M3.5 2.5v7M8.5 2.5v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="ic-play" d="M3.5 2.2v7.6L9.8 6z" fill="currentColor"/></svg></button>
   </div>
 </section>"""
 

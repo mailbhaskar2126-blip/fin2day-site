@@ -12,16 +12,6 @@
     });
   }
 
-  // Market ticker: pause / play
-  var tick = document.querySelector('.close-toggle');
-  if (tick) {
-    tick.addEventListener('click', function () {
-      var paused = tick.closest('.close').classList.toggle('paused');
-      tick.setAttribute('aria-pressed', paused ? 'true' : 'false');
-      tick.setAttribute('aria-label', paused ? 'Play the ticker' : 'Pause the ticker');
-    });
-  }
-
   // Masthead: compact once the top bar has scrolled away
   var mast = document.querySelector('.mast');
   if (mast) {

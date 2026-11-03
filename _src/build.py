@@ -6,9 +6,15 @@ import extras, enhance
 SITE = "https://fin2day.pages.dev"
 IG = "https://www.instagram.com/fin2day/"
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=Inter:wght@400;500;600&display=swap">')
-FAVICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23202020'/%3E"
-           "%3Ctext x='32' y='46' font-family='Arial,sans-serif' font-size='40' fill='%23C9A95C' text-anchor='middle'%3E2%3C/text%3E%3C/svg%3E")
+         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap">')
+FAVICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%231D46C8'/%3E"
+           "%3Ctext x='32' y='47' font-family='Georgia,serif' font-weight='700' font-size='42' fill='%23fff' text-anchor='middle'%3E2%3C/text%3E%3C/svg%3E")
+# Shared icons: arrow for links, check for lists. Use <svg aria-hidden="true"><use href="#i-go"/></svg>.
+ICONS = """<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-go" viewBox="0 0 16 16"><path d="M2.5 8h10M8.5 3.8 12.7 8l-4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m6.2 10.2 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>"""
+GO = '<svg aria-hidden="true"><use href="#i-go"/></svg>'
 
 NAV = [("/", "Home"), ("/explainers/", "Explainers"), ("/learn/", "Learn"), ("/tools/", "Tools"), ("/glossary.html", "Glossary"), ("/about.html", "About"), ("/contact.html", "Contact")]
 
@@ -33,48 +39,45 @@ def page(path, title, desc, body, active=None, og_type="website", pre=""):
 <meta property="og:url" content="{url}">
 <meta property="og:image" content="{SITE}/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#F5F5F5">
+<meta name="theme-color" content="#FFFFFF">
 <link rel="icon" href="{FAVICON}">
 {FONTS}
 <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
 <script>document.documentElement.classList.add('js')</script>
+{ICONS}
 <a class="skip" href="#main">Skip to content</a>
-{pre}
 <header class="mast">
   <div class="wrap">
-    <a class="logo" href="/" aria-label="FIN2DAY home"><span class="wm">FIN<b>2</b>DAY</span><span class="by">Finance, Explained</span></a>
+    <a class="logo" href="/" aria-label="FIN2DAY home"><span class="wm">FIN<b>2</b>DAY</span><span class="by">Finance, explained in 2 minutes</span></a>
     <nav class="nav" id="nav" aria-label="Main">
       {nav}
-      <a class="btn" href="{IG}" target="_blank" rel="noopener">Follow @fin2day</a>
+      <a class="btn" href="/#newsletter">Get the daily brief</a>
     </nav>
-    <a class="btn sm mast-cta" href="{IG}" target="_blank" rel="noopener">Follow @fin2day</a>
+    <a class="btn sm mast-cta" href="/#newsletter">Get the daily brief</a>
     <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
   </div>
 </header>
+{pre}
 <main id="main">
 {body}
 </main>
 <footer>
   <div class="fbox">
     <div class="fgrid">
-      <div class="fbig">FIN<b>2</b>DAY</div>
-      <div></div>
+      <div><div class="fbig">FIN<b>2</b>DAY</div><p class="ftag">Today’s money news, explained in 2 minutes.</p></div>
       <div class="fcols">
         <div class="flinks"><span>Read</span><a href="/explainers/">All explainers</a><a href="/explainers/#rbi">RBI</a><a href="/explainers/#ipo">IPOs</a><a href="/explainers/#global">Global economy</a><a href="/explainers/#markets">Markets</a><a href="/learn/">Learn</a><a href="/tools/">Money tools</a><a href="/glossary.html">Glossary</a></div>
-        <div class="flinks"><span>FIN2DAY</span><a href="/about.html">About</a><a href="/contact.html">Contact</a><a href="/#newsletter">Newsletter</a><a href="{IG}" target="_blank" rel="noopener">Instagram ↗</a></div>
+        <div class="flinks"><span>FIN2DAY</span><a href="/about.html">About</a><a href="/contact.html">Contact</a><a href="/#newsletter">Newsletter</a><a href="{IG}" target="_blank" rel="noopener">Instagram</a></div>
         <div class="flinks"><span>Legal</span><a href="/disclaimer.html">Disclaimer</a><a href="/disclaimer.html#privacy">Privacy</a></div>
       </div>
     </div>
     <p class="disc">FIN2DAY publishes educational content only. Nothing here is investment, legal or tax advice. Do your own research or speak to a SEBI-registered adviser before making financial decisions. © 2026 FIN2DAY.</p>
-    <svg class="fcurve" viewBox="0 0 300 420" aria-hidden="true"><path d="M300 0v420H150c0-40 18-70 54-90 34-19 46-52 46-100V0z" fill="currentColor"/></svg>
   </div>
 </footer>
 <script src="/assets/site.js" defer></script>
 <script src="/assets/charts.js" defer></script>
-<script src="/assets/lenis.min.js" defer></script>
-<script src="/assets/motion.js" defer></script>
 </body>
 </html>
 """
@@ -192,137 +195,130 @@ def build():
     lead = EXPLAINERS[0]
     tick = [t for t in TICKER if t[0] != "Closing data as of"]
     asof = next((t[1] for t in TICKER if t[0] == "Closing data as of"), "")
-    def tval(name):
-        for k, v, c in TICKER:
-            if k.lower().startswith(name.lower()):
-                parts = v.split(" ", 1)
-                return k, parts[0], (parts[1] if len(parts) > 1 else ""), c
-        return None
-    floats = ""
-    for cls, name in (("a", "Nifty"), ("b", "Sensex")):
-        tv = tval(name)
-        if tv:
-            k, num, chg, c = tv
-            floats += f'<div class="float {cls}" aria-hidden="true"><small>{html.escape(k)}</small><strong>{html.escape(num)}</strong><span class="{c}">{html.escape(chg)}</span></div>'
-    ticker_items = ''.join(''.join(f'<div class="tk"><span>{html.escape(k)}</span><span class="mono{(" " + c) if c else ""}">{html.escape(v)}</span></div>' for k, v, c in tick) for _ in range(2))
+    close_items = "".join(
+        f'<li><span class="k">{html.escape(k)}</span><span class="v{(" " + c) if c else ""}">{html.escape(v)}</span></li>' for k, v, c in tick)
+    close_strip = f"""<section class="close" aria-labelledby="close-h">
+  <div class="wrap">
+    <h2 id="close-h">Markets at close <span>{html.escape(asof)}</span></h2>
+    <ul>{close_items}</ul>
+  </div>
+</section>"""
 
-    BEATS = [("concepts", "CONCEPTS", "Money basics", "Repo rate, inflation, bonds, P/E. The ideas behind the headlines."),
-             ("ipo", "IPO", "IPO watch", "What the company does, how it's priced, and what to read before you bid."),
-             ("rbi", "RBI · REPO", "RBI &amp; rates", "Every policy move, and what it does to your EMI and FD."),
-             ("global", "USD · OIL · CNY", "Global economy", "The Fed, China, oil and the dollar, and how they ripple into India."),
-             ("trade", "TARIFFS", "Trade wars", "Who taxes whose goods, why, and who pays in the end."),
-             ("markets", "NIFTY · SENSEX", "Markets", "Why the market moved, and which sectors are booming or bust.")]
-    SQ = ["var(--ink)", "var(--brass)", "var(--hot)"]
-    beats = ""
-    used = set()
-    for i, (key, sym, name, desc) in enumerate(BEATS):
-        pool = [e for e in EXPLAINERS if key in e["topic"].split()]
-        latest = next((e for e in pool if e["slug"] not in used), pool[0] if pool else None)
-        if latest:
-            used.add(latest["slug"])
-        vis = ""
-        if latest:
-            vis = f"""<div class="vis rv"><a class="mini" href="/explainers/{latest['slug']}.html">
-        <div class="mt"><span class="tag {latest['tag_class']}">{latest['tag']}</span><span>{latest['date_label']}</span><span>{latest['mins']} min</span></div>
-        <h4>{latest['short']}</h4>
-        {latest["hero_html"]}</a></div>"""
-        beats += f"""
-    <div class="svc" style="--sq:{SQ[i % 3]}">
-      <div class="txt rv"><h3>{name}</h3><span class="sub">{sym}</span><p>{desc}</p><a class="more" href="/explainers/#{key}">Browse</a></div>
-      {vis}
-    </div>"""
+    def chart_bits(e):
+        """(title, measure line, source) for a story's lead chart, read from the caption under it in the body."""
+        cap = ""
+        i = e["body"].find(e["hero"]) if e["hero"] else -1
+        if i >= 0:
+            m = re.search(r'<div class="cap">(.*?)</div>', e["body"][i + len(e["hero"]):i + len(e["hero"]) + 1500], re.S)
+            if m:
+                cap = html.unescape(re.sub(r"<[^>]+>", "", m.group(1)))
+                cap = re.sub(r"\s+", " ", cap).replace(" .", ".").replace(" ,", ",").replace(" :", ":").strip()
+        parts = re.split(r"\s*Sources?:\s*", cap, maxsplit=1)
+        text = parts[0].strip().rstrip(".")
+        src = ("Source: " + parts[1].strip().rstrip(".")) if len(parts) > 1 else (e.get("hero_src") or "Sources listed in the explainer")
+        bits = [s.strip() for s in re.split(r"(?<=[a-z0-9)%])\.\s+", text) if s.strip()]
+        title = bits[0] if bits else ""
+        sub = ". ".join(bits[1:])
+        return title, sub, src
 
-    def bento(e, big=False):
-        chart = f'{e["hero_html"]}' if big and e["hero"] else ""
-        return f"""<article class="bx{' big' if big else ''} rv">
-      <div class="meta"><span class="tag {e['tag_class']}">{e['tag']}</span><span>{e['date_label']}</span><span>{e['mins']} min</span></div>
-      <h3><a href="/explainers/{e['slug']}.html">{e['short']}</a></h3>
-      {chart}<p>{e['card']}</p>
-      <a class="read" href="/explainers/{e['slug']}.html">Read the explainer →</a>
-    </article>"""
-    bentos = "".join(bento(e, i == 0) for i, e in enumerate(EXPLAINERS[:3]))
+    def gallery_card(e):
+        title, sub, _ = chart_bits(e)
+        measure = title + (f". {sub}" if sub else "")
+        return f"""<article class="cc">
+        <div class="cc-h"><h3><a href="/explainers/{e['slug']}.html">{e['short']}</a></h3></div>
+        {f'<p class="cc-s">{measure}</p>' if measure else ''}
+        <div class="cc-body">{e["hero_html"]}</div>
+        <div class="cc-foot"><span class="meta"><span class="tag {e['tag_class']}">{e['tag']}</span><span>{e['date_label']}</span></span><span class="wm" style="font-size:14px">FIN<b>2</b>DAY</span></div>
+      </article>"""
 
-    SRC_TILES = ["RBI", "SEBI", "NSE", "BSE", "PIB", "MoSPI", "Reuters", "NBER"]
-    tiles = "".join(f'<div class="tile t{i+1}">{t}</div>' for i, t in enumerate(SRC_TILES))
+    gallery = "".join(gallery_card(e) for e in [e for e in EXPLAINERS[1:] if e["hero"]][:6])
 
+    lt, ls, lsrc = chart_bits(lead)
+    hero_card = f"""<figure class="cc" style="margin:0">
+      <div class="cc-h"><h2>{lt or "Today’s story in one chart"}</h2></div>
+      {f'<p class="cc-s">{ls}</p>' if ls else ''}
+      <div class="cc-body">{lead["hero_html"]}</div>
+      <figcaption class="cc-f"><span class="cc-src">{lsrc}</span><span class="wm">FIN<b>2</b>DAY</span></figcaption>
+    </figure>""" if lead["hero"] else ""
+    prev = EXPLAINERS[1] if len(EXPLAINERS) > 1 else None
+    also = f"""<div class="also">
+      <span>Previous story, {prev['date_label']}</span>
+      <a href="/explainers/{prev['slug']}.html">{prev['short']}</a>
+    </div>""" if prev else ""
 
-    home_cta = cta_panel("home", "The daily brief", 'Get the story before your <em class="u">first meeting</em>.', "One email every weekday morning: today's story, one chart, and what it means for you. Free, and you can leave any time.", lead)
+    SCHEDULE = [("Monday", "Money basics", "Repo rate, inflation, bonds, P/E. The ideas behind the headlines.", "concepts"),
+                ("Tuesday", "IPO watch", "What the company does, how it’s priced, and what to read before you bid.", "ipo"),
+                ("Wednesday", "RBI &amp; rates", "Every policy move, and what it does to your EMI and FD.", "rbi"),
+                ("Thursday", "Global economy", "The Fed, China, oil and the dollar, and how they ripple into India.", "global"),
+                ("Friday", "Trade wars", "Who taxes whose goods, why, and who pays in the end.", "trade"),
+                ("After every trading day", "Markets", "Why the market moved, and which sectors are booming or bust.", "markets"),
+                ("Weekends", "World markets", "How New York, London, Frankfurt, Hong Kong and Shanghai closed the week.", "global")]
+    sched = "".join(f'<div class="sched-row"><span class="day">{d}</span><h3>{n}</h3><p>{t}</p><a class="go" href="/explainers/#{k}">Browse {GO}</a></div>'
+                    for d, n, t, k in SCHEDULE)
+
+    CHECK = '<svg aria-hidden="true"><use href="#i-check"/></svg>'
     home = f"""
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <div class="label reveal">Finance, Explained</div>
-      <h1 class="reveal d1">Today's money news, explained in <em class="u">2&nbsp;minutes</em>.</h1>
-      <p class="lede reveal d2">One story a day on markets, IPOs, the RBI and the global economy. Plain words, real charts, and what it means for your wallet.</p>
-      <div class="cta-row reveal d3">
-        <a class="btn" href="#newsletter">Get the daily brief →</a>
-        <a class="btn ghost" href="/explainers/{lead['slug']}.html">Read today's story</a>
+<section class="front" aria-labelledby="today-h">
+  <div class="wrap front-grid">
+    <div class="lead">
+      <h1 id="today-h">{lead['short']}</h1>
+      <p class="dek">{lead['dek']}</p>
+      <div class="meta"><span class="tag {lead['tag_class']}">{lead['tag']}</span><span>Today’s story, {lead['date_label']}</span><span>{lead['mins']} min read</span></div>
+      <div class="acts">
+        <a class="btn" href="/explainers/{lead['slug']}.html">Read today’s story</a>
+        <a class="go" href="#newsletter">Get it by email each morning {GO}</a>
       </div>
     </div>
-    <div class="collage reveal d2">
-      <a class="main" href="/explainers/{lead['slug']}.html" aria-label="Today's story: {html.escape(lead['short'])}">
-        <div class="top"><b>FIN<i>2</i>DAY</b><span class="pill">FACT-CHECKED</span></div>
-        <div class="label" style="margin-top:14px">Today's story · {lead['tag']}</div>
-        <h3>{lead['short']}</h3>
-        {lead["hero_html"]}
-        <div class="foot"><span>{lead['date_label']}</span><span>{lead['mins']} min read</span><span>{lead.get('hero_src') or 'Sources listed'}</span></div>
-      </a>
-      {floats}
-    </div>
-  </div>
-  <div class="wrap tband">
-    <div class="k"><span id="today">{datetime.date.fromisoformat(lead['date']).strftime('%A %-d %B %Y')}</span> · Closing data as of <b>{asof}</b></div>
-    <div class="ticker" aria-label="Latest closing figures"><div class="track">{ticker_items}</div></div>
+    {also}
+    {hero_card}
   </div>
 </section>
 
-{extras.snapshot(TICKER)}
-
-<section class="svc-wrap" id="topics">
-  <div class="svc-head rv">
-    <div class="label">What we explain</div>
-    <div class="shead" style="margin:0"><h2>Six beats. One story a day.</h2>
-    <p>A new beat every weekday, a markets update after every trading day, and world markets at the weekend. When big news breaks, it jumps the queue.</p></div>
-  </div>
-  {beats}
-</section>
-
-<section class="block" id="latest">
+<section class="sec" id="charts" aria-labelledby="charts-h">
   <div class="wrap">
-    <div class="shead rv">
-      <div><div class="label">Latest explainers</div><h2>The stories moving your money.</h2></div>
-      <a class="btn ghost" href="/explainers/">All explainers →</a>
+    <div class="shead">
+      <div><h2 id="charts-h">The week in charts</h2><p>Every explainer is built on one chart from a cited source. Hover or tap a bar or line for the exact figure.</p></div>
+      <a class="go" href="/explainers/">All explainers {GO}</a>
     </div>
-    <div class="bento">{bentos}</div>
-    <div class="stats">
-      <div class="stat rv"><div class="n">1</div><h4>Story a day</h4><p>The one that matters most, not a feed of twenty.</p></div>
-      <div class="stat rv"><div class="n">2<small>min</small></div><h4>Reading time</h4><p>Finished before your chai goes cold.</p></div>
-      <div class="stat rv"><div class="n">0</div><h4>Stock tips</h4><p>We explain. We never tell you what to buy.</p></div>
-      <div class="stat rv"><div class="n">100<small>%</small></div><h4>Real data</h4><p>Every chart comes from a cited source.</p></div>
-    </div>
+    <div class="gallery">{gallery}</div>
+  </div>
+</section>
+
+<section class="sec band" id="topics" aria-labelledby="topics-h">
+  <div class="wrap">
+    <div class="shead"><div><h2 id="topics-h">What we explain, and when</h2><p>A new beat every weekday, a markets update after every trading day, and world markets at the weekend. When big news breaks, it jumps the queue.</p></div></div>
+    <div class="sched">{sched}</div>
   </div>
 </section>
 
 {extras.tools_teaser()}
 
-<section class="how wrap" id="how">
-  <div class="tiles" aria-hidden="true">{tiles}</div>
-  <div class="inner rv">
-    <div class="label">How it works</div>
-    <h2 style="margin-top:14px">From headline to "oh, I get it" in three steps.</h2>
-    <ul class="checks" style="margin-top:34px">
-      <li><div><b>01 · News breaks</b><span>We pick the one story each day that actually affects your money.</span></div></li>
-      <li><div><b>02 · We break it down</b><span>Plain words, a real chart, and every number checked against its source.</span></div></li>
-      <li><div><b>03 · You get it in 2 minutes</b><span>As an Instagram carousel, a reel, and a full explainer right here.</span></div></li>
-    </ul>
-    <a class="btn" href="/explainers/{lead['slug']}.html">Read today's story</a>
+<section class="sec band" id="how" aria-labelledby="how-h">
+  <div class="wrap how-grid">
+    <div>
+      <h2 id="how-h" style="font-size:clamp(30px,3.6vw,44px);line-height:1.1">From headline to “oh, I get it”</h2>
+      <ul class="promises">
+        <li>{CHECK}<span>One story a day: the one that matters most, not a feed of twenty.</span></li>
+        <li>{CHECK}<span>Every chart comes from a cited source, listed at the end of each explainer.</span></li>
+        <li>{CHECK}<span>We explain. We never tell you what to buy.</span></li>
+      </ul>
+      <p class="sources-line"><b>Where the numbers come from:</b> RBI, SEBI, NSE, BSE, PIB, MoSPI, Reuters and NBER.</p>
+    </div>
+    <ol class="steps">
+      <li><div><b>News breaks</b><span>We pick the one story each day that actually affects your money.</span></div></li>
+      <li><div><b>We break it down</b><span>Plain words, a real chart, and every number checked against its source.</span></div></li>
+      <li><div><b>You get it in 2 minutes</b><span>As an Instagram carousel, a reel, and a full explainer right here.</span></div></li>
+    </ol>
   </div>
 </section>
 
-<section class="block" id="faq" style="padding-top:0">
-  <div class="wrap">
-    <div class="center rv"><div class="label">Questions</div><h2>Good to know.</h2></div>
-    <div class="faq rv">
+<section class="sec" id="faq" aria-labelledby="faq-h">
+  <div class="wrap faq-grid">
+    <div>
+      <h2 id="faq-h" style="font-size:clamp(30px,3.6vw,44px);line-height:1.1">Good to know</h2>
+      <p style="color:var(--ink-2);margin:14px 0 0;max-width:34ch">Something else on your mind? Ask through the <a href="/contact.html" style="color:var(--blue)">contact form</a> or on <a href="{IG}" target="_blank" rel="noopener" style="color:var(--blue)">Instagram</a>.</p>
+    </div>
+    <div class="faq">
       <details><summary>Is this investment advice?</summary><p>No. FIN2DAY explains what happened and why. We never recommend buying or selling anything. For decisions about your money, talk to a SEBI-registered adviser.</p></details>
       <details><summary>How often do you post?</summary><p>Every day. Monday is money basics, Tuesday IPOs, Wednesday the RBI and rates, Thursday the global economy and Friday trade wars. After every trading day there is a markets update, and on weekends we cover world markets like the NYSE and Shanghai. When big news breaks, we cover it the same day.</p></details>
       <details><summary>Is it free?</summary><p>Yes. The Instagram page, the site and the newsletter are all free.</p></details>
@@ -332,12 +328,18 @@ def build():
   </div>
 </section>
 
-<section class="block" id="newsletter" style="padding-top:0">
-  <div class="wrap">{home_cta}</div>
+<section class="brief" id="newsletter" aria-labelledby="brief-h">
+  <div class="wrap">
+    <div>
+      <h2 id="brief-h">Get the story before your first meeting</h2>
+      <p class="intro">One email every weekday morning: today’s story, one chart, and what it means for you. Free, and you can leave any time.</p>
+    </div>
+    {newsletter_form("home").replace('class="btn brass"', 'class="btn light"')}
+  </div>
 </section>
 """
     open("index.html", "w").write(page("index.html", "FIN2DAY | Finance, Explained",
-        "Today's money news, explained in 2 minutes. Markets, IPOs, the RBI and the global economy in plain words, with real charts.", home, "/"))
+        "Today's money news, explained in 2 minutes. Markets, IPOs, the RBI and the global economy in plain words, with real charts.", home, "/", pre=close_strip))
 
     # ---------------- Explainers list ----------------
     chips = "".join(f'<button class="chip" data-filter="{k}" aria-pressed="false">{v}</button>' for k, v in

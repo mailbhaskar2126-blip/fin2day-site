@@ -34,9 +34,12 @@ TOOLS = [
 SELECT = {"fd-calculator": ("freq", "Compounding", [("4", "Quarterly"), ("12", "Monthly"), ("2", "Half-yearly"), ("1", "Yearly")])}
 
 
+GO = '<svg aria-hidden="true"><use href="#i-go"/></svg>'  # arrow icon from the sprite in build.page()
+
+
 def _tool_card(t):
-    return (f'<a class="tool-card rv" href="/tools/{t[0]}.html"><h3>{E(t[1])}</h3><p>{E(t[2])}</p>'
-            f'<span class="go">Open calculator →</span></a>')
+    return (f'<a class="tool-card" href="/tools/{t[0]}.html"><h3>{E(t[1])}</h3><p>{E(t[2])}</p>'
+            f'<span class="go">Open calculator {GO}</span></a>')
 
 
 def snapshot(ticker):
@@ -52,8 +55,9 @@ def snapshot(ticker):
 
 def tools_teaser():
     cards = "".join(_tool_card(t) for t in TOOLS)
-    return (f'<section class="block" id="tools"><div class="wrap"><div class="shead rv"><div><div class="label">Free tools</div>'
-            f'<h2>Run your own numbers.</h2></div><a class="btn ghost" href="/tools/">All tools →</a></div>'
+    return (f'<section class="sec" id="tools" aria-labelledby="tools-h"><div class="wrap"><div class="shead">'
+            f'<div><h2 id="tools-h">Run your own numbers</h2><p>Free calculators for the decisions our stories keep coming back to.</p></div>'
+            f'<a class="go" href="/tools/">All tools {GO}</a></div>'
             f'<div class="tools-grid">{cards}</div></div></section>')
 
 

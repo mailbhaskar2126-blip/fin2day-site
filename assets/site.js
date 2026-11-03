@@ -40,6 +40,12 @@
     } catch (e) {}
   }
 
+  // Weekly planner: highlight today's beat, by the day in India (IST is UTC+5:30)
+  var dow = String(new Date(Date.now() + 330 * 60000).getUTCDay());
+  document.querySelectorAll('.wk-day[data-dow]').forEach(function (c) {
+    if (c.getAttribute('data-dow').split(' ').indexOf(dow) > -1) c.classList.add('today');
+  });
+
   // Netlify forms (newsletter + contact)
   function encode(form) {
     return new URLSearchParams(new FormData(form)).toString();

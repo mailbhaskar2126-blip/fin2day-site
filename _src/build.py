@@ -248,15 +248,32 @@ def build():
       <a href="/explainers/{prev['slug']}.html">{prev['short']}</a>
     </div>""" if prev else ""
 
-    SCHEDULE = [("Monday", "Money basics", "Repo rate, inflation, bonds, P/E. The ideas behind the headlines.", "concepts"),
-                ("Tuesday", "IPO watch", "What the company does, how it’s priced, and what to read before you bid.", "ipo"),
-                ("Wednesday", "RBI &amp; rates", "Every policy move, and what it does to your EMI and FD.", "rbi"),
-                ("Thursday", "Global economy", "The Fed, China, oil and the dollar, and how they ripple into India.", "global"),
-                ("Friday", "Trade wars", "Who taxes whose goods, why, and who pays in the end.", "trade"),
-                ("After every trading day", "Markets", "Why the market moved, and which sectors are booming or bust.", "markets"),
-                ("Weekends", "World markets", "How New York, London, Frankfurt, Hong Kong and Shanghai closed the week.", "global")]
-    sched = "".join(f'<div class="sched-row"><span class="day">{d}</span><h3>{n}</h3><p>{t}</p><a class="go" href="/explainers/#{k}">Browse {GO}</a></div>'
-                    for d, n, t, k in SCHEDULE)
+    # The week as a planner: one card per beat day, the weekend shared, and the daily markets update as a bar under Mon-Fri.
+    def latest(test):
+        return next((e for e in EXPLAINERS if test(e)), None)
+    def topics(e):
+        return e["topic"].split()
+    WEEK = [  # data-dow uses JavaScript's getDay(): 0 = Sunday
+        ("1", "Mon", "Money basics", "Repo rate, inflation, bonds, P/E. The ideas behind the headlines.", "concepts", lambda e: "concepts" in topics(e)),
+        ("2", "Tue", "IPO watch", "What the company does, how it’s priced, and what to read before you bid.", "ipo", lambda e: "ipo" in topics(e)),
+        ("3", "Wed", "RBI &amp; rates", "Every policy move, and what it does to your EMI and FD.", "rbi", lambda e: "rbi" in topics(e)),
+        ("4", "Thu", "Global economy", "The Fed, China, oil and the dollar, and how they ripple into India.", "global", lambda e: "global" in topics(e) and e["tag"] != "World markets"),
+        ("5", "Fri", "Trade wars", "Who taxes whose goods, why, and who pays in the end.", "trade", lambda e: "trade" in topics(e)),
+        ("6 0", "Sat &amp; Sun", "World markets", "How New York, London, Frankfurt, Hong Kong and Shanghai closed the week.", "global", lambda e: e["tag"] == "World markets"),
+    ]
+    def day_card(dow, day, name, desc, key, test):
+        e = latest(test)
+        last = (f'<a class="wk-latest" href="/explainers/{e["slug"]}.html"><span>Latest, {e["date_label"]}</span>{e["short"]}</a>' if e else "")
+        weekend = " wk-weekend" if " " in dow else ""
+        cover = f'<div class="wk-cover">{thumbs.cover(e)}</div>' if weekend and e else ""
+        return (f'<div class="wk-day{weekend}" data-dow="{dow}"><span class="wk-d">{day}</span><h3>{name}</h3><p>{desc}</p>'
+                f'{cover}{last}<a class="go" href="/explainers/#{key}">Browse {GO}</a></div>')
+    mk = latest(lambda e: e["tag"] == "Markets")
+    mk_last = f'<a class="wk-latest" href="/explainers/{mk["slug"]}.html"><span>Latest, {mk["date_label"]}</span>{mk["short"]}</a>' if mk else ""
+    sched = (f'<div class="week">{"".join(day_card(*d) for d in WEEK)}'
+             f'<div class="wk-markets"><div><span class="wk-d">Mon to Fri, after the 3:30 pm close</span><h3>Markets</h3>'
+             f'<p>Why the market moved, and which sectors are booming or bust.</p></div>{mk_last}'
+             f'<a class="go" href="/explainers/#markets">Browse {GO}</a></div></div>')
 
     CHECK = '<svg aria-hidden="true"><use href="#i-check"/></svg>'
     home = f"""
@@ -289,7 +306,7 @@ def build():
 <section class="sec band" id="topics" aria-labelledby="topics-h">
   <div class="wrap">
     <div class="shead"><div><h2 id="topics-h">What we explain, and when</h2><p>A new beat every weekday, a markets update after every trading day, and world markets at the weekend. When big news breaks, it jumps the queue.</p></div></div>
-    <div class="sched">{sched}</div>
+    {sched}
   </div>
 </section>
 

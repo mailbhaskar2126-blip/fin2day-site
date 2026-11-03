@@ -37,9 +37,58 @@ SELECT = {"fd-calculator": ("freq", "Compounding", [("4", "Quarterly"), ("12", "
 GO = '<svg aria-hidden="true"><use href="#i-go"/></svg>'  # arrow icon from the sprite in build.page()
 
 
+def _inr(x):
+    """Indian digit grouping: 1161695 -> 11,61,695."""
+    s = str(int(round(x)))
+    head, tail = s[:-3], s[-3:]
+    while len(head) > 2:
+        tail = head[-2:] + "," + tail
+        head = head[:-2]
+    return (head + "," + tail) if head else tail
+
+
+def _amt(x):
+    if x >= 1e7:
+        return f"₹{x / 1e7:.2f} crore"
+    if x >= 1e5:
+        return f"₹{x / 1e5:.2f} lakh".replace(".00 lakh", " lakh")
+    return f"₹{_inr(x)}"
+
+
+def _example(t):
+    """A worked example from the calculator's own default inputs, using the same formulas as assets/tools.js:
+    (caption, headline result, [(label, amount), (label, amount)])."""
+    d = {f[0]: f[2] for f in t[3]}
+    p, r, y = d["amt"], d["rate"], d["yrs"]
+    if t[0] == "sip-calculator":
+        i, n = r / 1200, y * 12
+        fv = p * ((1 + i) ** n - 1) / i * (1 + i)
+        return (f"Example: {_amt(p)} a month at {r:g}% for {y} years", _amt(fv), [("Invested", p * n), ("Gain", fv - p * n)])
+    if t[0] == "emi-calculator":
+        i, n = r / 1200, y * 12
+        emi = p * i * (1 + i) ** n / ((1 + i) ** n - 1)
+        return (f"Example: {_amt(p)} loan at {r:g}% for {y} years", (_amt(emi), "a month"), [("Principal", p), ("Interest", emi * n - p)])
+    if t[0] == "fd-calculator":
+        mat = p * (1 + r / 400) ** (4 * y)
+        return (f"Example: {_amt(p)} at {r:g}% for {y} years, compounded quarterly", _amt(mat), [("Deposit", p), ("Interest", mat - p)])
+    if t[0] == "inflation-calculator":
+        fut = p * (1 + r / 100) ** y
+        return (f"Example: {_amt(p)} of spending today at {r:g}% inflation", (_amt(fut), f"in {y} years"), [("Today", p), ("Added by inflation", fut - p)])
+    return None
+
+
 def _tool_card(t):
-    return (f'<a class="tool-card" href="/tools/{t[0]}.html"><h3>{E(t[1])}</h3><p>{E(t[2])}</p>'
-            f'<span class="go">Open calculator {GO}</span></a>')
+    ex = _example(t)
+    demo = ""
+    if ex:
+        cap, big, ((la, a), (lb, b)) = ex
+        num, unit = big if isinstance(big, tuple) else (big, "")
+        share = a / (a + b) * 100
+        demo = (f'<div class="tc-demo"><span class="tc-cap">{E(cap)}</span><b class="tc-big">{E(num)}{f"<small>{E(unit)}</small>" if unit else ""}</b>'
+                f'<div class="tc-bar" aria-hidden="true"><i style="width:{share:.1f}%"></i></div>'
+                f'<div class="tc-leg"><span><i class="a"></i>{E(la)} {E(_amt(a))}</span><span><i class="b"></i>{E(lb)} {E(_amt(b))}</span></div></div>')
+    return (f'<a class="tool-card" href="/tools/{t[0]}.html">{demo}<div class="tc-txt"><h3>{E(t[1])}</h3><p>{E(t[2])}</p>'
+            f'<span class="go">Open calculator {GO}</span></div></a>')
 
 
 def snapshot(ticker):

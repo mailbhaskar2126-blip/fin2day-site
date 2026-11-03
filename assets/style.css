@@ -209,16 +209,57 @@ section.block,.sec{padding-block:clamp(56px,8vw,104px)}
 .band{background:var(--mist);border-block:1px solid var(--rule)}
 .sec.band + .sec{border-top:0}
 
-/* Tools */
-.tools-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:2px solid var(--navy);border-bottom:1px solid var(--rule)}
-.tool-card{display:flex;flex-direction:column;gap:10px;padding:22px 24px 26px;text-decoration:none;color:var(--navy);min-width:0;border-left:1px solid var(--rule)}
-.tool-card:first-child{padding-left:0;border-left:0}
-.tool-card h3{font-size:22px;line-height:1.2;margin:0}
-.tool-card p{margin:0;color:var(--ink-2);font-size:15.5px}
-.tool-card .go{margin-top:auto;padding-top:6px}
+/* Tools: each card leads with a worked example from the calculator's defaults */
+.tools-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.tool-card{display:flex;flex-direction:column;background:var(--white);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;text-decoration:none;color:var(--navy);min-width:0;transition:border-color .2s,box-shadow .2s}
+.tool-card:hover{border-color:var(--blue);box-shadow:0 18px 36px -26px rgba(29,70,200,.7)}
 .tool-card:hover h3{color:var(--blue)}
-@media(max-width:1000px){.tools-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tool-card:nth-child(odd){padding-left:0;border-left:0}.tool-card:nth-child(-n+2){border-bottom:1px solid var(--rule)}}
-@media(max-width:560px){.tools-grid{grid-template-columns:1fr}.tool-card{padding:20px 0;border-left:0;border-bottom:1px solid var(--rule)}.tool-card:last-child{border-bottom:0}}
+.tc-demo{display:flex;flex-direction:column;background:var(--blue);color:#fff;padding:18px 18px 16px;min-height:168px}
+.tc-big small{font:600 14px var(--sans);color:#DCE4FA;margin-left:6px}
+.tc-bar{margin-top:auto}
+.tool-card:nth-child(2) .tc-demo,.tool-card:nth-child(4) .tc-demo{background:var(--navy)}
+.tc-cap{display:block;font:500 12.5px/1.4 var(--sans);color:#C9D5F5;min-height:2.8em}
+.tc-big{display:block;margin:6px 0 14px;font:700 clamp(24px,2.2vw,30px)/1.1 var(--serif);font-variant-numeric:lining-nums;white-space:nowrap}
+.tc-bar{height:8px;border-radius:4px;background:#8EA6E6;overflow:hidden}
+.tc-bar i{display:block;height:100%;background:#fff;border-radius:4px 0 0 4px}
+.tc-leg{display:flex;flex-direction:column;gap:4px;margin-top:9px;font:500 12px/1.3 var(--sans);color:#DCE4FA}
+.tc-leg i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;vertical-align:0}
+.tc-leg .a{background:#fff}.tc-leg .b{background:#8EA6E6}
+.tc-txt{display:flex;flex-direction:column;gap:8px;flex:1;padding:18px 18px 20px}
+.tool-card h3{font-size:21px;line-height:1.2;margin:0}
+.tool-card p{margin:0;color:var(--ink-2);font-size:15px}
+.tool-card .go{margin-top:auto;padding-top:8px}
+@media(max-width:1000px){.tools-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.tools-grid{grid-template-columns:1fr}.tc-cap{min-height:0}}
+
+/* How it works: three illustrated steps in a row */
+.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px}
+.flow li{position:relative;display:flex;flex-direction:column;gap:6px;background:var(--white);border:1px solid var(--rule);border-radius:var(--r);padding:18px 20px 22px;min-width:0}
+.flow li + li::before{content:"";position:absolute;left:-31px;top:76px;width:22px;height:22px;background:no-repeat center/22px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2.5 8h10M8.5 3.8 12.7 8l-4.2 4.2' fill='none' stroke='%231D46C8' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.fl-art{background:var(--mist);border-radius:4px;margin-bottom:10px;padding:10px}
+.fl-art svg{display:block;width:100%;height:auto;max-height:150px}
+.fl-n{font:600 13px var(--sans);color:var(--blue)}
+.flow b{font:700 22px/1.2 var(--serif)}
+.fl-t{color:var(--ink-2);font-size:15.5px}
+.promises-row{list-style:none;margin:28px 0 0;padding:20px 0 0;border-top:1px solid var(--rule);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 40px}
+.promises-row li{display:grid;grid-template-columns:22px 1fr;gap:12px;color:var(--ink-2);font-size:15px;line-height:1.5}
+.promises-row svg{width:22px;height:22px;margin-top:1px;color:var(--blue)}
+.promises-row b{color:var(--navy);font-weight:600}
+@media(max-width:900px){.flow,.promises-row{grid-template-columns:1fr}.flow{gap:34px}.flow li + li::before{left:50%;top:-29px;transform:translateX(-50%) rotate(90deg)}}
+
+/* FAQ: question cards beside a contact card */
+.faq-side h2{font-size:clamp(30px,3.6vw,44px);line-height:1.1}
+.ask-card{margin-top:24px;background:var(--blue-soft);border-radius:var(--r);padding:22px 22px 20px;max-width:380px}
+.ask-card b{display:block;font:700 22px/1.2 var(--serif)}
+.ask-card p{margin:8px 0 16px;color:var(--ink-2);font-size:15.5px}
+.ask-acts{display:flex;flex-wrap:wrap;gap:8px}
+.faq.faq-cards{border-top:0;gap:10px}
+.faq.faq-cards details{background:var(--white);border:1px solid var(--rule);border-radius:var(--r);padding:0 20px;transition:border-color .2s,box-shadow .2s}
+.faq.faq-cards details[open]{border-color:var(--blue);box-shadow:0 16px 32px -26px rgba(29,70,200,.7)}
+.faq.faq-cards summary{padding:18px 0}
+.faq.faq-cards summary::after{width:28px;height:28px;flex:0 0 28px;border:0;border-radius:50%;transform:none;background:var(--blue-soft) no-repeat center/12px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M6 1v10M1 6h10' stroke='%231D46C8' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E")}
+.faq.faq-cards details[open] summary::after{transform:none;background:var(--blue) no-repeat center/12px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M1 6h10' stroke='%23fff' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E")}
+.faq.faq-cards details p{margin:0 0 20px}
 
 /* How it works: a real sequence, so it is numbered */
 .how-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr);gap:clamp(28px,5vw,80px);align-items:start}

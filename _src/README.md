@@ -13,6 +13,12 @@ step on Netlify: run the build locally and commit the generated HTML.
   `enhance.py` turns bar and line charts into `data-spec` JSON; `assets/charts.js` renders them in the house style
   (values on bars, end-value pills, hover/tap readouts, draw-in once when scrolled into view). `line()` points carry
   their exact value in `data-tip` (pass `tipfmt=` to control the format).
+- `thumbs.py` + `content/thumbs.json` — explainer thumbnails. Every story gets a vector cover drawn automatically from
+  its lead chart (biggest bar or last point shown large). To use a real photo instead, add the story to `thumbs.json`
+  with `file` (save a ~960px-wide JPG in `assets/thumbs/<slug>.jpg`), `alt`, `credit` and `link`. Use only photos
+  you are allowed to publish (public domain, CC0, CC BY, CC BY-SA from Wikimedia Commons), credit them exactly, and
+  only when the story has a clear real-world subject (a company, building, product, place or historical event).
+  Photos are shown in the site's blue duotone automatically.
 - `DESIGN.md` — the visual system (colours, fonts, chart card). The homepage reads each story's chart title and
   measure line from the caption under its first chart: write captions as "What is measured. Extra note. Source: …".
 - `example_stories.py` — reference examples of real stories (do not run)

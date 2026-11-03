@@ -1,7 +1,7 @@
 """Generates the FIN2DAY static site. Run: python3 build.py"""
 import os, sys, html
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import extras, enhance
+import extras, enhance, thumbs
 
 SITE = "https://fin2day.pages.dev"
 IG = "https://www.instagram.com/fin2day/"
@@ -138,7 +138,7 @@ ENHANCED = None  # all stories now use the interactive renderer
 def load_stories():
     out = []
     for jf in glob.glob(os.path.join(CONTENT, "*.json")):
-        if jf.endswith("ticker.json"):
+        if jf.endswith(("ticker.json", "thumbs.json")):
             continue
         m = json.load(open(jf))
         base = jf[:-5]
@@ -177,11 +177,13 @@ def share_bar():
 
 def story_card(e, link_prefix="/explainers/"):
     t, cls = e["tag"], e["tag_class"]
+    href = f"{link_prefix}{e['slug']}.html"
     return f"""<article class="story" data-topic="{e['topic']}">
+  {thumbs.thumb(e, href)}
   <div class="meta"><span class="tag {cls}">{t}</span><span>{e['date_label']}</span><span>{e['mins']} min</span></div>
-  <h3><a href="{link_prefix}{e['slug']}.html">{e['short']}</a></h3>
+  <h3><a href="{href}">{e['short']}</a></h3>
   <p>{e['card']}</p>
-  <a class="read" href="{link_prefix}{e['slug']}.html">Read the explainer →</a>
+  <a class="read" href="{href}">Read the explainer {GO}</a>
 </article>"""
 
 
@@ -375,6 +377,7 @@ def build():
     <h1>{e['title']}</h1>
     <p class="dek">{e['dek']}</p>
   </header>
+  {thumbs.figure(e)}
   <div class="prose">{ARTICLE_BODIES[e['slug']]}</div>
   {share_bar()}
   <div class="sources"><b>Sources</b><ol>{srcs}</ol>

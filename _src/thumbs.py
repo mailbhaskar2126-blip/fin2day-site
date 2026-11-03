@@ -79,7 +79,8 @@ def _key(sp):
     if sp["k"] in ("h", "v"):
         size = "w" if sp["k"] == "h" else "h"
         r = max(sp["rows"], key=lambda r: r[size])
-        return r["l"], r["t"]
+        # a bare number means nothing out of context; show it only with its unit
+        return (r["l"], r["t"]) if re.search(r"[^\d\s,.+\-−~]", r["t"]) else None
     base = sp["series"][0]
     if "p" in base and base["p"] and base["p"][-1][2]:
         label = sp["xl"][-1][1] if sp.get("xl") else ""
@@ -127,8 +128,9 @@ def thumb(e, href):
     """Card thumbnail, linked to the story. Decorative for screen readers: the card title is the link they use."""
     p = PHOTOS.get(e["slug"])
     if p:
+        pos = f' style="object-position:{p["pos"]}"' if p.get("pos") else ""
         return (f'<a class="thumb photo" href="{href}" tabindex="-1" aria-hidden="true">'
-                f'<img src="{p["file"]}" alt="" loading="lazy" width="960" height="540">'
+                f'<img src="{p["file"]}" alt="" loading="lazy" width="960" height="540"{pos}>'
                 f'<span class="credit">{html.escape(p["credit"])}</span></a>')
     return f'<a class="thumb" href="{href}" tabindex="-1" aria-hidden="true">{cover(e)}</a>'
 
@@ -138,5 +140,6 @@ def figure(e):
     p = PHOTOS.get(e["slug"])
     if not p:
         return ""
-    return (f'<figure class="lead-photo"><div class="duo"><img src="{p["file"]}" alt="{html.escape(p["alt"])}" width="960" height="540"></div>'
+    pos = f' style="object-position:{p["pos"]}"' if p.get("pos") else ""
+    return (f'<figure class="lead-photo"><div class="duo"><img src="{p["file"]}" alt="{html.escape(p["alt"])}" width="960" height="540"{pos}></div>'
             f'<figcaption><a href="{p["link"]}" target="_blank" rel="noopener">{html.escape(p["credit"])}</a></figcaption></figure>')

@@ -18,7 +18,7 @@ step on Netlify: run the build locally and commit the generated HTML.
   with `file` (save a ~960px-wide JPG in `assets/thumbs/<slug>.jpg`), `alt`, `credit` and `link`. Use only photos
   you are allowed to publish (public domain, CC0, CC BY, CC BY-SA from Wikimedia Commons), credit them exactly, and
   only when the story has a clear real-world subject (a company, building, product, place or historical event).
-  Photos are shown in the site's blue duotone automatically.
+  Photos are shown in their real colours, cropped to 16:9; add `"pos": "50% 10%"` to keep faces or the subject in frame.
 - `DESIGN.md` — the visual system (colours, fonts, chart card). The homepage reads each story's chart title and
   measure line from the caption under its first chart: write captions as "What is measured. Extra note. Source: …".
 - `example_stories.py` — reference examples of real stories (do not run)

@@ -332,16 +332,15 @@ footer :focus-visible{outline-color:#fff}
 .story .read{margin-top:auto}
 .story[hidden]{display:none!important}
 
-/* Thumbnails: vector covers drawn from each story's chart, or a photo in the same blues (duotone) */
-.thumb{position:relative;display:block;aspect-ratio:16/9;margin:0 0 16px;border-radius:var(--r);overflow:hidden;background:var(--blue);isolation:isolate}
+/* Thumbnails: vector covers drawn from each story's chart, or a real photo in its own colours */
+.thumb{position:relative;display:block;aspect-ratio:16/9;margin:0 0 16px;border-radius:var(--r);overflow:hidden;background:var(--mist)}
 .thumb svg,.thumb img{display:block;width:100%;height:100%;object-fit:cover}
-.thumb.photo img,.duo img{filter:grayscale(1) contrast(1.12) brightness(1.04)}
-.thumb.photo::after,.duo::after{content:"";position:absolute;inset:0;background:var(--blue);mix-blend-mode:screen;pointer-events:none}
-.thumb .credit{position:absolute;right:8px;bottom:6px;z-index:2;max-width:calc(100% - 16px);font:500 10.5px/1.3 var(--sans);color:#fff;text-shadow:0 1px 3px rgba(14,26,46,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.thumb.photo::after{content:"";position:absolute;inset:auto 0 0;height:34%;background:linear-gradient(transparent,rgba(14,26,46,.55));pointer-events:none}
+.thumb .credit{position:absolute;right:8px;bottom:6px;z-index:2;max-width:calc(100% - 16px);font:500 10.5px/1.3 var(--sans);color:#fff;text-shadow:0 1px 2px rgba(14,26,46,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .story:hover .thumb{outline:2px solid var(--blue);outline-offset:2px}
 .story .thumb + .meta{margin-top:0}
 .lead-photo{margin:28px 0 0}
-.duo{position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;isolation:isolate;background:var(--blue)}
+.duo{position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:var(--mist)}
 .duo img{width:100%;height:100%;object-fit:cover;display:block}
 .lead-photo figcaption{margin-top:8px;font-size:13px;color:var(--mute)}
 .lead-photo figcaption a{color:var(--mute)}

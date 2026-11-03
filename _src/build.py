@@ -213,10 +213,14 @@ def build():
     asof = next((t[1] for t in TICKER if t[0] == "Closing data as of"), "")
     close_items = "".join(
         f'<li><span class="k">{html.escape(k)}</span><span class="v{(" " + c) if c else ""}">{html.escape(v)}</span></li>' for k, v, c in tick)
+    # The list runs twice so the ticker can loop seamlessly; the copy is hidden from screen readers.
     close_strip = f"""<section class="close" aria-labelledby="close-h">
   <div class="wrap">
     <h2 id="close-h">Markets at close <span>{html.escape(asof)}</span></h2>
-    <ul>{close_items}</ul>
+    <div class="close-view">
+      <div class="close-track"><ul>{close_items}</ul><ul class="close-dup" aria-hidden="true">{close_items}</ul></div>
+    </div>
+    <button class="close-toggle" type="button" aria-pressed="false" aria-label="Pause the ticker"><svg viewBox="0 0 12 12" aria-hidden="true"><path class="ic-pause" d="M3.5 2.5v7M8.5 2.5v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="ic-play" d="M3.5 2.2v7.6L9.8 6z" fill="currentColor"/></svg></button>
   </div>
 </section>"""
 

@@ -12,6 +12,8 @@ FAVICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox
 # Shared icons: arrow for links, check for lists. Use <svg aria-hidden="true"><use href="#i-go"/></svg>.
 ICONS = """<svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-go" viewBox="0 0 16 16"><path d="M2.5 8h10M8.5 3.8 12.7 8l-4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 20 20"><rect x="2.5" y="2.5" width="15" height="15" rx="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="10" r="3.4" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="14.4" cy="5.6" r="1" fill="currentColor"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 20 20"><rect x="2.5" y="4.5" width="15" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m3.5 6 6.5 5 6.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
   <symbol id="i-check" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m6.2 10.2 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </svg>"""
 GO = '<svg aria-hidden="true"><use href="#i-go"/></svg>'
@@ -23,6 +25,17 @@ def page(path, title, desc, body, active=None, og_type="website", pre=""):
     url = SITE + ("/" if path == "index.html" else "/" + path.replace("index.html", ""))
     nav = "".join(
         f'<a href="{h}"{" aria-current=\"page\"" if active == h else ""}>{t}</a>' for h, t in NAV)
+    # top bar: the date (site.js swaps in today's IST date) and the newest story
+    lead = EXPLAINERS[0]
+    ld = datetime.date.fromisoformat(lead["date"])
+    topbar = f"""<div class="topbar">
+  <div class="wrap">
+    <span class="tb-date" id="today">{ld:%A}, {ld.day} {ld:%B %Y}</span>
+    <a class="tb-latest" href="/explainers/{lead['slug']}.html"><span>Latest</span>{lead['short']}</a>
+    <a class="tb-ig" href="{IG}" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg><span>Follow @fin2day</span></a>
+  </div>
+</div>"""
+    MAIL = '<svg aria-hidden="true"><use href="#i-mail"/></svg>'
     full_title = title if title.startswith("FIN2DAY") else f"{title} | FIN2DAY"
     return f"""<!doctype html>
 <html lang="en">
@@ -48,15 +61,16 @@ def page(path, title, desc, body, active=None, og_type="website", pre=""):
 <script>document.documentElement.classList.add('js')</script>
 {ICONS}
 <a class="skip" href="#main">Skip to content</a>
+{topbar}
 <header class="mast">
   <div class="wrap">
     <a class="logo" href="/" aria-label="FIN2DAY home"><span class="wm">FIN<b>2</b>DAY</span><span class="by">Finance, explained in 2 minutes</span></a>
     <nav class="nav" id="nav" aria-label="Main">
       {nav}
-      <a class="btn" href="/#newsletter">Get the daily brief</a>
+      <a class="btn" href="/#newsletter">{MAIL}Get the daily brief</a>
     </nav>
-    <a class="btn sm mast-cta" href="/#newsletter">Get the daily brief</a>
-    <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
+    <a class="btn sm mast-cta" href="/#newsletter">{MAIL}Get the daily brief</a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="nav"><span class="mb-lines" aria-hidden="true"><i></i><i></i><i></i></span><span class="mb-txt">Menu</span></button>
   </div>
 </header>
 {pre}

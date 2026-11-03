@@ -4,11 +4,21 @@
   var btn = document.querySelector('.menu-btn');
   var nav = document.getElementById('nav');
   if (btn && nav) {
+    var label = btn.querySelector('.mb-txt') || btn;
     btn.addEventListener('click', function () {
       var open = nav.classList.toggle('open');
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      btn.textContent = open ? 'Close' : 'Menu';
+      label.textContent = open ? 'Close' : 'Menu';
     });
+  }
+
+  // Masthead: compact once the top bar has scrolled away
+  var mast = document.querySelector('.mast');
+  if (mast) {
+    var bar = document.querySelector('.topbar');
+    var onScroll = function () { mast.classList.toggle('compact', window.scrollY > (bar ? bar.offsetHeight : 0) + 8); };
+    window.addEventListener('scroll', onScroll, {passive: true});
+    onScroll();
   }
 
   // Scroll reveals

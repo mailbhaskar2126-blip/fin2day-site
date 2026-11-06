@@ -1,0 +1,35 @@
+{
+ "slug": "us-japan-chip-war-1980s",
+ "date": "2026-11-06",
+ "order": 50,
+ "topic": "trade",
+ "tag": "Trade",
+ "tag_class": "",
+ "title": "The US–Japan chip war of the 1980s: 100% tariffs, a secret 20% target, and Korea's win",
+ "short": "The 1980s US–Japan chip war, and why Korea won it",
+ "dek": "In 1987 Washington slapped 100% tariffs on Japanese electronics to enforce a chip deal. Japan did open its market, but the real winner of the fight was a country that wasn't in it.",
+ "card": "Japan held 75% of the world memory-chip market in 1987. By 2001 it had 20%, and Korea had 40%.",
+ "hero_src": "Data: Wikipedia (1986 Semiconductor Agreement), American Presidency Project",
+ "sources": [
+  [
+   "The American Presidency Project: Reagan statement on tariff increases on Japanese semiconductor products, 17 April 1987",
+   "https://www.presidency.ucsb.edu/documents/statement-tariff-increases-japanese-semiconductor-products"
+  ],
+  [
+   "The American Presidency Project: Memorandum, Determination under Section 301 (100% ad valorem duties), 17 April 1987",
+   "https://www.presidency.ucsb.edu/documents/memorandum-tariff-increases-japanese-semiconductor-products"
+  ],
+  [
+   "Wikipedia: 1986 U.S.–Japan Semiconductor Agreement (market-share data)",
+   "https://en.wikipedia.org/wiki/1986_U.S.%E2%80%93Japan_Semiconductor_Agreement"
+  ],
+  [
+   "Christian Science Monitor: 'It's about time,' say Congress and business on chips, 30 March 1987",
+   "https://www.csmonitor.com/layout/set/amphtml/1987/0330/asil.html"
+  ],
+  [
+   "The Fab, chapter 16: At war with Japan (history of the 1985–87 dispute)",
+   "https://fab-book.pages.dev/chapters/16_at_war_with_japan/"
+  ]
+ ]
+}

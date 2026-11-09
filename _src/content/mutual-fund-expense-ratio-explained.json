@@ -1,0 +1,35 @@
+{
+ "slug": "mutual-fund-expense-ratio-explained",
+ "date": "2026-11-09",
+ "order": 50,
+ "topic": "concepts",
+ "tag": "Basics",
+ "tag_class": "",
+ "title": "Mutual fund expense ratios, explained: how a 1% fee can cost you ₹14 lakh",
+ "short": "Expense ratios explained: how a 1% fee can cost you ₹14 lakh",
+ "dek": "Every mutual fund quietly takes a cut of your money each year. What the expense ratio is, why direct plans cost less, and what SEBI's new 2026 caps changed.",
+ "card": "A fee gap of one percentage point looks tiny. Over 20 years on ₹10 lakh, it can be worth ₹14.55 lakh.",
+ "hero_src": "FIN2DAY calculation; caps: SEBI via Cafemutual",
+ "sources": [
+  [
+   "Cafemutual: New MF expense ratio norms to be implemented from April 1, 2026 (19 Jan 2026)",
+   "https://cafemutual.com/news/industry/36767-new-mf-expense-ratio-norms-to-be-implemented-from-april-1-2026"
+  ],
+  [
+   "Cafemutual: SEBI's new expense ratio framework, what changes after April 1, 2026 (17 Feb 2026)",
+   "https://cafemutual.com/news/industry/37012-sebis-new-expense-ratio-framework-here-is-what-changes-after-april-1-2026"
+  ],
+  [
+   "Kotak Mutual Fund: What is expense ratio in mutual funds (SEBI 2026 BER limits)",
+   "https://www.kotakmf.com/Information/blogs/what-is-expense-ratio-in-mutual-fund"
+  ],
+  [
+   "Outlook Money: Direct plan penalty, how SEBI's new TER rules are leading to higher costs (9 Jun 2026)",
+   "https://www.outlookmoney.com/amp/story/invest/direct-plan-penalty-how-sebis-new-ter-rules-are-leading-to-higher-costs-for-diy-investors"
+  ],
+  [
+   "Whalesbook: Mutual funds, direct plans save costs, regular plans offer advice (3 Apr 2026)",
+   "https://www.whalesbook.com/news/English/mutual-funds/Mutual-Funds-Direct-Plans-Save-Costs-Regular-Plans-Offer-Advice/69cf6f8c69ec081354e31dbe"
+  ]
+ ]
+}

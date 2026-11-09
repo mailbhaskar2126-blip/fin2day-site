@@ -1,47 +1,52 @@
 [
  [
   "Closing data as of",
-  "6 Nov 2026",
+  "9 Nov 2026",
   ""
  ],
  [
   "Nifty 50",
-  "25,030.35 ▲ 2.01%",
+  "25,044.65 ▲ 0.23%",
   "up"
  ],
  [
   "Sensex",
-  "81,028.02 ▲ 1,718 pts",
+  "81,106.65 ▲ 107 pts",
   "up"
  ],
  [
   "Brent crude",
-  "$97.62 / bbl",
-  "up"
+  "$97.51 / bbl",
+  "dn"
  ],
  [
   "Rupee",
-  "₹93.89 / $ ▲ 52 paise",
+  "₹93.93 / $ ▲ 5 paise",
+  "up"
+ ],
+ [
+  "Bank Nifty",
+  "59,741.25 ▲ 1.51%",
   "up"
  ],
  [
   "Nifty Midcap 100",
-  "60,606.65 ▼ 0.02%",
-  "dn"
- ],
- [
-  "Nifty Smallcap 100",
-  "18,975.05 ▼ 0.82%",
-  "dn"
- ],
- [
-  "FII net buying (5 Nov)",
-  "₹14,974.68 cr",
+  "61,022.55 ▲ 0.55%",
   "up"
  ],
  [
-  "DII net selling (5 Nov)",
-  "₹10,444.54 cr",
+  "Nifty Smallcap 100",
+  "19,185.05 ▲ 0.10%",
+  "up"
+ ],
+ [
+  "FII net buying (6 Nov)",
+  "₹13,749.82 cr",
+  "up"
+ ],
+ [
+  "DII net selling (6 Nov)",
+  "₹5,968.70 cr",
   "dn"
  ],
  [

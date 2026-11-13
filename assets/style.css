@@ -619,7 +619,6 @@ footer :focus-visible{outline-color:#fff}
   .nav a:not(.btn):hover,.nav a:not(.btn):focus-visible{color:#fff}
   .nav a:not(.btn):hover::before,.nav a:not(.btn):focus-visible::before{opacity:1;bottom:0;left:0;margin:0;width:100%;height:100%;border-radius:999px;transform:none}
   .nav a[aria-current="page"]{color:var(--blue);background:var(--blue-soft)}
-  .nav a[aria-current="page"]::before{opacity:1;transform:scale(1)}
   .nav a[aria-current="page"]:hover{color:#fff}
 }
 

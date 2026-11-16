@@ -1,0 +1,35 @@
+{
+ "slug": "gdp-explained-real-vs-nominal",
+ "date": "2026-11-16",
+ "order": 50,
+ "topic": "concepts",
+ "tag": "Basics",
+ "tag_class": "",
+ "title": "GDP, explained: what the 7.8% growth number actually measures",
+ "short": "GDP, explained: what the 7.8% number actually measures",
+ "dek": "India's next GDP figure is due on 30 November. What GDP counts, why there's a 'real' and a 'nominal' number, and how to read the release like an economist.",
+ "card": "India's economy grew 10.3% in rupees but 7.8% in 'real' terms in April–June. The gap, and the rest of GDP, explained.",
+ "hero_src": "Data: MoSPI via Policy Edge, Business Standard, The Core",
+ "sources": [
+  [
+   "Policy Edge: India's GDP growth accelerates to 7.8% in Q1 FY27 as investment and services strengthen",
+   "https://www.policyedge.in/p/indias-gdp-growth-accelerates-to-78-in-q1-fy27-as-investment-and-services-strengthen"
+  ],
+  [
+   "Business Today: Capital formation, exports boost Q1 FY27 GDP growth to 7.8%",
+   "https://www.businesstoday.in/latest/economy/story/capital-formation-and-exports-boost-q1fy27-gdp-growth-to-7-8-552372-2026-08-31"
+  ],
+  [
+   "The Core: India's GDP growth, the deflator and double deflation",
+   "https://www.thecore.in/economy/india-gdp-growth-deflator-double-deflation-real-gdi-analysis-870021"
+  ],
+  [
+   "Devdiscourse (ANI): India's Q2 FY27 GDP growth pegged at 7.8%, GVA at 8–8.2%: SBI Research",
+   "https://www.devdiscourse.com/article/business/4005076-indias-q2-fy27-gdp-growth-pegged-at-78-gva-growth-seen-at-8-82-sbi-research"
+  ],
+  [
+   "MoSPI: National Accounts Statistics",
+   "https://www.mospi.gov.in/"
+  ]
+ ]
+}

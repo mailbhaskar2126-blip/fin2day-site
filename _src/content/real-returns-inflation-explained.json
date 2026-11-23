@@ -1,0 +1,47 @@
+{
+ "slug": "real-returns-inflation-explained",
+ "date": "2026-11-23",
+ "order": 50,
+ "topic": "concepts",
+ "tag": "Basics",
+ "tag_class": "",
+ "title": "Real returns, explained: why a 6.25% FD now earns you almost nothing",
+ "short": "Real returns explained: why a 6.25% FD earns almost nothing",
+ "dek": "With inflation at 6.09%, the interest on your deposit barely keeps up with prices. What real return means, how to calculate it, and how tax makes it negative.",
+ "card": "SBI's one-year FD earned a real return of about 3.4% in January. With inflation at 6.09%, it is now 0.15%.",
+ "hero_src": "FIN2DAY calculation; data: MoSPI, SBI",
+ "sources": [
+  [
+   "MoSPI: Press release on CPI for October 2026 (12 Nov 2026)",
+   "https://www.mospi.gov.in/uploads/latestreleasesfiles/1794480048335-Press%20Release%20of%20CPI%20for%20October%202026%20.pdf"
+  ],
+  [
+   "DD News: Retail inflation rises to 6.09% in October (12 Nov 2026)",
+   "https://ddindia.co.in/2026/11/retail-inflation-rises-to-6-09-percent-in-october-food-inflation-at-8-94-percent-goverment-data/"
+  ],
+  [
+   "BankBazaar: SBI fixed deposit interest rates 2026",
+   "https://www.bankbazaar.com/fixed-deposit/sbi-fixed-deposit-rate.html"
+  ],
+  [
+   "Upstox: SBI FD and RD interest rates for October 2026",
+   "https://upstox.com/news/personal-finance/investing/sbi-fd-and-rd-interest-rates-for-october-2026-latest-rates-highest-returns-and-rbi-mpc-impact/article-201400/"
+  ],
+  [
+   "Upstox: Best special FD rates, November 2026",
+   "https://upstox.com/news/personal-finance/investing/best-special-fixed-deposit-rates-november-2026-bank-of-india-state-bank-of-india-bank-of-baroda-indian-bank/article-202934/"
+  ],
+  [
+   "Business Today: Savings account rates at Canara Bank, SBI, PNB, BoB (10 Sep 2026)",
+   "https://www.businesstoday.in/personal-finance/story/have-rs-50-lakh-in-savings-check-canara-banks-new-interest-rate-and-what-sbi-pnb-bob-offer-554214-2026-09-10"
+  ],
+  [
+   "Business Today: How to calculate tax on FD interest (19 Jul 2026)",
+   "https://www.businesstoday.in/personal-finance/tax/story/received-fd-interest-this-year-heres-how-to-calculate-your-tax-liability-before-filing-itr-543778-2026-07-19"
+  ],
+  [
+   "Business Today: Income tax slabs FY 2026-27 (1 Apr 2026)",
+   "https://www.businesstoday.in/personal-finance/tax/story/income-tax-slabs-fy-2026-27-will-rates-change-from-april-1-under-new-tax-rules-details-523303-2026-04-01"
+  ]
+ ]
+}
